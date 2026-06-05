@@ -15,6 +15,7 @@
                 <div class="pulse-logo-mark">
                     <span class="material-symbols-rounded">bolt</span>
                 </div>
+
                 <div>
                     <h1>Pulse CMS</h1>
                     <p>Admin workspace</p>
@@ -23,7 +24,10 @@
 
             <div class="pulse-auth-copy">
                 <h2>Welcome back</h2>
-                <p>Sign in to manage your pages, themes, plugins, settings, and site health.</p>
+                <p>
+                    Sign in to manage your pages, themes, plugins,
+                    settings, SEO, site health, and content.
+                </p>
             </div>
 
             @if ($errors->any())
@@ -37,38 +41,69 @@
 
                 <label>
                     <span>Email address</span>
-                    <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="admin@pulse.test">
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        required
+                        autofocus
+                        placeholder="admin@pulse.test"
+                    >
                 </label>
 
                 <label>
                     <span>Password</span>
-                    <input type="password" name="password" required placeholder="••••••••">
+                    <input
+                        type="password"
+                        name="password"
+                        required
+                        placeholder="••••••••"
+                    >
                 </label>
 
                 <div class="pulse-form-row">
-                    <label class="pulse-check">
+                    <label class="pulse-switch">
                         <input type="checkbox" name="remember">
-                        <span>Remember me</span>
+
+                        <span class="pulse-switch-track">
+                            <span class="pulse-switch-thumb"></span>
+                        </span>
+
+                        <span class="pulse-switch-text">
+                            Remember me
+                        </span>
                     </label>
                 </div>
 
                 <button type="submit" class="pulse-btn pulse-btn-dark">
                     <span>Sign in</span>
-                    <span class="material-symbols-rounded">arrow_forward</span>
+
+                    <span class="material-symbols-rounded">
+                        arrow_forward
+                    </span>
                 </button>
             </form>
 
             <p class="pulse-auth-foot">
-                Default local login: admin@pulse.test / password
+                Pulse CMS Administration
             </p>
         </section>
 
         <section class="pulse-auth-panel">
             <div class="pulse-panel-glow"></div>
+
             <div class="pulse-panel-content">
-                <span class="material-symbols-rounded">dashboard_customize</span>
+                <span class="material-symbols-rounded">
+                    dashboard_customize
+                </span>
+
                 <h2>Build. Manage. Customize.</h2>
-                <p>A Laravel-powered CMS script with bundled themes, plugins, page controls, SEO tools, and site health features.</p>
+
+                <p>
+                    A Laravel-powered CMS built for business websites,
+                    ecommerce stores, schools, blogs, portfolios,
+                    landing pages, and more.
+                </p>
             </div>
         </section>
     </main>
