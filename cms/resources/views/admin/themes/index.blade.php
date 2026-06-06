@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', [
     'title' => 'Pulse Themes',
     'heading' => 'Themes',
-    'subheading' => 'Manage bundled Pulse themes, activate layouts, and preview default site structures.'
+    'subheading' => 'Manage bundled Pulse themes, activate layouts, and configure public site design.'
 ])
 
 @section('content')
@@ -15,10 +15,12 @@
     <section class="pulse-themes-hero">
         <div>
             <span class="material-symbols-rounded">palette</span>
+
             <h2>{{ $activeTheme?->name ?? 'No active theme' }}</h2>
+
             <p>
                 The active theme controls your public site structure, default pages,
-                design presets, widget support, and frontend layout direction.
+                layout presets, widget support, header/footer behavior, and frontend design.
             </p>
         </div>
 
@@ -79,23 +81,30 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('admin.themes.activate', $theme) }}">
-                        @csrf
+                    <div class="pulse-theme-actions">
+                        <form method="POST" action="{{ route('admin.themes.activate', $theme) }}">
+                            @csrf
 
-                        <button
-                            type="submit"
-                            class="pulse-btn {{ $theme->is_active ? 'pulse-btn-soft' : 'pulse-btn-dark' }}"
-                            @disabled($theme->is_active)
-                        >
-                            @if ($theme->is_active)
-                                <span>Currently active</span>
-                                <span class="material-symbols-rounded">check_circle</span>
-                            @else
-                                <span>Activate theme</span>
-                                <span class="material-symbols-rounded">arrow_forward</span>
-                            @endif
-                        </button>
-                    </form>
+                            <button
+                                type="submit"
+                                class="pulse-btn {{ $theme->is_active ? 'pulse-btn-soft' : 'pulse-btn-dark' }}"
+                                @disabled($theme->is_active)
+                            >
+                                @if ($theme->is_active)
+                                    <span>Currently active</span>
+                                    <span class="material-symbols-rounded">check_circle</span>
+                                @else
+                                    <span>Activate theme</span>
+                                    <span class="material-symbols-rounded">arrow_forward</span>
+                                @endif
+                            </button>
+                        </form>
+
+                        <a href="{{ route('admin.themes.settings', $theme) }}" class="pulse-theme-settings-btn">
+                            <span class="material-symbols-rounded">tune</span>
+                            Settings
+                        </a>
+                    </div>
                 </div>
             </article>
         @endforeach

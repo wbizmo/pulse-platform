@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\Admin\ThemeSettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,6 +44,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/themes', [ThemeController::class, 'index'])->name('themes');
         Route::post('/themes/{theme}/activate', [ThemeController::class, 'activate'])->name('themes.activate');
+        Route::get('/themes/{theme}/settings', [ThemeSettingsController::class, 'index'])->name('themes.settings');
+        Route::post('/themes/{theme}/settings', [ThemeSettingsController::class, 'update'])->name('themes.settings.update');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
