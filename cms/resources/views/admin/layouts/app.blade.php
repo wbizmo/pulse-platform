@@ -39,7 +39,7 @@
                     Page Builder
                 </a>
 
-                <a href="#">
+                <a href="{{ route('admin.plugins') }}" class="{{ request()->routeIs('admin.plugins') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">extension</span>
                     Plugins
                 </a>
