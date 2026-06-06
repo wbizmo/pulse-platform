@@ -34,17 +34,22 @@
                     Pages
                 </a>
 
+                <a href="{{ route('admin.menus') }}" class="{{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">menu_open</span>
+                    Menus
+                </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">view_quilt</span>
                     Page Builder
                 </a>
 
-                <a href="{{ route('admin.plugins') }}" class="{{ request()->routeIs('admin.plugins') ? 'active' : '' }}">
+                <a href="{{ route('admin.plugins') }}" class="{{ request()->routeIs('admin.plugins*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">extension</span>
                     Plugins
                 </a>
 
-                <a href="{{ route('admin.themes') }}" class="{{ request()->routeIs('admin.themes') ? 'active' : '' }}">
+                <a href="{{ route('admin.themes') }}" class="{{ request()->routeIs('admin.themes*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">palette</span>
                     Themes
                 </a>
