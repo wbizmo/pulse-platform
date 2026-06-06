@@ -16,6 +16,7 @@
                 <div class="pulse-logo-mark">
                     <span class="material-symbols-rounded">bolt</span>
                 </div>
+
                 <div>
                     <strong>Pulse CMS</strong>
                     <small>Control center</small>
@@ -23,30 +24,36 @@
             </div>
 
             <nav class="pulse-nav">
-                <a href="{{ route('admin.dashboard') }}" class="active">
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">dashboard</span>
                     Dashboard
                 </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">article</span>
                     Pages
                 </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">view_quilt</span>
                     Page Builder
                 </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">extension</span>
                     Plugins
                 </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">palette</span>
                     Themes
                 </a>
-                <a href="#">
+
+                <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">tune</span>
                     Settings
                 </a>
+
                 <a href="#">
                     <span class="material-symbols-rounded">monitor_heart</span>
                     Site Health
@@ -75,6 +82,7 @@
 
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
+
                     <button class="pulse-logout" type="submit">
                         <span class="material-symbols-rounded">logout</span>
                         Logout
