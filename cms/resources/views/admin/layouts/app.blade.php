@@ -29,7 +29,7 @@
                     Dashboard
                 </a>
 
-                <a href="#">
+                <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">article</span>
                     Pages
                 </a>
