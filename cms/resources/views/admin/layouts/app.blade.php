@@ -44,7 +44,7 @@
                     Plugins
                 </a>
 
-                <a href="#">
+                <a href="{{ route('admin.themes') }}" class="{{ request()->routeIs('admin.themes') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">palette</span>
                     Themes
                 </a>

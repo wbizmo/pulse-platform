@@ -923,3 +923,252 @@ svg{
         transform:translateX(18px);
     }
 }
+
+/* THEMES */
+
+.pulse-themes-hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    background:linear-gradient(135deg,#111827,#020617);
+    color:#ffffff;
+    border-radius:28px;
+    padding:30px;
+    margin-bottom:22px;
+    overflow:hidden;
+    position:relative;
+}
+
+.pulse-themes-hero::after{
+    content:"";
+    position:absolute;
+    width:280px;
+    height:280px;
+    right:-80px;
+    top:-80px;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+}
+
+.pulse-themes-hero > div{
+    position:relative;
+    z-index:2;
+}
+
+.pulse-themes-hero span.material-symbols-rounded{
+    font-size:38px;
+    margin-bottom:16px;
+}
+
+.pulse-themes-hero h2{
+    font-size:clamp(28px,4vw,38px);
+    letter-spacing:-.05em;
+    line-height:1.1;
+}
+
+.pulse-themes-hero p{
+    max-width:680px;
+    color:#d1d5db;
+    line-height:1.8;
+    margin-top:10px;
+}
+
+.pulse-theme-status{
+    min-width:150px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:22px;
+    padding:20px;
+    text-align:center;
+    backdrop-filter:blur(12px);
+}
+
+.pulse-theme-status strong{
+    display:block;
+    font-size:34px;
+    line-height:1;
+}
+
+.pulse-theme-status span{
+    display:block;
+    margin-top:8px;
+    color:#d1d5db;
+    font-size:13px;
+}
+
+.pulse-theme-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:20px;
+}
+
+.pulse-theme-card{
+    min-width:0;
+    background:#ffffff;
+    border:1px solid var(--line);
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+}
+
+.pulse-theme-card.active{
+    border-color:#111827;
+}
+
+.pulse-theme-preview{
+    height:190px;
+    background:
+        radial-gradient(circle at top right,rgba(191,219,254,.95),transparent 42%),
+        linear-gradient(135deg,#f8fafc,#eef2ff);
+    padding:18px;
+    position:relative;
+}
+
+.pulse-theme-preview-bar{
+    height:34px;
+    background:#ffffff;
+    border:1px solid rgba(148,163,184,.35);
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:0 12px;
+}
+
+.pulse-theme-preview-bar span{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#cbd5e1;
+}
+
+.pulse-theme-preview-body{
+    margin-top:16px;
+    display:grid;
+    grid-template-columns:1.3fr .7fr;
+    gap:12px;
+}
+
+.pulse-theme-preview-body div{
+    min-height:90px;
+    border-radius:18px;
+    background:rgba(255,255,255,.75);
+    border:1px solid rgba(148,163,184,.25);
+}
+
+.pulse-theme-preview-body div:first-child{
+    grid-row:span 2;
+}
+
+.pulse-theme-preview-body div:nth-child(2),
+.pulse-theme-preview-body div:nth-child(3){
+    min-height:39px;
+}
+
+.pulse-theme-badge{
+    position:absolute;
+    top:16px;
+    right:16px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:#111827;
+    color:#ffffff;
+    font-size:12px;
+}
+
+.pulse-theme-content{
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    flex:1;
+}
+
+.pulse-theme-head{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+}
+
+.pulse-theme-head h3{
+    font-size:19px;
+    letter-spacing:-.035em;
+}
+
+.pulse-theme-head p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:4px;
+}
+
+.pulse-theme-version{
+    align-self:flex-start;
+    padding:6px 9px;
+    border-radius:999px;
+    background:#f3f4f6;
+    color:#4b5563;
+    font-size:12px;
+}
+
+.pulse-theme-description{
+    color:#4b5563;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.pulse-theme-meta,
+.pulse-theme-pages div{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.pulse-theme-meta span,
+.pulse-theme-pages span{
+    padding:7px 9px;
+    border-radius:999px;
+    background:#f3f4f6;
+    color:#374151;
+    font-size:12px;
+    text-transform:capitalize;
+}
+
+.pulse-theme-pages strong{
+    display:block;
+    margin-bottom:10px;
+    font-size:13px;
+    color:#111827;
+}
+
+.pulse-btn-soft{
+    background:#f3f4f6;
+    color:#6b7280;
+    cursor:not-allowed;
+    box-shadow:none;
+}
+
+@media(max-width:1200px){
+    .pulse-theme-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:760px){
+    .pulse-themes-hero{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:24px;
+    }
+
+    .pulse-theme-status{
+        width:100%;
+        text-align:left;
+    }
+
+    .pulse-theme-grid{
+        grid-template-columns:1fr;
+    }
+}

@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PulseAdminSeeder::class,
+            PulseThemeSeeder::class,
         ]);
     }
 }
