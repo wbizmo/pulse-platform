@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -24,11 +24,20 @@ class AuthController extends Controller
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()
-                ->withErrors(['email' => 'The email or password is incorrect.'])
+                ->withErrors([
+                    'email' => 'The email or password is incorrect.',
+                ])
                 ->onlyInput('email');
         }
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        $user->update([
+            'last_login_at' => now(),
+            'last_login_ip' => $request->ip(),
+        ]);
 
         return redirect()->route('admin.dashboard');
     }
