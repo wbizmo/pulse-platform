@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PluginController;
+use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ThemeController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/plugins', [PluginController::class, 'index'])->name('plugins');
         Route::post('/plugins/{plugin}/toggle', [PluginController::class, 'toggle'])->name('plugins.toggle');
+        Route::get('/plugins/{plugin}/settings', [PluginSettingsController::class, 'index'])->name('plugins.settings');
+        Route::post('/plugins/{plugin}/settings', [PluginSettingsController::class, 'update'])->name('plugins.settings.update');
 
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');

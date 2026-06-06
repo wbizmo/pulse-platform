@@ -15,10 +15,13 @@
     <section class="pulse-plugins-hero">
         <div>
             <span class="material-symbols-rounded">extension</span>
+
             <h2>{{ $activePluginsCount }} active plugins</h2>
+
             <p>
                 Pulse CMS ships with bundled plugins for content, SEO, security,
-                payments, mail, ecommerce, exports, analytics, and business site features.
+                payments, mail, ecommerce, exports, analytics, forms,
+                business websites, school websites, and site management.
             </p>
         </div>
 
@@ -31,6 +34,7 @@
     <section class="pulse-plugin-groups">
         @foreach ($plugins as $category => $group)
             <div class="pulse-plugin-group">
+
                 <div class="pulse-plugin-group-head">
                     <h3>{{ ucfirst(str_replace('-', ' ', $category)) }}</h3>
                     <span>{{ $group->count() }} plugins</span>
@@ -38,19 +42,33 @@
 
                 <div class="pulse-plugin-grid">
                     @foreach ($group as $plugin)
+
                         <article class="pulse-plugin-card {{ $plugin->is_active ? 'active' : '' }}">
+
                             <div class="pulse-plugin-icon">
-                                <span class="material-symbols-rounded">{{ $plugin->icon }}</span>
+                                <span class="material-symbols-rounded">
+                                    {{ $plugin->icon }}
+                                </span>
                             </div>
 
                             <div class="pulse-plugin-body">
+
                                 <div class="pulse-plugin-title">
+
                                     <div>
                                         <h4>{{ $plugin->name }}</h4>
-                                        <p>v{{ $plugin->version }} · {{ $plugin->author }}</p>
+
+                                        <p>
+                                            v{{ $plugin->version }}
+                                            ·
+                                            {{ $plugin->author }}
+                                        </p>
                                     </div>
 
-                                    <form method="POST" action="{{ route('admin.plugins.toggle', $plugin) }}">
+                                    <form
+                                        method="POST"
+                                        action="{{ route('admin.plugins.toggle', $plugin) }}"
+                                    >
                                         @csrf
 
                                         <label class="pulse-switch pulse-plugin-switch">
@@ -65,6 +83,7 @@
                                             </span>
                                         </label>
                                     </form>
+
                                 </div>
 
                                 <p class="pulse-plugin-description">
@@ -72,24 +91,53 @@
                                 </p>
 
                                 <div class="pulse-plugin-tags">
+
                                     @if ($plugin->is_active)
-                                        <span class="active">Active</span>
+                                        <span class="active">
+                                            Active
+                                        </span>
                                     @else
-                                        <span>Inactive</span>
+                                        <span>
+                                            Inactive
+                                        </span>
                                     @endif
 
                                     @if ($plugin->has_settings)
-                                        <span>Settings</span>
+                                        <span>
+                                            Configurable
+                                        </span>
                                     @endif
 
                                     @foreach (($plugin->provides ?? []) as $feature)
-                                        <span>{{ str_replace('-', ' ', $feature) }}</span>
+                                        <span>
+                                            {{ str_replace('-', ' ', $feature) }}
+                                        </span>
                                     @endforeach
+
                                 </div>
+
+                                @if ($plugin->has_settings)
+
+                                    <a
+                                        href="{{ route('admin.plugins.settings', $plugin) }}"
+                                        class="pulse-plugin-settings-btn"
+                                    >
+                                        <span class="material-symbols-rounded">
+                                            settings
+                                        </span>
+
+                                        Settings
+                                    </a>
+
+                                @endif
+
                             </div>
+
                         </article>
+
                     @endforeach
                 </div>
+
             </div>
         @endforeach
     </section>
