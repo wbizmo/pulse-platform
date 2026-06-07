@@ -29,6 +29,11 @@
                     Dashboard
                 </a>
 
+                <a href="{{ route('admin.media') }}" class="{{ request()->routeIs('admin.media*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">perm_media</span>
+                    Media
+                </a>
+
                 <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages*') && ! request()->routeIs('admin.pages.builder*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">article</span>
                     Pages

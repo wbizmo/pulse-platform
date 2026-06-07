@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\PageController;
@@ -55,6 +56,18 @@ Route::prefix('admin')
         Route::middleware('auth')->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])
                 ->name('dashboard');
+
+            Route::get('/media', [MediaController::class, 'index'])
+                ->name('media');
+
+            Route::get('/media/upload', [MediaController::class, 'upload'])
+                ->name('media.upload');
+
+            Route::post('/media', [MediaController::class, 'store'])
+                ->name('media.store');
+
+            Route::delete('/media/{media}', [MediaController::class, 'destroy'])
+                ->name('media.destroy');
 
             Route::get('/pages', [PageController::class, 'index'])
                 ->name('pages');
