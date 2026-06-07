@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', [
     'title' => 'Pulse Pages',
     'heading' => 'Pages',
-    'subheading' => 'Create, manage, publish, and optimize your site pages.'
+    'subheading' => 'Create, manage, publish, optimize, and visually build your site pages.'
 ])
 
 @section('content')
@@ -15,7 +15,7 @@
     <div class="pulse-page-head">
         <div>
             <h2>Site Pages</h2>
-            <p>Manage regular pages, homepage, blog page, templates, visibility, and SEO metadata.</p>
+            <p>Manage regular pages, homepage, blog page, templates, visibility, SEO metadata, and builder layouts.</p>
         </div>
 
         <a href="{{ route('admin.pages.create') }}" class="pulse-inline-btn">
@@ -64,6 +64,10 @@
                                         <span>Blog</span>
                                     @endif
 
+                                    @if ($page->builder_data)
+                                        <span>Builder</span>
+                                    @endif
+
                                     @if (! $page->show_header)
                                         <span>No header</span>
                                     @endif
@@ -78,13 +82,21 @@
 
                             <td>
                                 <div class="pulse-row-actions">
-                                    <a href="{{ route('admin.pages.edit', $page) }}">Edit</a>
+                                    <a href="{{ route('admin.pages.builder', $page) }}">
+                                        Builder
+                                    </a>
+
+                                    <a href="{{ route('admin.pages.edit', $page) }}">
+                                        Edit
+                                    </a>
 
                                     <form method="POST" action="{{ route('admin.pages.destroy', $page) }}" onsubmit="return confirm('Delete this page?')">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit">Delete</button>
+                                        <button type="submit">
+                                            Delete
+                                        </button>
                                     </form>
                                 </div>
                             </td>

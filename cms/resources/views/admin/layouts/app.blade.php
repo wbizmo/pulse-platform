@@ -29,19 +29,19 @@
                     Dashboard
                 </a>
 
-                <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages*') ? 'active' : '' }}">
+                <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages*') && ! request()->routeIs('admin.pages.builder*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">article</span>
                     Pages
+                </a>
+
+                <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages.builder*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">view_quilt</span>
+                    Page Builder
                 </a>
 
                 <a href="{{ route('admin.menus') }}" class="{{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">menu_open</span>
                     Menus
-                </a>
-
-                <a href="#">
-                    <span class="material-symbols-rounded">view_quilt</span>
-                    Page Builder
                 </a>
 
                 <a href="{{ route('admin.plugins') }}" class="{{ request()->routeIs('admin.plugins*') ? 'active' : '' }}">

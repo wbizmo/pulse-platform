@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
@@ -43,9 +44,7 @@ Route::get('/login', function () {
 Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
-
         Route::middleware('guest')->group(function () {
-
             Route::get('/login', [AuthController::class, 'showLogin'])
                 ->name('login');
 
@@ -54,7 +53,6 @@ Route::prefix('admin')
         });
 
         Route::middleware('auth')->group(function () {
-
             Route::get('/dashboard', [DashboardController::class, 'index'])
                 ->name('dashboard');
 
@@ -75,6 +73,12 @@ Route::prefix('admin')
 
             Route::delete('/pages/{page}', [PageController::class, 'destroy'])
                 ->name('pages.destroy');
+
+            Route::get('/pages/{page}/builder', [PageBuilderController::class, 'edit'])
+                ->name('pages.builder');
+
+            Route::post('/pages/{page}/builder', [PageBuilderController::class, 'update'])
+                ->name('pages.builder.update');
 
             Route::get('/menus', [MenuController::class, 'index'])
                 ->name('menus');
