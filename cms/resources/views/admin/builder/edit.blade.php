@@ -118,5 +118,34 @@
         </div>
     </form>
 
+    <div class="pulse-media-picker" id="pulseMediaPicker" hidden>
+        <div class="pulse-media-picker-backdrop" data-media-close></div>
+
+        <section class="pulse-media-picker-panel">
+            <div class="pulse-media-picker-head">
+                <div>
+                    <h3>Select Media</h3>
+                    <p>Choose an uploaded image for the selected builder block.</p>
+                </div>
+
+                <button type="button" data-media-close>
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+
+            <div id="pulseMediaPickerGrid" class="pulse-media-picker-grid">
+                <div class="pulse-empty">
+                    <span class="material-symbols-rounded">hourglass_empty</span>
+                    <h3>Loading media...</h3>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        window.PULSE_MEDIA_LIBRARY_URL = "{{ route('admin.media.library', ['type' => 'image']) }}";
+    </script>
+
+    <script src="{{ asset('js/media-picker.js') }}"></script>
     <script src="{{ asset('js/builder.js') }}"></script>
 @endsection

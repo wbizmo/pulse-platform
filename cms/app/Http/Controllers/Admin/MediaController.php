@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,28 @@ class MediaController extends Controller
             'mediaItems' => $query->paginate(18)->withQueryString(),
             'activeType' => $request->type,
             'search' => $request->search,
+        ]);
+    }
+
+    public function library(Request $request): JsonResponse
+    {
+        $mediaItems = Media::query()
+            ->when($request->filled('type'), fn ($query) => $query->where('type', $request->type))
+            ->latest()
+            ->take(60)
+            ->get()
+            ->map(fn ($media) => [
+                'id' => $media->id,
+                'name' => $media->name,
+                'original_name' => $media->original_name,
+                'url' => url($media->url),
+                'type' => $media->type,
+                'mime_type' => $media->mime_type,
+                'size' => $media->readable_size,
+            ]);
+
+        return response()->json([
+            'media' => $mediaItems,
         ]);
     }
 
