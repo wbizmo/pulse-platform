@@ -85,7 +85,7 @@
                 <div class="pulse-builder-top">
                     <div>
                         <h3>{{ $page->title }}</h3>
-                        <p>Build structured page sections. This v1 saves blocks as JSON.</p>
+                        <p>Visual builder. Add blocks, select one, and edit it from the settings panel.</p>
                     </div>
 
                     <a href="{{ route('admin.pages.edit', $page) }}" class="pulse-inline-btn pulse-inline-btn-soft">
@@ -103,6 +103,8 @@
                     rows="18"
                 >{{ old('builder_data', json_encode($page->builder_data ?? [], JSON_PRETTY_PRINT)) }}</textarea>
             </section>
+
+            @include('admin.builder.sidebar')
         </section>
 
         <div class="pulse-save-bar">
