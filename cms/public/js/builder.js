@@ -5,8 +5,9 @@ const addButtons = document.querySelectorAll("[data-builder-add]");
 
 let blocks = [];
 let selectedIndex = null;
+let collapsedBlocks = {};
 
-const templates = {
+const blockTemplates = {
     hero: {
         type: "hero",
         eyebrow: "Pulse CMS",
@@ -105,6 +106,174 @@ const templates = {
     }
 };
 
+const starterTemplates = {
+    "business-home": [
+        {
+            type: "hero",
+            eyebrow: "Business Website",
+            title: "Grow Your Business With A Better Website",
+            description: "Launch a polished business website with pages, menus, media, themes, and flexible content blocks.",
+            button_label: "Get Started",
+            button_url: "/contact"
+        },
+        {
+            type: "features",
+            title: "Why Choose Us",
+            description: "Everything your business website needs from day one.",
+            items: [
+                {
+                    icon: "verified",
+                    title: "Professional Presence",
+                    description: "Create a clean and trustworthy public-facing brand."
+                },
+                {
+                    icon: "speed",
+                    title: "Fast Updates",
+                    description: "Edit pages, menus, images, and sections without touching code."
+                },
+                {
+                    icon: "extension",
+                    title: "Built-In Tools",
+                    description: "Use bundled CMS modules for SEO, forms, analytics, and more."
+                }
+            ]
+        },
+        {
+            type: "stats",
+            items: [
+                {
+                    value: "5+",
+                    label: "Bundled themes"
+                },
+                {
+                    value: "20+",
+                    label: "CMS modules"
+                },
+                {
+                    value: "100%",
+                    label: "Blade powered"
+                }
+            ]
+        },
+        {
+            type: "testimonial",
+            quote: "Pulse gives us the flexibility to manage our website without turning every update into a development task.",
+            name: "Business Owner",
+            role: "Pulse CMS User"
+        },
+        {
+            type: "cta",
+            title: "Ready To Build Your Site?",
+            description: "Start with pages, themes, menus, media, plugins, and a visual builder foundation.",
+            button_label: "Contact Us",
+            button_url: "/contact"
+        }
+    ],
+
+    "portfolio-home": [
+        {
+            type: "hero",
+            eyebrow: "Portfolio",
+            title: "Showcase Your Work With Style",
+            description: "Create a clean personal website for projects, case studies, services, and contact details.",
+            button_label: "View Projects",
+            button_url: "/projects"
+        },
+        {
+            type: "text",
+            content: "Use Pulse CMS to build a simple but polished portfolio site with flexible sections, image blocks, CTAs, and reusable layouts."
+        },
+        {
+            type: "image",
+            url: "",
+            alt: "Portfolio image"
+        },
+        {
+            type: "features",
+            title: "What You Can Highlight",
+            description: "Use structured blocks to present your best work clearly.",
+            items: [
+                {
+                    icon: "work",
+                    title: "Projects",
+                    description: "Showcase completed work and case studies."
+                },
+                {
+                    icon: "person",
+                    title: "About",
+                    description: "Introduce yourself, your background, and your skills."
+                },
+                {
+                    icon: "mail",
+                    title: "Contact",
+                    description: "Guide visitors toward bookings, emails, or enquiries."
+                }
+            ]
+        },
+        {
+            type: "cta",
+            title: "Let’s Work Together",
+            description: "Use this section to point visitors to your contact page or services.",
+            button_label: "Start A Conversation",
+            button_url: "/contact"
+        }
+    ],
+
+    "landing-page": [
+        {
+            type: "hero",
+            eyebrow: "Landing Page",
+            title: "Launch A Focused Page Fast",
+            description: "Use Pulse builder blocks to create a campaign page, product page, or service landing page.",
+            button_label: "Take Action",
+            button_url: "#"
+        },
+        {
+            type: "features",
+            title: "Built For Conversion",
+            description: "Add benefits, proof, answers, and calls to action.",
+            items: [
+                {
+                    icon: "ads_click",
+                    title: "Clear CTA",
+                    description: "Guide users toward one focused action."
+                },
+                {
+                    icon: "grid_view",
+                    title: "Flexible Blocks",
+                    description: "Mix hero, feature, image, FAQ, and CTA sections."
+                },
+                {
+                    icon: "query_stats",
+                    title: "SEO Ready",
+                    description: "Use page metadata and content structure to support discovery."
+                }
+            ]
+        },
+        {
+            type: "accordion",
+            title: "Common Questions",
+            items: [
+                {
+                    question: "Can I edit this page later?",
+                    answer: "Yes. Builder sections are stored as JSON and can be edited from the admin."
+                },
+                {
+                    question: "Can I add images?",
+                    answer: "Yes. The builder is connected to the Pulse media library."
+                }
+            ]
+        },
+        {
+            type: "cta",
+            title: "Ready To Continue?",
+            description: "Use this block for your final conversion message.",
+            button_label: "Continue",
+            button_url: "#"
+        }
+    ]
+};
+
 function safeParseJson(value) {
     try {
         const parsed = JSON.parse(value || "[]");
@@ -125,13 +294,35 @@ function escapeHtml(text) {
         .replaceAll(">", "&gt;");
 }
 
+function escapeAttribute(value) {
+    return escapeHtml(value).replaceAll('"', "&quot;");
+}
+
+function deepClone(value) {
+    return JSON.parse(JSON.stringify(value));
+}
+
+function normalizeCollapsedState() {
+    const next = {};
+
+    blocks.forEach((_, index) => {
+        if (collapsedBlocks[index]) {
+            next[index] = true;
+        }
+    });
+
+    collapsedBlocks = next;
+}
+
 function renderBuilder() {
+    normalizeCollapsedState();
+
     if (!blocks.length) {
         builderCanvas.innerHTML = `
             <div class="pulse-builder-empty">
                 <span class="material-symbols-rounded">view_quilt</span>
                 <h3>No blocks yet</h3>
-                <p>Add a block to begin building this page.</p>
+                <p>Add a block or import a starter template to begin building this page.</p>
             </div>
         `;
 
@@ -142,33 +333,45 @@ function renderBuilder() {
     }
 
     builderCanvas.innerHTML = blocks.map((block, index) => {
+        const isCollapsed = Boolean(collapsedBlocks[index]);
+
         return `
             <article
-                class="pulse-builder-item ${selectedIndex === index ? "pulse-builder-selected" : ""}"
+                class="pulse-builder-item ${selectedIndex === index ? "pulse-builder-selected" : ""} ${isCollapsed ? "pulse-builder-collapsed" : ""}"
                 data-select-block="${index}"
+                draggable="true"
+                data-drag-index="${index}"
             >
                 <div class="pulse-builder-item-head">
                     <div>
                         <strong>${escapeHtml(block.type)}</strong>
-                        <span>Block ${index + 1}</span>
+                        <span>Block ${index + 1}${isCollapsed ? " · Collapsed" : ""}</span>
                     </div>
 
                     <div class="pulse-builder-item-actions">
-                        <button type="button" data-up="${index}">
+                        <button type="button" data-duplicate="${index}" title="Duplicate block">
+                            <span class="material-symbols-rounded">content_copy</span>
+                        </button>
+
+                        <button type="button" data-collapse="${index}" title="Collapse block">
+                            <span class="material-symbols-rounded">${isCollapsed ? "expand_more" : "expand_less"}</span>
+                        </button>
+
+                        <button type="button" data-up="${index}" title="Move up">
                             <span class="material-symbols-rounded">keyboard_arrow_up</span>
                         </button>
 
-                        <button type="button" data-down="${index}">
+                        <button type="button" data-down="${index}" title="Move down">
                             <span class="material-symbols-rounded">keyboard_arrow_down</span>
                         </button>
 
-                        <button type="button" data-delete="${index}">
+                        <button type="button" data-delete="${index}" title="Delete block">
                             <span class="material-symbols-rounded">delete</span>
                         </button>
                     </div>
                 </div>
 
-                ${renderBlockPreview(block)}
+                ${isCollapsed ? "" : renderBlockPreview(block)}
             </article>
         `;
     }).join("");
@@ -200,7 +403,7 @@ function renderBlockPreview(block) {
                 <div class="pulse-builder-preview">
                     ${
                         block.url
-                            ? `<img class="pulse-builder-preview-image" src="${escapeHtml(block.url)}" alt="${escapeHtml(block.alt)}">`
+                            ? `<img class="pulse-builder-preview-image" src="${escapeAttribute(block.url)}" alt="${escapeAttribute(block.alt)}">`
                             : `<div class="pulse-builder-placeholder"><span class="material-symbols-rounded">image</span><p>No image selected</p></div>`
                     }
                 </div>
@@ -412,50 +615,55 @@ function jsonField(key, label, value) {
     `;
 }
 
-function escapeAttribute(value) {
-    return escapeHtml(value).replaceAll('"', "&quot;");
+function resetSelectionIfNeeded() {
+    if (selectedIndex !== null && !blocks[selectedIndex]) {
+        selectedIndex = null;
+    }
 }
 
-function updateBlockField(key, value) {
-    if (selectedIndex === null || !blocks[selectedIndex]) {
+function loadStarterTemplate(name) {
+    if (!starterTemplates[name]) {
         return;
     }
 
-    blocks[selectedIndex][key] = value;
+    if (blocks.length && !confirm("Replace current builder blocks with this template?")) {
+        return;
+    }
+
+    blocks = deepClone(starterTemplates[name]);
+    selectedIndex = null;
+    collapsedBlocks = {};
+
     renderBuilder();
     renderInspector();
 }
 
-function updateBlockJsonField(key, value) {
-    if (selectedIndex === null || !blocks[selectedIndex]) {
+function clearBuilder() {
+    if (!blocks.length) {
         return;
     }
 
-    try {
-        const parsed = JSON.parse(value || "[]");
-
-        if (key) {
-            blocks[selectedIndex][key] = parsed;
-        } else {
-            blocks[selectedIndex] = parsed;
-        }
-
-        renderBuilder();
-        renderInspector();
-    } catch {
-        syncTextarea();
+    if (!confirm("Clear all builder blocks?")) {
+        return;
     }
+
+    blocks = [];
+    selectedIndex = null;
+    collapsedBlocks = {};
+
+    renderBuilder();
+    renderInspector();
 }
 
 addButtons.forEach(button => {
     button.addEventListener("click", () => {
         const type = button.dataset.builderAdd;
 
-        if (!templates[type]) {
+        if (!blockTemplates[type]) {
             return;
         }
 
-        blocks.push(JSON.parse(JSON.stringify(templates[type])));
+        blocks.push(deepClone(blockTemplates[type]));
         selectedIndex = blocks.length - 1;
 
         renderBuilder();
@@ -464,10 +672,32 @@ addButtons.forEach(button => {
 });
 
 builderCanvas.addEventListener("click", event => {
+    const duplicate = event.target.closest("[data-duplicate]");
+    const collapse = event.target.closest("[data-collapse]");
     const remove = event.target.closest("[data-delete]");
     const up = event.target.closest("[data-up]");
     const down = event.target.closest("[data-down]");
     const select = event.target.closest("[data-select-block]");
+
+    if (duplicate) {
+        const index = Number(duplicate.dataset.duplicate);
+
+        blocks.splice(index + 1, 0, deepClone(blocks[index]));
+        selectedIndex = index + 1;
+
+        renderBuilder();
+        renderInspector();
+        return;
+    }
+
+    if (collapse) {
+        const index = Number(collapse.dataset.collapse);
+
+        collapsedBlocks[index] = !collapsedBlocks[index];
+
+        renderBuilder();
+        return;
+    }
 
     if (remove) {
         const index = Number(remove.dataset.delete);
@@ -491,6 +721,7 @@ builderCanvas.addEventListener("click", event => {
         if (index > 0) {
             [blocks[index], blocks[index - 1]] = [blocks[index - 1], blocks[index]];
             selectedIndex = index - 1;
+            collapsedBlocks = {};
             renderBuilder();
             renderInspector();
         }
@@ -504,6 +735,7 @@ builderCanvas.addEventListener("click", event => {
         if (index < blocks.length - 1) {
             [blocks[index], blocks[index + 1]] = [blocks[index + 1], blocks[index]];
             selectedIndex = index + 1;
+            collapsedBlocks = {};
             renderBuilder();
             renderInspector();
         }
@@ -518,20 +750,87 @@ builderCanvas.addEventListener("click", event => {
     }
 });
 
+builderCanvas.addEventListener("dragstart", event => {
+    const item = event.target.closest("[data-drag-index]");
+
+    if (!item) {
+        return;
+    }
+
+    event.dataTransfer.setData("text/plain", item.dataset.dragIndex);
+    item.classList.add("pulse-builder-dragging");
+});
+
+builderCanvas.addEventListener("dragend", event => {
+    const item = event.target.closest("[data-drag-index]");
+
+    if (item) {
+        item.classList.remove("pulse-builder-dragging");
+    }
+});
+
+builderCanvas.addEventListener("dragover", event => {
+    event.preventDefault();
+});
+
+builderCanvas.addEventListener("drop", event => {
+    event.preventDefault();
+
+    const target = event.target.closest("[data-drag-index]");
+
+    if (!target) {
+        return;
+    }
+
+    const fromIndex = Number(event.dataTransfer.getData("text/plain"));
+    const toIndex = Number(target.dataset.dragIndex);
+
+    if (fromIndex === toIndex) {
+        return;
+    }
+
+    const movedBlock = blocks.splice(fromIndex, 1)[0];
+    blocks.splice(toIndex, 0, movedBlock);
+
+    selectedIndex = toIndex;
+    collapsedBlocks = {};
+
+    renderBuilder();
+    renderInspector();
+});
+
 builderInspector.addEventListener("input", event => {
     const field = event.target.closest("[data-builder-field]");
     const jsonFieldTarget = event.target.closest("[data-builder-json-field]");
 
-    if (field) {
+    if (field && selectedIndex !== null) {
         const key = field.dataset.builderField;
+
         blocks[selectedIndex][key] = field.value;
+
         syncTextarea();
         renderBuilder();
+        renderInspector();
     }
 
-    if (jsonFieldTarget) {
+    if (jsonFieldTarget && selectedIndex !== null) {
         const key = jsonFieldTarget.dataset.builderJsonField;
-        updateBlockJsonField(key, jsonFieldTarget.value);
+
+        try {
+            const parsed = JSON.parse(jsonFieldTarget.value || "[]");
+
+            if (key) {
+                blocks[selectedIndex][key] = parsed;
+            } else {
+                blocks[selectedIndex] = parsed;
+            }
+
+            syncTextarea();
+            renderBuilder();
+            renderInspector();
+        } catch {
+            syncTextarea();
+        }
     }
 });
 
@@ -544,19 +843,42 @@ builderInspector.addEventListener("click", event => {
 
     window.PulseMediaPicker.open(url => {
         blocks[selectedIndex].url = url;
+
         syncTextarea();
         renderBuilder();
         renderInspector();
     });
 });
 
+document.addEventListener("click", event => {
+    const templateButton = event.target.closest("[data-builder-template]");
+    const clearButton = event.target.closest("[data-builder-clear]");
+    const templateClose = event.target.closest("[data-template-close]");
+    const templateModal = document.getElementById("pulseTemplateModal");
+
+    if (templateButton) {
+        loadStarterTemplate(templateButton.dataset.builderTemplate);
+    }
+
+    if (clearButton) {
+        clearBuilder();
+    }
+
+    if (templateClose && templateModal) {
+        templateModal.hidden = true;
+    }
+});
+
 builderData.addEventListener("input", () => {
     blocks = safeParseJson(builderData.value);
     selectedIndex = null;
+    collapsedBlocks = {};
+
     renderBuilder();
     renderInspector();
 });
 
 blocks = safeParseJson(builderData.value);
+resetSelectionIfNeeded();
 renderBuilder();
 renderInspector();

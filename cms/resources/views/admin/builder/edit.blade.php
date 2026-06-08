@@ -85,7 +85,7 @@
                 <div class="pulse-builder-top">
                     <div>
                         <h3>{{ $page->title }}</h3>
-                        <p>Visual builder. Add blocks, select one, and edit it from the settings panel.</p>
+                        <p>Visual builder. Add, edit, duplicate, reorder, collapse, and import page sections.</p>
                     </div>
 
                     <a href="{{ route('admin.pages.edit', $page) }}" class="pulse-inline-btn pulse-inline-btn-soft">
@@ -93,6 +93,8 @@
                         Page settings
                     </a>
                 </div>
+
+                @include('admin.builder.templates.index')
 
                 <div id="pulseBuilderCanvas" class="pulse-builder-canvas"></div>
 
@@ -143,6 +145,8 @@
             </div>
         </section>
     </div>
+
+    @include('admin.builder.templates.modal')
 
     <script>
         window.PULSE_MEDIA_LIBRARY_URL = "{{ route('admin.media.library', ['type' => 'image']) }}";
