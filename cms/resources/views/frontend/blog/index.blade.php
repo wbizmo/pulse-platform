@@ -1,0 +1,79 @@
+@extends('frontend.layout', [
+    'page' => (object) [
+        'title' => 'Blog',
+        'meta_title' => 'Blog',
+        'meta_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
+        'meta_keywords' => '',
+        'canonical_url' => route('frontend.blog'),
+        'og_title' => 'Blog',
+        'og_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
+        'og_image' => null,
+        'twitter_title' => 'Blog',
+        'twitter_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
+        'twitter_image' => null,
+        'show_header' => true,
+        'show_footer' => true,
+    ]
+])
+
+@section('content')
+    <section class="pulse-blog-hero">
+        <div class="pulse-site-container">
+            <span class="pulse-eyebrow">Pulse Blog</span>
+            <h1>Latest Posts</h1>
+            <p>Read the latest posts, updates, insights, and announcements published from Pulse CMS.</p>
+        </div>
+    </section>
+
+    <section class="pulse-blog-section">
+        <div class="pulse-site-container">
+            <div class="pulse-blog-grid">
+                @forelse ($posts as $post)
+                    <article class="pulse-blog-card">
+                        @if ($post->featured_image)
+                            <a href="{{ route('frontend.blog.show', $post->slug) }}" class="pulse-blog-image">
+                                <img src="{{ $post->featured_image }}" alt="{{ $post->title }}">
+                            </a>
+                        @else
+                            <a href="{{ route('frontend.blog.show', $post->slug) }}" class="pulse-blog-image pulse-blog-image-empty">
+                                <span class="material-symbols-rounded">article</span>
+                            </a>
+                        @endif
+
+                        <div class="pulse-blog-card-body">
+                            <div class="pulse-blog-meta">
+                                <span>{{ $post->category?->name ?? 'Uncategorized' }}</span>
+                                <span>{{ $post->published_at?->format('M d, Y') ?? $post->created_at->format('M d, Y') }}</span>
+                            </div>
+
+                            <h2>
+                                <a href="{{ route('frontend.blog.show', $post->slug) }}">
+                                    {{ $post->title }}
+                                </a>
+                            </h2>
+
+                            <p>
+                                {{ $post->excerpt ?: str($post->content)->stripTags()->limit(140) }}
+                            </p>
+
+                            <a href="{{ route('frontend.blog.show', $post->slug) }}" class="pulse-blog-read">
+                                Read post
+                                <span class="material-symbols-rounded">arrow_forward</span>
+                            </a>
+                        </div>
+                    </article>
+                @empty
+                    <div class="pulse-blog-empty">
+                        <span class="material-symbols-rounded">edit_note</span>
+                        <h2>No posts published yet</h2>
+                        <p>Create and publish your first post from the Pulse CMS admin dashboard.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <div class="pulse-blog-pagination">
+                {{ $posts->links() }}
+            </div>
+        </div>
+    </section>
+@endsection

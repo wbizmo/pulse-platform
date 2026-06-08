@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Page;
+use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Theme;
 use Illuminate\View\View;
@@ -27,6 +28,38 @@ class FrontendController extends Controller
         return $this->renderPage($page, $theme);
     }
 
+    public function blog(): View
+    {
+        $theme = Theme::where('is_active', true)->first();
+
+        return view('frontend.blog.index', array_merge(
+            $this->frontendData($theme),
+            [
+                'posts' => Post::with(['category', 'tags', 'author'])
+                    ->where('status', 'published')
+                    ->latest('published_at')
+                    ->paginate(9),
+            ]
+        ));
+    }
+
+    public function post(string $slug): View
+    {
+        $theme = Theme::where('is_active', true)->first();
+
+        $post = Post::with(['category', 'tags', 'author'])
+            ->where('status', 'published')
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return view('frontend.blog.show', array_merge(
+            $this->frontendData($theme),
+            [
+                'post' => $post,
+            ]
+        ));
+    }
+
     public function page(string $slug): View
     {
         $page = Page::where('slug', $slug)->firstOrFail();
@@ -37,6 +70,16 @@ class FrontendController extends Controller
     }
 
     protected function renderPage(Page $page, ?Theme $theme): View
+    {
+        return view('frontend.page', array_merge(
+            $this->frontendData($theme),
+            [
+                'page' => $page,
+            ]
+        ));
+    }
+
+    protected function frontendData(?Theme $theme): array
     {
         $settings = Setting::pluck('value', 'key');
 
@@ -54,13 +97,12 @@ class FrontendController extends Controller
             ->where('is_active', true)
             ->first();
 
-        return view('frontend.page', [
-            'page' => $page,
+        return [
             'theme' => $theme,
             'settings' => $settings,
             'themeSettings' => $themeSettings,
             'mainMenu' => $mainMenu,
             'footerMenu' => $footerMenu,
-        ]);
+        ];
     }
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', [
-    'title' => 'Pulse Categories',
-    'heading' => 'Categories',
-    'subheading' => 'Create and manage blog categories.'
+    'title' => 'Pulse Tags',
+    'heading' => 'Tags',
+    'subheading' => 'Create and manage blog tags.'
 ])
 
 @section('content')
@@ -21,30 +21,25 @@
     <div class="pulse-editor-grid">
         <section class="pulse-panel">
             <div class="pulse-panel-head">
-                <h3>Existing Categories</h3>
-                <p>Manage categories used to organize blog posts.</p>
+                <h3>Existing Tags</h3>
+                <p>Manage tags used to describe and group blog posts.</p>
             </div>
 
             <div class="pulse-category-list">
-                @forelse ($categories as $category)
-                    <form method="POST" action="{{ route('admin.categories.update', $category) }}" class="pulse-category-card">
+                @forelse ($tags as $tag)
+                    <form method="POST" action="{{ route('admin.tags.update', $tag) }}" class="pulse-category-card">
                         @csrf
                         @method('PUT')
 
                         <div class="pulse-form-grid">
                             <label>
                                 <span>Name</span>
-                                <input type="text" name="name" value="{{ $category->name }}" required>
+                                <input type="text" name="name" value="{{ $tag->name }}" required>
                             </label>
 
                             <label>
                                 <span>Slug</span>
-                                <input type="text" name="slug" value="{{ $category->slug }}">
-                            </label>
-
-                            <label class="pulse-form-wide">
-                                <span>Description</span>
-                                <textarea name="description" rows="3">{{ $category->description }}</textarea>
+                                <input type="text" name="slug" value="{{ $tag->slug }}">
                             </label>
                         </div>
 
@@ -56,9 +51,9 @@
 
                             <button
                                 type="submit"
-                                formaction="{{ route('admin.categories.destroy', $category) }}"
+                                formaction="{{ route('admin.tags.destroy', $tag) }}"
                                 formmethod="POST"
-                                onclick="event.preventDefault(); if(confirm('Delete this category?')) this.closest('form').submit();"
+                                onclick="event.preventDefault(); if(confirm('Delete this tag?')) this.closest('form').submit();"
                                 class="pulse-danger-btn"
                             >
                                 Delete
@@ -67,9 +62,9 @@
                     </form>
                 @empty
                     <div class="pulse-empty">
-                        <span class="material-symbols-rounded">category</span>
-                        <h3>No categories yet</h3>
-                        <p>Create your first blog category.</p>
+                        <span class="material-symbols-rounded">sell</span>
+                        <h3>No tags yet</h3>
+                        <p>Create your first blog tag.</p>
                     </div>
                 @endforelse
             </div>
@@ -78,32 +73,27 @@
         <aside class="pulse-editor-side">
             <section class="pulse-panel">
                 <div class="pulse-panel-head">
-                    <h3>Create Category</h3>
-                    <p>Add a new category for blog posts.</p>
+                    <h3>Create Tag</h3>
+                    <p>Add a new tag for blog posts.</p>
                 </div>
 
-                <form method="POST" action="{{ route('admin.categories.store') }}" class="pulse-settings-form">
+                <form method="POST" action="{{ route('admin.tags.store') }}" class="pulse-settings-form">
                     @csrf
 
                     <div class="pulse-form-grid pulse-form-grid-single">
                         <label>
                             <span>Name</span>
-                            <input type="text" name="name" required placeholder="News">
+                            <input type="text" name="name" required placeholder="Laravel">
                         </label>
 
                         <label>
                             <span>Slug</span>
-                            <input type="text" name="slug" placeholder="news">
-                        </label>
-
-                        <label>
-                            <span>Description</span>
-                            <textarea name="description" rows="4"></textarea>
+                            <input type="text" name="slug" placeholder="laravel">
                         </label>
                     </div>
 
                     <button type="submit" class="pulse-btn pulse-btn-dark">
-                        <span>Create category</span>
+                        <span>Create tag</span>
                         <span class="material-symbols-rounded">add</span>
                     </button>
                 </form>

@@ -5,173 +5,148 @@
 ])
 
 @section('content')
+    @if(session('success'))
+        <div class="pulse-success">
+            <span class="material-symbols-rounded">check_circle</span>
+            {{ session('success') }}
+        </div>
+    @endif
 
-@if(session('success'))
-    <div class="pulse-success">
-        <span class="material-symbols-rounded">check_circle</span>
-        {{ session('success') }}
-    </div>
-@endif
+    <form method="POST" action="{{ route('admin.themes.customizer.update', $theme) }}" class="pulse-settings-form">
+        @csrf
 
-<form
-    method="POST"
-    action="{{ route('admin.themes.customizer.update', $theme) }}"
-    class="pulse-settings-form"
->
-    @csrf
+        <div class="pulse-settings-grid">
+            <section class="pulse-panel">
+                <div class="pulse-panel-head">
+                    <h3>Branding</h3>
+                    <p>Control visual branding assets.</p>
+                </div>
 
-    <div class="pulse-settings-grid">
+                <div class="pulse-form-grid">
+                    <label>
+                        <span>Logo URL</span>
+                        <input type="text" name="logo_url" value="{{ $settings['logo_url'] ?? '' }}">
+                    </label>
 
-        <section class="pulse-panel">
-            <div class="pulse-panel-head">
-                <h3>Branding</h3>
-                <p>Control visual branding assets.</p>
-            </div>
+                    <label>
+                        <span>Favicon URL</span>
+                        <input type="text" name="favicon_url" value="{{ $settings['favicon_url'] ?? '' }}">
+                    </label>
+                </div>
+            </section>
 
-            <div class="pulse-form-grid">
-                <label>
-                    <span>Logo URL</span>
+            <section class="pulse-panel">
+                <div class="pulse-panel-head">
+                    <h3>Colors</h3>
+                    <p>Theme color configuration.</p>
+                </div>
 
-                    <input
-                        type="text"
-                        name="logo_url"
-                        value="{{ $settings['logo_url'] ?? '' }}"
-                    >
-                </label>
+                <div class="pulse-form-grid">
+                    <label>
+                        <span>Primary Color</span>
+                        <input type="color" name="primary_color" value="{{ $settings['primary_color'] ?? '#111827' }}">
+                    </label>
 
-                <label>
-                    <span>Favicon URL</span>
+                    <label>
+                        <span>Secondary Color</span>
+                        <input type="color" name="secondary_color" value="{{ $settings['secondary_color'] ?? '#2563eb' }}">
+                    </label>
+                </div>
+            </section>
 
-                    <input
-                        type="text"
-                        name="favicon_url"
-                        value="{{ $settings['favicon_url'] ?? '' }}"
-                    >
-                </label>
-            </div>
-        </section>
+            <section class="pulse-panel">
+                <div class="pulse-panel-head">
+                    <h3>Typography</h3>
+                    <p>Choose frontend type and button shape.</p>
+                </div>
 
-        <section class="pulse-panel">
-            <div class="pulse-panel-head">
-                <h3>Colors</h3>
-                <p>Theme color configuration.</p>
-            </div>
+                <div class="pulse-form-grid">
+                    <label>
+                        <span>Font Family</span>
+                        <select name="font_family">
+                            @foreach (['Inter', 'Poppins', 'Roboto', 'Montserrat'] as $font)
+                                <option value="{{ $font }}" @selected(($settings['font_family'] ?? 'Inter') === $font)>
+                                    {{ $font }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
 
-            <div class="pulse-form-grid">
+                    <label>
+                        <span>Button Radius</span>
+                        <select name="button_radius">
+                            <option value="8px" @selected(($settings['button_radius'] ?? '16px') === '8px')>Small</option>
+                            <option value="14px" @selected(($settings['button_radius'] ?? '16px') === '14px')>Medium</option>
+                            <option value="24px" @selected(($settings['button_radius'] ?? '16px') === '24px')>Large</option>
+                            <option value="999px" @selected(($settings['button_radius'] ?? '16px') === '999px')>Pill</option>
+                        </select>
+                    </label>
+                </div>
+            </section>
 
-                <label>
-                    <span>Primary Color</span>
+            <section class="pulse-panel">
+                <div class="pulse-panel-head">
+                    <h3>Layout</h3>
+                    <p>Control public header, footer, and utility behavior.</p>
+                </div>
 
-                    <input
-                        type="color"
-                        name="primary_color"
-                        value="{{ $settings['primary_color'] ?? '#111827' }}"
-                    >
-                </label>
+                <div class="pulse-form-grid">
+                    <label>
+                        <span>Header Style</span>
+                        <select name="header_style">
+                            @foreach (['classic', 'centered', 'minimal'] as $style)
+                                <option value="{{ $style }}" @selected(($settings['header_style'] ?? 'classic') === $style)>
+                                    {{ ucfirst($style) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
 
-                <label>
-                    <span>Secondary Color</span>
+                    <label>
+                        <span>Footer Style</span>
+                        <select name="footer_style">
+                            @foreach (['classic', 'columns', 'minimal'] as $style)
+                                <option value="{{ $style }}" @selected(($settings['footer_style'] ?? 'classic') === $style)>
+                                    {{ ucfirst($style) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
+                </div>
 
-                    <input
-                        type="color"
-                        name="secondary_color"
-                        value="{{ $settings['secondary_color'] ?? '#2563eb' }}"
-                    >
-                </label>
+                <div class="pulse-toggle-list pulse-settings-spacer">
+                    <label class="pulse-toggle-row">
+                        <span>Show public back-to-top button</span>
 
-            </div>
-        </section>
+                        <span class="pulse-switch">
+                            <input type="checkbox" name="show_back_to_top" value="1" @checked(($settings['show_back_to_top'] ?? '1') == '1')>
+                            <span class="pulse-switch-track">
+                                <span class="pulse-switch-thumb"></span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </section>
 
-        <section class="pulse-panel">
-            <div class="pulse-panel-head">
-                <h3>Typography</h3>
-            </div>
+            <section class="pulse-panel pulse-form-wide">
+                <div class="pulse-panel-head">
+                    <h3>Custom CSS</h3>
+                    <p>Additional frontend CSS.</p>
+                </div>
 
-            <div class="pulse-form-grid">
-
-                <label>
-                    <span>Font Family</span>
-
-                    <select name="font_family">
-                        <option value="Inter">Inter</option>
-                        <option value="Poppins">Poppins</option>
-                        <option value="Roboto">Roboto</option>
-                        <option value="Montserrat">Montserrat</option>
-                    </select>
-                </label>
-
-                <label>
-                    <span>Button Radius</span>
-
-                    <select name="button_radius">
-                        <option value="8px">Small</option>
-                        <option value="14px">Medium</option>
-                        <option value="24px">Large</option>
-                        <option value="999px">Pill</option>
-                    </select>
-                </label>
-
-            </div>
-        </section>
-
-        <section class="pulse-panel">
-            <div class="pulse-panel-head">
-                <h3>Layout</h3>
-            </div>
-
-            <div class="pulse-form-grid">
-
-                <label>
-                    <span>Header Style</span>
-
-                    <select name="header_style">
-                        <option value="classic">Classic</option>
-                        <option value="centered">Centered</option>
-                        <option value="minimal">Minimal</option>
-                    </select>
-                </label>
-
-                <label>
-                    <span>Footer Style</span>
-
-                    <select name="footer_style">
-                        <option value="classic">Classic</option>
-                        <option value="columns">Columns</option>
-                        <option value="minimal">Minimal</option>
-                    </select>
-                </label>
-
-            </div>
-        </section>
-
-        <section class="pulse-panel pulse-form-wide">
-            <div class="pulse-panel-head">
-                <h3>Custom CSS</h3>
-                <p>Additional frontend CSS.</p>
-            </div>
-
-            <textarea
-                name="custom_css"
-                rows="12"
-            >{{ $settings['custom_css'] ?? '' }}</textarea>
-        </section>
-
-    </div>
-
-    <div class="pulse-save-bar">
-        <div>
-            <strong>Theme Customizer</strong>
-            <span>Save changes to this theme.</span>
+                <textarea name="custom_css" rows="12">{{ $settings['custom_css'] ?? '' }}</textarea>
+            </section>
         </div>
 
-        <button
-            type="submit"
-            class="pulse-btn pulse-btn-dark pulse-save-btn"
-        >
-            Save Theme Settings
-        </button>
-    </div>
+        <div class="pulse-save-bar">
+            <div>
+                <strong>Theme Customizer</strong>
+                <span>Save changes to this theme.</span>
+            </div>
 
-</form>
-
+            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+                Save Theme Settings
+            </button>
+        </div>
+    </form>
 @endsection

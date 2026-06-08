@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Theme;
 use App\Models\ThemeSetting;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ThemeCustomizerController extends Controller
@@ -25,6 +25,22 @@ class ThemeCustomizerController extends Controller
 
     public function update(Request $request, Theme $theme): RedirectResponse
     {
+        $checkboxes = [
+            'show_back_to_top',
+        ];
+
+        foreach ($checkboxes as $checkbox) {
+            ThemeSetting::updateOrCreate(
+                [
+                    'theme_id' => $theme->id,
+                    'key' => $checkbox,
+                ],
+                [
+                    'value' => $request->has($checkbox) ? '1' : '0',
+                ]
+            );
+        }
+
         $data = $request->validate([
             'logo_url' => ['nullable', 'string'],
             'favicon_url' => ['nullable', 'string'],
@@ -49,9 +65,6 @@ class ThemeCustomizerController extends Controller
             );
         }
 
-        return back()->with(
-            'success',
-            'Theme settings updated successfully.'
-        );
+        return back()->with('success', 'Theme settings updated successfully.');
     }
 }

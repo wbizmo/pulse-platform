@@ -44,6 +44,21 @@
                     Page Builder
                 </a>
 
+                <a href="{{ route('admin.posts') }}" class="{{ request()->routeIs('admin.posts*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">edit_note</span>
+                    Posts
+                </a>
+
+                <a href="{{ route('admin.categories') }}" class="{{ request()->routeIs('admin.categories*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">category</span>
+                    Categories
+                </a>
+
+                <a href="{{ route('admin.tags') }}" class="{{ request()->routeIs('admin.tags*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">sell</span>
+                    Tags
+                </a>
+
                 <a href="{{ route('admin.menus') }}" class="{{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">menu_open</span>
                     Menus
@@ -59,6 +74,11 @@
                     Themes
                 </a>
 
+                <a href="{{ route('admin.seo') }}" class="{{ request()->routeIs('admin.seo*') ? 'active' : '' }}">
+                    <span class="material-symbols-rounded">travel_explore</span>
+                    SEO
+                </a>
+
                 <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">tune</span>
                     Settings
@@ -68,12 +88,21 @@
                     <span class="material-symbols-rounded">monitor_heart</span>
                     Site Health
                 </a>
+
+                <form method="POST" action="{{ route('admin.system.clear-cache') }}" class="pulse-sidebar-cache-form">
+                    @csrf
+
+                    <button type="submit">
+                        <span class="material-symbols-rounded">cleaning_services</span>
+                        Clear Cache
+                    </button>
+                </form>
             </nav>
 
             <div class="pulse-sidebar-footer">
                 <span class="material-symbols-rounded">verified</span>
                 <div>
-                    <strong>v1 Foundation</strong>
+                    <strong>Pulse CMS</strong>
                     <small>Blade-only build</small>
                 </div>
             </div>
