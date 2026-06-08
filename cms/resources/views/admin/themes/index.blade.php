@@ -1,7 +1,7 @@
 @extends('admin.layouts.app', [
     'title' => 'Pulse Themes',
     'heading' => 'Themes',
-    'subheading' => 'Manage bundled Pulse themes, activate layouts, and configure public site design.'
+    'subheading' => 'Manage bundled Pulse themes, activate layouts, customize design, and configure public site behavior.'
 ])
 
 @section('content')
@@ -20,7 +20,8 @@
 
             <p>
                 The active theme controls your public site structure, default pages,
-                layout presets, widget support, header/footer behavior, and frontend design.
+                layout presets, widget support, header/footer behavior, frontend design,
+                and visual customization.
             </p>
         </div>
 
@@ -99,6 +100,11 @@
                                 @endif
                             </button>
                         </form>
+
+                        <a href="{{ route('admin.themes.customizer', $theme) }}" class="pulse-theme-settings-btn">
+                            <span class="material-symbols-rounded">brush</span>
+                            Customize
+                        </a>
 
                         <a href="{{ route('admin.themes.settings', $theme) }}" class="pulse-theme-settings-btn">
                             <span class="material-symbols-rounded">tune</span>

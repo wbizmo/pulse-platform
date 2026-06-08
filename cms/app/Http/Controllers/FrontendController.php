@@ -14,16 +14,15 @@ class FrontendController extends Controller
     {
         $theme = Theme::where('is_active', true)->first();
 
-        $homepageId = optional($theme)
-            ->settings()
-            ->where('key', 'homepage_id')
-            ->value('value');
+        $homepageId = $theme
+            ? $theme->settings()->where('key', 'homepage_id')->value('value')
+            : null;
 
         $page = $homepageId
             ? Page::find($homepageId)
             : Page::where('slug', 'home')->first();
 
-        abort_if(!$page, 404);
+        abort_if(! $page, 404);
 
         return $this->renderPage($page, $theme);
     }
@@ -41,6 +40,10 @@ class FrontendController extends Controller
     {
         $settings = Setting::pluck('value', 'key');
 
+        $themeSettings = $theme
+            ? $theme->settings()->pluck('value', 'key')
+            : collect();
+
         $mainMenu = Menu::with('items')
             ->where('location', 'main')
             ->where('is_active', true)
@@ -55,6 +58,7 @@ class FrontendController extends Controller
             'page' => $page,
             'theme' => $theme,
             'settings' => $settings,
+            'themeSettings' => $themeSettings,
             'mainMenu' => $mainMenu,
             'footerMenu' => $footerMenu,
         ]);

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\Admin\ThemeCustomizerController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/themes/{theme}/activate', [ThemeController::class, 'activate'])->name('themes.activate');
         Route::get('/themes/{theme}/settings', [ThemeSettingsController::class, 'index'])->name('themes.settings');
         Route::post('/themes/{theme}/settings', [ThemeSettingsController::class, 'update'])->name('themes.settings.update');
+        Route::get('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'index'])->name('themes.customizer');
+        Route::post('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'update'])->name('themes.customizer.update');
 
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');

@@ -416,3 +416,50 @@ a{
         padding:38px 0;
     }
 }
+
+
+/* THEME CUSTOMIZER OUTPUT */
+
+body{
+    font-family:var(--site-font);
+}
+
+.pulse-site-logo-img{
+    max-width:150px;
+    max-height:48px;
+    object-fit:contain;
+    display:block;
+}
+
+.pulse-site-btn,
+.pulse-builder-preview button,
+.pulse-builder-cta .pulse-site-btn{
+    border-radius:var(--site-button-radius);
+}
+
+.pulse-site-nav a:hover{
+    color:var(--site-secondary);
+}
+
+.pulse-header-centered .pulse-site-header-inner{
+    justify-content:center;
+    text-align:center;
+    flex-direction:column;
+}
+
+.pulse-header-minimal .pulse-site-brand small{
+    display:none;
+}
+
+.pulse-footer-minimal .pulse-site-footer-grid{
+    grid-template-columns:1fr;
+    text-align:center;
+}
+
+.pulse-footer-minimal .pulse-footer-links{
+    align-items:center;
+}
+
+.pulse-footer-columns .pulse-site-footer-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}

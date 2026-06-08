@@ -26,10 +26,33 @@
         <meta name="twitter:image" content="{{ $page->twitter_image }}">
     @endif
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" rel="stylesheet">
+    @if (! empty($themeSettings['favicon_url']))
+        <link rel="icon" href="{{ $themeSettings['favicon_url'] }}">
+    @endif
+
+    @php
+        $fontFamily = $themeSettings['font_family'] ?? 'Inter';
+    @endphp
+
+    <link href="https://fonts.googleapis.com/css2?family={{ urlencode($fontFamily) }}:wght@300;400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+
+    <style>
+        :root {
+            --site-primary: {{ $themeSettings['primary_color'] ?? '#111827' }};
+            --site-secondary: {{ $themeSettings['secondary_color'] ?? '#2563eb' }};
+            --site-font: "{{ $fontFamily }}", sans-serif;
+            --site-button-radius: {{ $themeSettings['button_radius'] ?? '16px' }};
+        }
+
+        {!! $themeSettings['custom_css'] ?? '' !!}
+    </style>
 </head>
-<body>
+<body class="
+    pulse-theme-{{ $theme?->slug ?? 'default' }}
+    pulse-header-{{ $themeSettings['header_style'] ?? 'classic' }}
+    pulse-footer-{{ $themeSettings['footer_style'] ?? 'classic' }}
+">
     <div class="pulse-site">
         @if ($page->show_header)
             @include('frontend.partials.header')
