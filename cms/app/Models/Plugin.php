@@ -3,35 +3,44 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plugin extends Model
 {
     protected $fillable = [
         'name',
         'slug',
+        'description',
         'version',
         'author',
-        'description',
         'category',
         'icon',
         'is_active',
         'has_settings',
-        'requires',
         'provides',
-        'permissions',
+        'settings_schema',
+        'settings',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'has_settings' => 'boolean',
-        'requires' => 'array',
         'provides' => 'array',
-        'permissions' => 'array',
+        'settings_schema' => 'array',
+        'settings' => 'array',
     ];
 
-    public function settings(): HasMany
+    public function isActive(): bool
     {
-        return $this->hasMany(PluginSetting::class);
+        return $this->is_active;
+    }
+
+    public function isInactive(): bool
+    {
+        return ! $this->is_active;
+    }
+
+    public function setting(string $key, mixed $default = null): mixed
+    {
+        return $this->settings[$key] ?? $default;
     }
 }
