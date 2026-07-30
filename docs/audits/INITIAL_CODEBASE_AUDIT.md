@@ -16,7 +16,7 @@ Date: 2026-07-30. Scope: repository structure, routes, controllers, models, migr
 | Medium | Builder/runtime lifecycle incomplete | Existing builder/plugin/theme UI does not meet required schema, lifecycle, isolation and concurrency guarantees. | Preserve useful behavior while versioning contracts. |
 | Medium (partially resolved M1) | Test suite is skeletal | Identity and access now have security-first feature coverage; other modules remain largely uncovered. | Add module suites with each dependency-ordered slice. |
 | Medium | Operational/release surface absent | No installer, audit/log access, production health, release SQL validation. | Add after identity and core domain foundations. |
-| Low | Misleading/dead UI and asset artifacts | Site Health points to `#`; `public/js/frontend.jsphp` is suspicious; boilerplate product metadata remains. | Remove or implement during UI/operations cleanup. |
+| Low (partially resolved M2) | Misleading/dead UI and asset artifacts | The disconnected shell Site Health link and obsolete direct admin bundles were removed; `public/js/frontend.jsphp` is still suspicious and boilerplate product metadata remains. | Remove or implement during UI/operations cleanup. |
 | Low | Asset compilation required network font retrieval | Vite configured a Bunny-hosted Instrument Sans fetch, preventing deterministic/offline builds. | Replaced build-time retrieval with the local system font stack in M0. |
 
 ## Environment and assets

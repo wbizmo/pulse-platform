@@ -5,6 +5,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ## Unreleased
 
 ### Added
+- Added the tokenized Pulse design system, permission-aware responsive administration shell, accessible Blade component foundations, safe queued toasts, and custom destructive-action confirmation dialog; migrated M1 identity, MFA, profile, user, role, and dashboard interfaces.
 - Repository-level engineering governance, product/security/testing contracts, architecture baseline and target, initial audit, debt register, dependency-ordered roadmap and recovery checkpoint.
 - Added paginated user and role administration with validated workflows, safe delegation, protected system roles, final-super-administrator safeguards, and append-only security audit records.
 - Added the canonical RBAC permission catalogue, normalized role and permission schema, legacy-role migration, system role matrix, Gate integration, authorization tests, and permission-aware admin navigation.

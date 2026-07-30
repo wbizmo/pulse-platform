@@ -10,3 +10,6 @@ Baseline commands from `cms/`: `composer validate --strict`, `vendor/bin/pint --
 
 
 The M1 matrix exercises MFA enrollment enforcement, current-session challenge state, permission-driven enforcement changes, password confirmation, encrypted and hidden secrets, one-way single-use recovery codes, plus denial precedence for disabled and unverified identities. Lifecycle regressions retain signed verification tampering, session and profile ownership, and final-super-administrator invariants.
+
+
+M2 rendered-interface feature tests cover permission-aware and active navigation, mobile drawer landmarks, escaped flash-to-toast rendering, validation summaries, and destructive dialog triggers. Production Vite compilation is a required frontend gate; browser interaction remains a separate, explicitly reported gate.
