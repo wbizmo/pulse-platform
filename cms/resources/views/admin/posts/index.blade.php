@@ -13,7 +13,7 @@
                     @foreach ($posts as $post)
                         <tr>
                             <td data-label="Post"><strong>{{ $post->title }}</strong><br><span class="p-muted">{{ $post->slug }}</span></td>
-                            <td data-label="Status"><x-pulse.badge :variant="$post->status === 'published' ? 'success' : 'neutral'">{{ ucfirst($post->status) }}</x-pulse.badge></td>
+                            <td data-label="Status"><x-pulse.badge :variant="$post->status->value === 'published' ? 'success' : 'neutral'">{{ ucfirst($post->status->value) }}</x-pulse.badge></td>
                             <td data-label="Category">{{ $post->category?->name ?? 'Uncategorized' }}</td>
                             <td data-label="Author">{{ $post->author?->name ?? 'System' }}</td>
                             <td data-label="Published">{{ $post->published_at?->format('M d, Y') ?? 'Not published' }}</td>

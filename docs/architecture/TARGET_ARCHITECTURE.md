@@ -12,3 +12,5 @@ Operational architecture includes queues, scheduler, health checks, structured/r
 
 
 The presentation boundary uses Pulse design tokens and small Blade components. A shared administration shell owns authorized navigation, responsive drawer, account controls, global feedback, and dialog regions; module views compose it rather than duplicating layout or interaction code.
+
+Content lifecycle mutations use typed states, Form Requests, transactional actions, conditional scheduled transitions, signed previews, centralized public scopes, and optimistic versions. Scheduler workers remain bounded and idempotent.

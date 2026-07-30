@@ -18,12 +18,12 @@ class SeoPublicController extends Controller
         }
 
         $pages = Page::query()
-            ->where('status', 'published')
+            ->publiclyVisible()
             ->orderBy('updated_at', 'desc')
             ->get();
 
         $posts = Post::query()
-            ->where('status', 'published')
+            ->publiclyVisible()
             ->orderBy('updated_at', 'desc')
             ->get();
 

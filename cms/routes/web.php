@@ -3,6 +3,7 @@
 use App\Domain\Access\Permission;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContentPreviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IdentityController;
 use App\Http\Controllers\Admin\MediaController;
@@ -89,6 +90,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.edit');
             Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.update');
             Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.destroy');
+            Route::get('/posts/{post}/preview', [ContentPreviewController::class, 'post'])->middleware(['can:'.Permission::ManagePosts->value, 'signed'])->name('posts.preview');
 
             Route::get('/categories', [CategoryController::class, 'index'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories');
             Route::post('/categories', [CategoryController::class, 'store'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.store');
@@ -106,6 +108,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.edit');
             Route::put('/pages/{page}', [PageController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.update');
             Route::delete('/pages/{page}', [PageController::class, 'destroy'])->middleware('can:'.Permission::ManagePages->value)->name('pages.destroy');
+            Route::get('/pages/{page}/preview', [ContentPreviewController::class, 'page'])->middleware(['can:'.Permission::ManagePages->value, 'signed'])->name('pages.preview');
             Route::get('/pages/{page}/builder', [PageBuilderController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder');
             Route::post('/pages/{page}/builder', [PageBuilderController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder.update');
 

@@ -15,7 +15,7 @@
                     @foreach ($pages as $page)
                         <tr>
                             <td data-label="Page"><strong>{{ $page->title }}</strong><br><span class="p-muted">{{ $page->slug }}</span></td>
-                            <td data-label="Status"><x-pulse.badge :variant="$page->status === 'published' ? 'success' : 'neutral'">{{ ucfirst($page->status) }}</x-pulse.badge></td>
+                            <td data-label="Status"><x-pulse.badge :variant="$page->status->value === 'published' ? 'success' : 'neutral'">{{ ucfirst($page->status->value) }}</x-pulse.badge></td>
                             <td data-label="Template">{{ ucfirst(str_replace('-', ' ', $page->template)) }}</td>
                             <td data-label="Flags">
                                 <div class="p-actions">
