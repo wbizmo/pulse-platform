@@ -1,0 +1,1 @@
+@props(['title','description'=>null])<header class="p-page-header"><div>@if(isset($breadcrumbs)){{ $breadcrumbs }}@endif<h1>{{ $title }}</h1>@if($description)<p class="p-muted">{{ $description }}</p>@endif</div>@if(isset($actions))<div class="p-actions">{{ $actions }}</div>@endif</header>

@@ -1,10 +1,1 @@
-@extends('admin.identity.layout')
-@section('title', 'Enroll authenticator')
-@section('content')
-<h1>Enroll your authenticator</h1>
-<div class="alert alert-warning" role="alert">This secret is displayed once. Do not share or store it in an insecure location.</div>
-<p>In your standards-based authenticator app, add this setup key:</p>
-<p><code aria-label="Authenticator setup key">{{ $secret }}</code></p>
-<p class="small">Authenticator URI for compatible password managers: <code class="text-break">{{ $uri }}</code></p>
-<form method="POST" action="{{ route('admin.mfa.confirm') }}">@csrf<label for="code" class="form-label">Six-digit authentication code</label><input id="code" name="code" class="form-control" inputmode="numeric" autocomplete="one-time-code" required pattern="[0-9]{6}" aria-describedby="code-help"><div id="code-help" class="form-text">Enter the current code to verify setup.</div><button class="btn btn-primary mt-3" type="submit">Confirm and enable</button></form>
-@endsection
+@extends('admin.identity.layout',['title'=>'Enroll your authenticator']) @section('identity-content')<x-pulse.alert variant="warning">This secret is displayed once. Store it securely and do not share it.</x-pulse.alert><p>Add this setup key to a standards-based authenticator:</p><p><code aria-label="Authenticator setup key">{{ $secret }}</code></p><details><summary>Show authenticator URI</summary><code style="overflow-wrap:anywhere">{{ $uri }}</code></details><form method="POST" action="{{ route('admin.mfa.confirm') }}" class="p-form">@csrf<x-pulse.field name="code" label="Six-digit authentication code" required inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" help="Enter the current code to verify setup."/><x-pulse.button type="submit">Confirm and enable</x-pulse.button></form>@endsection

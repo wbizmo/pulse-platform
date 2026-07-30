@@ -1,0 +1,1 @@
+@props(['name','label','required'=>false])<div class="p-field"><label class="p-label" for="{{ $name }}">{{ $label }}</label><select class="p-select" id="{{ $name }}" name="{{ $name }}" @required($required) {{ $attributes }}>{{ $slot }}</select>@error($name)<span class="p-error">{{ $message }}</span>@enderror</div>

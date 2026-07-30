@@ -1,0 +1,1 @@
+@if($errors->any())<x-pulse.alert variant="error"><strong>There {{ $errors->count() === 1 ? 'is one problem' : 'are '.$errors->count().' problems' }} with your submission.</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></x-pulse.alert>@endif

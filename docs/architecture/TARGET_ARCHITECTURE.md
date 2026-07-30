@@ -9,3 +9,6 @@ RBAC has a canonical permission catalogue, many-to-many user roles and role perm
 Builder documents use a validated, versioned schema with stable node IDs, nested container rules, reusable/template references, responsive settings and an optimistic-lock version. Commerce uses explicit state machines, integer money, immutable order snapshots and locked inventory reservations. Payments use a gateway registry, idempotent commands, verified webhook inbox and reconciliation.
 
 Operational architecture includes queues, scheduler, health checks, structured/redacted logs, protected diagnostics, notifications, backups, upgrade/rollback paths and release artifacts. Migrations remain canonical. `database/releases/pulse_cms_mysql.sql` is generated and clean-import tested at release; PostgreSQL SQL is published only after genuine compatibility verification.
+
+
+The presentation boundary uses Pulse design tokens and small Blade components. A shared administration shell owns authorized navigation, responsive drawer, account controls, global feedback, and dialog regions; module views compose it rather than duplicating layout or interaction code.

@@ -1,7 +1,1 @@
-@extends('admin.identity.layout')
-@section('title', 'Save recovery codes')
-@section('content')
-<h1>Save your recovery codes</h1><div class="alert alert-warning" role="alert">Each code works once. These codes will never be shown again. Store them offline in a secure place.</div>
-<ul aria-label="Recovery codes">@foreach($codes as $code)<li><code>{{ $code }}</code></li>@endforeach</ul>
-<a class="btn btn-primary" href="{{ route('admin.mfa.show') }}">I have saved these codes</a>
-@endsection
+@extends('admin.identity.layout',['title'=>'Save recovery codes']) @section('identity-content')<x-pulse.alert variant="warning">Each code works once and will never be shown again. Store them offline.</x-pulse.alert><ul aria-label="Recovery codes">@foreach($codes as $code)<li><code>{{ $code }}</code></li>@endforeach</ul><a class="p-button" href="{{ route('admin.mfa.show') }}">I have saved these codes</a>@endsection
