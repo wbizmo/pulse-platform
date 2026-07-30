@@ -4,6 +4,7 @@ use App\Domain\Access\Permission;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\IdentityController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PageBuilderController;
@@ -40,76 +41,92 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+        Route::get('/forgot-password', [IdentityController::class, 'forgotPassword'])->name('password.request');
+        Route::post('/forgot-password', [IdentityController::class, 'sendResetLink'])->middleware('throttle:5,1')->name('password.email');
+        Route::get('/reset-password/{token}', [IdentityController::class, 'resetPassword'])->name('password.reset');
+        Route::post('/reset-password', [IdentityController::class, 'updateResetPassword'])->name('password.update');
     });
 
     Route::middleware(['auth', 'account.active'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:'.Permission::ViewDashboard->value)->name('dashboard');
-
-        Route::resource('users', UserController::class)->except('show')->middleware('can:'.Permission::ManageUsers->value);
-        Route::resource('roles', RoleController::class)->except('show')->middleware('can:'.Permission::ManageRoles->value);
-
-        Route::post('/system/clear-cache', [SystemController::class, 'clearCache'])->middleware('can:'.Permission::ManageSystem->value)->name('system.clear-cache');
-
-        Route::get('/media', [MediaController::class, 'index'])->middleware('can:'.Permission::ManageMedia->value)->name('media');
-        Route::get('/media/library', [MediaController::class, 'library'])->middleware('can:'.Permission::ManageMedia->value)->name('media.library');
-        Route::get('/media/upload', [MediaController::class, 'upload'])->middleware('can:'.Permission::ManageMedia->value)->name('media.upload');
-        Route::post('/media', [MediaController::class, 'store'])->middleware('can:'.Permission::ManageMedia->value)->name('media.store');
-        Route::delete('/media/{media}', [MediaController::class, 'destroy'])->middleware('can:'.Permission::ManageMedia->value)->name('media.destroy');
-
-        Route::get('/posts', [PostController::class, 'index'])->middleware('can:'.Permission::ManagePosts->value)->name('posts');
-        Route::get('/posts/create', [PostController::class, 'create'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.create');
-        Route::post('/posts', [PostController::class, 'store'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.store');
-        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.edit');
-        Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.update');
-        Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.destroy');
-
-        Route::get('/categories', [CategoryController::class, 'index'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories');
-        Route::post('/categories', [CategoryController::class, 'store'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.store');
-        Route::put('/categories/{category}', [CategoryController::class, 'update'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.update');
-        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.destroy');
-
-        Route::get('/tags', [TagController::class, 'index'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags');
-        Route::post('/tags', [TagController::class, 'store'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.store');
-        Route::put('/tags/{tag}', [TagController::class, 'update'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.update');
-        Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.destroy');
-
-        Route::get('/pages', [PageController::class, 'index'])->middleware('can:'.Permission::ManagePages->value)->name('pages');
-        Route::get('/pages/create', [PageController::class, 'create'])->middleware('can:'.Permission::ManagePages->value)->name('pages.create');
-        Route::post('/pages', [PageController::class, 'store'])->middleware('can:'.Permission::ManagePages->value)->name('pages.store');
-        Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.edit');
-        Route::put('/pages/{page}', [PageController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.update');
-        Route::delete('/pages/{page}', [PageController::class, 'destroy'])->middleware('can:'.Permission::ManagePages->value)->name('pages.destroy');
-        Route::get('/pages/{page}/builder', [PageBuilderController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder');
-        Route::post('/pages/{page}/builder', [PageBuilderController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder.update');
-
-        Route::get('/menus', [MenuController::class, 'index'])->middleware('can:'.Permission::ManageMenus->value)->name('menus');
-        Route::get('/menus/create', [MenuController::class, 'create'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.create');
-        Route::post('/menus', [MenuController::class, 'store'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.store');
-        Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.edit');
-        Route::put('/menus/{menu}', [MenuController::class, 'update'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.update');
-        Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.destroy');
-        Route::post('/menus/{menu}/items', [MenuController::class, 'storeItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.store');
-        Route::delete('/menu-items/{item}', [MenuController::class, 'destroyItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.destroy');
-
-        Route::get('/plugins', [PluginController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins');
-        Route::post('/plugins/{plugin}/toggle', [PluginController::class, 'toggle'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.toggle');
-        Route::get('/plugins/{plugin}/settings', [PluginSettingsController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings');
-        Route::post('/plugins/{plugin}/settings', [PluginSettingsController::class, 'update'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings.update');
-
-        Route::get('/themes', [ThemeController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes');
-        Route::post('/themes/{theme}/activate', [ThemeController::class, 'activate'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.activate');
-        Route::get('/themes/{theme}/settings', [ThemeSettingsController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings');
-        Route::post('/themes/{theme}/settings', [ThemeSettingsController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings.update');
-        Route::get('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer');
-        Route::post('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer.update');
-
-        Route::get('/seo', [SeoController::class, 'index'])->middleware('can:'.Permission::ManageSeo->value)->name('seo');
-        Route::post('/seo', [SeoController::class, 'update'])->middleware('can:'.Permission::ManageSeo->value)->name('seo.update');
-
-        Route::get('/settings', [SettingsController::class, 'index'])->middleware('can:'.Permission::ManageSettings->value)->name('settings');
-        Route::post('/settings', [SettingsController::class, 'update'])->middleware('can:'.Permission::ManageSettings->value)->name('settings.update');
-
+        Route::get('/verify-email', [IdentityController::class, 'verificationNotice'])->name('verification.notice');
+        Route::get('/verify-email/{id}/{hash}', [IdentityController::class, 'verify'])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+        Route::post('/email/verification-notification', [IdentityController::class, 'resendVerification'])->middleware('throttle:6,1')->name('verification.send');
+        Route::get('/confirm-password', [IdentityController::class, 'confirmPassword'])->name('password.confirm');
+        Route::post('/confirm-password', [IdentityController::class, 'storePasswordConfirmation'])->name('password.confirm.store');
+        Route::get('/profile', [IdentityController::class, 'editProfile'])->name('profile.edit');
+        Route::patch('/profile', [IdentityController::class, 'updateProfile'])->name('profile.update');
+        Route::put('/profile/password', [IdentityController::class, 'updatePassword'])->middleware('password.confirm:admin.password.confirm')->name('profile.password');
+        Route::delete('/profile/sessions/{session}', [IdentityController::class, 'revokeSession'])->middleware('password.confirm:admin.password.confirm')->name('profile.sessions.destroy');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::middleware('verified:admin.verification.notice')->group(function () {
+            Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:'.Permission::ViewDashboard->value)->name('dashboard');
+
+            Route::resource('users', UserController::class)->except('show')->middleware('can:'.Permission::ManageUsers->value);
+            Route::resource('roles', RoleController::class)->except('show')->middleware('can:'.Permission::ManageRoles->value);
+
+            Route::post('/system/clear-cache', [SystemController::class, 'clearCache'])->middleware('can:'.Permission::ManageSystem->value)->name('system.clear-cache');
+
+            Route::get('/media', [MediaController::class, 'index'])->middleware('can:'.Permission::ManageMedia->value)->name('media');
+            Route::get('/media/library', [MediaController::class, 'library'])->middleware('can:'.Permission::ManageMedia->value)->name('media.library');
+            Route::get('/media/upload', [MediaController::class, 'upload'])->middleware('can:'.Permission::ManageMedia->value)->name('media.upload');
+            Route::post('/media', [MediaController::class, 'store'])->middleware('can:'.Permission::ManageMedia->value)->name('media.store');
+            Route::delete('/media/{media}', [MediaController::class, 'destroy'])->middleware('can:'.Permission::ManageMedia->value)->name('media.destroy');
+
+            Route::get('/posts', [PostController::class, 'index'])->middleware('can:'.Permission::ManagePosts->value)->name('posts');
+            Route::get('/posts/create', [PostController::class, 'create'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.create');
+            Route::post('/posts', [PostController::class, 'store'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.store');
+            Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.edit');
+            Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.update');
+            Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.destroy');
+
+            Route::get('/categories', [CategoryController::class, 'index'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories');
+            Route::post('/categories', [CategoryController::class, 'store'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.store');
+            Route::put('/categories/{category}', [CategoryController::class, 'update'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.update');
+            Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('categories.destroy');
+
+            Route::get('/tags', [TagController::class, 'index'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags');
+            Route::post('/tags', [TagController::class, 'store'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.store');
+            Route::put('/tags/{tag}', [TagController::class, 'update'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.update');
+            Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->middleware('can:'.Permission::ManageTaxonomy->value)->name('tags.destroy');
+
+            Route::get('/pages', [PageController::class, 'index'])->middleware('can:'.Permission::ManagePages->value)->name('pages');
+            Route::get('/pages/create', [PageController::class, 'create'])->middleware('can:'.Permission::ManagePages->value)->name('pages.create');
+            Route::post('/pages', [PageController::class, 'store'])->middleware('can:'.Permission::ManagePages->value)->name('pages.store');
+            Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.edit');
+            Route::put('/pages/{page}', [PageController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.update');
+            Route::delete('/pages/{page}', [PageController::class, 'destroy'])->middleware('can:'.Permission::ManagePages->value)->name('pages.destroy');
+            Route::get('/pages/{page}/builder', [PageBuilderController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder');
+            Route::post('/pages/{page}/builder', [PageBuilderController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder.update');
+
+            Route::get('/menus', [MenuController::class, 'index'])->middleware('can:'.Permission::ManageMenus->value)->name('menus');
+            Route::get('/menus/create', [MenuController::class, 'create'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.create');
+            Route::post('/menus', [MenuController::class, 'store'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.store');
+            Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.edit');
+            Route::put('/menus/{menu}', [MenuController::class, 'update'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.update');
+            Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.destroy');
+            Route::post('/menus/{menu}/items', [MenuController::class, 'storeItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.store');
+            Route::delete('/menu-items/{item}', [MenuController::class, 'destroyItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.destroy');
+
+            Route::get('/plugins', [PluginController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins');
+            Route::post('/plugins/{plugin}/toggle', [PluginController::class, 'toggle'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.toggle');
+            Route::get('/plugins/{plugin}/settings', [PluginSettingsController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings');
+            Route::post('/plugins/{plugin}/settings', [PluginSettingsController::class, 'update'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings.update');
+
+            Route::get('/themes', [ThemeController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes');
+            Route::post('/themes/{theme}/activate', [ThemeController::class, 'activate'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.activate');
+            Route::get('/themes/{theme}/settings', [ThemeSettingsController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings');
+            Route::post('/themes/{theme}/settings', [ThemeSettingsController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings.update');
+            Route::get('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer');
+            Route::post('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer.update');
+
+            Route::get('/seo', [SeoController::class, 'index'])->middleware('can:'.Permission::ManageSeo->value)->name('seo');
+            Route::post('/seo', [SeoController::class, 'update'])->middleware('can:'.Permission::ManageSeo->value)->name('seo.update');
+
+            Route::get('/settings', [SettingsController::class, 'index'])->middleware('can:'.Permission::ManageSettings->value)->name('settings');
+            Route::post('/settings', [SettingsController::class, 'update'])->middleware('can:'.Permission::ManageSettings->value)->name('settings.update');
+
+        });
     });
 });
 

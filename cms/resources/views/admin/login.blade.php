@@ -82,6 +82,7 @@
                         arrow_forward
                     </span>
                 </button>
+                <a href="{{ route('admin.password.request') }}">Forgot your password?</a>
             </form>
 
             <p class="pulse-auth-foot">
