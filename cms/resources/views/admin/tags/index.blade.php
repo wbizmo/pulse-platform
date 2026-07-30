@@ -14,9 +14,10 @@
                         @method('PUT')
                         <x-pulse.field name="name" id="tag-{{ $tag->id }}-name" label="Name" :value="$tag->name" required />
                         <x-pulse.field name="slug" id="tag-{{ $tag->id }}-slug" label="Slug" :value="$tag->slug" />
+                        <p class="p-muted">{{ $tag->posts_count }} {{ Str::plural('post', $tag->posts_count) }} assigned.</p>
                         <x-pulse.action-bar>
                             <x-pulse.button type="submit">Save tag</x-pulse.button>
-                            <x-pulse.button type="submit" variant="danger" form="delete-tag-{{ $tag->id }}" data-confirm data-confirm-title="Delete tag?" data-confirm-message="This permanently deletes the tag and cannot be undone.">Delete tag</x-pulse.button>
+                            <x-pulse.button type="submit" variant="danger" form="delete-tag-{{ $tag->id }}" :disabled="$tag->posts_count > 0" data-confirm data-confirm-title="Delete tag?" data-confirm-message="This permanently deletes the unused tag and cannot be undone.">Delete tag</x-pulse.button>
                         </x-pulse.action-bar>
                     </form>
                     <form id="delete-tag-{{ $tag->id }}" method="POST" action="{{ route('admin.tags.destroy', $tag) }}" hidden>@csrf @method('DELETE')</form>
@@ -24,6 +25,7 @@
                     <x-pulse.empty title="No tags yet">Create your first blog tag.</x-pulse.empty>
                 @endforelse
             </div>
+            <x-pulse.pagination :paginator="$tags" />
         </x-pulse.card>
 
         <aside>

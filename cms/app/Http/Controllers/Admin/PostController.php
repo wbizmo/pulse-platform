@@ -28,7 +28,7 @@ class PostController extends Controller
     public function store(PostRequest $request, SaveContent $save): RedirectResponse
     {
         $data = $request->validated();
-        $tags = $data['tags'] ?? [];
+        $tags = $data['tags'] ?? null;
         unset($data['tags']);
         $data['user_id'] = $request->user()->id;
         $save->execute(new Post, $data, $request->user(), $tags);
@@ -44,7 +44,7 @@ class PostController extends Controller
     public function update(PostRequest $request, Post $post, SaveContent $save): RedirectResponse
     {
         $data = $request->validated();
-        $tags = $data['tags'] ?? [];
+        $tags = $data['tags'] ?? null;
         unset($data['tags']);
         $save->execute($post, $data, $request->user(), $tags);
 

@@ -14,3 +14,5 @@ Only consciously accepted, bounded compromises belong here. New entries require 
 M1 privileged MFA introduced no newly accepted debt. QR rendering is intentionally not embedded: the one-time standards-based `otpauth://` URI and manual key support compatible authenticator/password-manager enrollment without adding a remote or secret-bearing image service.
 
 | TD-007 | Open (bounded) | The inherited page/post schema stores featured images as URLs and has no page-parent relation; versioned builder documents and revisions are assigned to M4. | Deleted external media can become unavailable, and revision restoration/hierarchical pages are unavailable. | Content/Builder/Media | Convert media URLs to authorized nullable foreign keys in the M3 media slice; implement compatible versioned revisions and hierarchy only with the M4 schema contract. | M3/M4 | Blocks production release. |
+
+Taxonomy hardening introduced no accepted taxonomy debt. Browser interaction remains tracked by TD-005; MySQL collation and migration behavior still require release-environment integration verification.

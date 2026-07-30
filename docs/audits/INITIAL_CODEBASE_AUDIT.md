@@ -30,3 +30,7 @@ The identity recovery/session checkpoint was verified at merge `eed503a` (focuse
 ## M3 content lifecycle follow-up
 
 The initial page/post implementation mixed inline validation and persistence, accepted arbitrary status/taxonomy/time values, leaked draft pages through the catch-all route, omitted effective-time checks from posts and sitemap, offered no scheduler, audit, signed preview, or lost-update protection, and used unbounded taxonomy selectors. The lifecycle slice replaces those paths with focused requests/actions, a shared public scope, conditional scheduled publishing, bounded selectors, signed private preview routes, optimistic versions, audit events, and composite publication indexes.
+
+## M3 taxonomy follow-up
+
+The inherited taxonomy controllers performed inline validation and unaudited direct writes, allowed case-equivalent names, relied only on slug uniqueness, loaded all administration rows, silently detached relationships on deletion, and exposed no public archive contract. Post editors could assign taxonomy with only post permission. The hardened slice adds canonical normalization and database constraints, focused requests/actions, explicit assignment authority, bounded identifiers, dependency-blocking transactional deletion, usage counts/pagination, audits, and visibility-scoped public archives. Categories remain flat because no product behavior requires hierarchy.

@@ -26,3 +26,5 @@ The administration login smoke gate must exercise a real CLI-server request, not
 M2 completion coverage renders media, menus, themes, plugins, settings, SEO, and the existing builder surface; it checks shared toast regions and rejects retired administration bridge classes and native dialogs. Browser interaction remains a distinct outstanding environment gate.
 
 M3 content lifecycle tests cover draft/scheduled/archived public exclusion, sitemap exclusion, effective publication, idempotent scheduler transitions and audits, optimistic-lock conflicts, and direct preview authentication. Form Request coverage exercises invalid lifecycle/time combinations, reserved and colliding slugs, taxonomy identifiers, and route authorization.
+
+M3 taxonomy coverage exercises normalization and case-equivalent duplicates, application and database uniqueness, invalid/duplicate identifiers, foreign-key integrity, assigned-record deletion denial, audit creation, rendered pagination, and draft/scheduled/archived exclusion from public archives.

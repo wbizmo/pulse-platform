@@ -28,3 +28,5 @@ Enrollment, disablement, replacement, and recovery-code regeneration require rec
 ## Content publication
 
 Public queries must use the shared publication-eligibility scope. Unpublished preview requires an authenticated, authorized account and an unexpired signed URL, and responses must be private, uncached, and noindex. Slugs reject reserved system paths and retain database uniqueness. Stale editor versions must fail closed rather than overwrite newer content.
+
+Taxonomy creation, update, deletion, and post assignment require `taxonomy.manage` independently of post editing. Submitted identifiers must exist and be distinct, archive queries must use centralized public visibility, and assigned taxonomy records must not be deleted. Category and tag names and slugs are normalized and protected by per-type database uniqueness.

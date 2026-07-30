@@ -33,6 +33,8 @@ Route::get('/robots.txt', [SeoPublicController::class, 'robots'])->name('seo.rob
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
 
 Route::get('/blog', [FrontendController::class, 'blog'])->name('frontend.blog');
+Route::get('/blog/category/{slug}', [FrontendController::class, 'category'])->name('frontend.blog.category');
+Route::get('/blog/tag/{slug}', [FrontendController::class, 'tag'])->name('frontend.blog.tag');
 Route::get('/blog/{slug}', [FrontendController::class, 'post'])->name('frontend.blog.show');
 
 Route::get('/login', function () {

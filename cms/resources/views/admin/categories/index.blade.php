@@ -15,9 +15,10 @@
                         <x-pulse.field name="name" id="category-{{ $category->id }}-name" label="Name" :value="$category->name" required />
                         <x-pulse.field name="slug" id="category-{{ $category->id }}-slug" label="Slug" :value="$category->slug" />
                         <x-pulse.textarea name="description" id="category-{{ $category->id }}-description" label="Description" :value="$category->description" rows="3" />
+                        <p class="p-muted">{{ $category->posts_count }} {{ Str::plural('post', $category->posts_count) }} assigned.</p>
                         <x-pulse.action-bar>
                             <x-pulse.button type="submit">Save category</x-pulse.button>
-                            <x-pulse.button type="submit" variant="danger" form="delete-category-{{ $category->id }}" data-confirm data-confirm-title="Delete category?" data-confirm-message="This permanently deletes the category and cannot be undone.">Delete category</x-pulse.button>
+                            <x-pulse.button type="submit" variant="danger" form="delete-category-{{ $category->id }}" :disabled="$category->posts_count > 0" data-confirm data-confirm-title="Delete category?" data-confirm-message="This permanently deletes the unused category and cannot be undone.">Delete category</x-pulse.button>
                         </x-pulse.action-bar>
                     </form>
                     <form id="delete-category-{{ $category->id }}" method="POST" action="{{ route('admin.categories.destroy', $category) }}" hidden>@csrf @method('DELETE')</form>
@@ -25,6 +26,7 @@
                     <x-pulse.empty title="No categories yet">Create your first blog category.</x-pulse.empty>
                 @endforelse
             </div>
+            <x-pulse.pagination :paginator="$categories" />
         </x-pulse.card>
 
         <aside>

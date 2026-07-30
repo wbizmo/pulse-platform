@@ -1,5 +1,11 @@
 # Page and post lifecycle
 
+## Taxonomy contract
+
+Categories and tags have separate public slug namespaces at `/blog/category/{slug}` and `/blog/tag/{slug}`. Each type requires a unique display name after Unicode normalization, trimming, whitespace collapse, and case folding, plus a unique lower-kebab ASCII slug. Names and slugs are limited to 100 characters and reserved archive/control segments are rejected. Existing public slugs are never changed implicitly.
+
+Categories are flat; hierarchy is not part of the current product. Post taxonomy assignment requires `taxonomy.manage` independently of `posts.manage`, accepts only existing IDs, rejects duplicates, and caps tags at 50. Relationship synchronization occurs in the existing transactional content mutation. Taxonomies assigned to any post cannot be deleted; deletion of unused records is transactional and audited. Public archives are paginated and include only posts accepted by the centralized public visibility scope, with publication-time and ID ordering for deterministic results.
+
 ## State and time contract
 
 Pages and posts use `draft`, `scheduled`, `published`, and `archived`. Lifecycle input is validated centrally by content Form Requests and persisted by `SaveContent`. Draft and archived records have no publication timestamp. Scheduled records require a future timestamp. Published records receive the current application time when no timestamp is supplied and cannot carry a future timestamp. The application timezone is Laravel's configured `app.timezone`; production database timestamps are UTC and Laravel converts them at the boundary.

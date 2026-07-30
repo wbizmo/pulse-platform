@@ -49,7 +49,7 @@
                 @if ($post->tags->count())
                     <div class="pulse-post-tags">
                         @foreach ($post->tags as $tag)
-                            <span>{{ $tag->name }}</span>
+                            <a href="{{ route('frontend.blog.tag', $tag->slug) }}">{{ $tag->name }}</a>
                         @endforeach
                     </div>
                 @endif

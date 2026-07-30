@@ -27,3 +27,4 @@ All notable changes are recorded here. The project is pre-release and follows mi
 
 ### M3 content lifecycle
 - Hardened page and post lifecycle states, centralized hostile-input validation and mutation, public visibility scopes, atomic scheduled publication, signed private previews, normalized/reserved slug protection, optimistic locking, bounded taxonomy choices, audit records, publication indexes, and adversarial lifecycle coverage.
+- Hardened the taxonomy domain with Unicode-aware normalized names, separate category/tag slug namespaces, database uniqueness, bounded assignment, independent assignment permission, dependency-safe transactional deletion, audits, paginated usage-aware administration, and public visibility-safe category/tag archives.

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Setting;
+use App\Models\Tag;
 use App\Models\Theme;
 use Illuminate\View\View;
 
@@ -58,6 +60,35 @@ class FrontendController extends Controller
                 'post' => $post,
             ]
         ));
+    }
+
+    public function category(string $slug): View
+    {
+        $category = Category::query()->where('slug', $slug)->firstOrFail();
+
+        return $this->taxonomyArchive($category, 'Category');
+    }
+
+    public function tag(string $slug): View
+    {
+        $tag = Tag::query()->where('slug', $slug)->firstOrFail();
+
+        return $this->taxonomyArchive($tag, 'Tag');
+    }
+
+    private function taxonomyArchive(Category|Tag $taxonomy, string $type): View
+    {
+        $theme = Theme::where('is_active', true)->first();
+        $posts = $taxonomy->posts()->with(['category', 'tags', 'author'])->publiclyVisible()
+            ->orderByDesc('published_at')->orderByDesc('id')->paginate(9);
+
+        return view('frontend.blog.index', $this->frontendData($theme) + [
+            'posts' => $posts,
+            'archiveTitle' => $taxonomy->name,
+            'archiveDescription' => $taxonomy instanceof Category ? $taxonomy->description : null,
+            'archiveCanonical' => route('frontend.blog.'.strtolower($type), $taxonomy->slug),
+            'archiveType' => $type,
+        ]);
     }
 
     public function page(string $slug): View

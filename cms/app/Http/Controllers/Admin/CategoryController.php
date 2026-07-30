@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Content\DeleteTaxonomy;
+use App\Actions\Content\SaveTaxonomy;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TaxonomyRequest;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CategoryController extends Controller
@@ -14,26 +15,15 @@ class CategoryController extends Controller
     public function index(): View
     {
         return view('admin.categories.index', [
-            'categories' => Category::latest()->get(),
+            'categories' => Category::query()->withCount('posts')->orderBy('name')->paginate(20),
         ]);
     }
 
     public function store(
-        Request $request
+        TaxonomyRequest $request,
+        SaveTaxonomy $save
     ): RedirectResponse {
-        $data = $request->validate([
-            'name' => ['required', 'max:255'],
-            'slug' => ['nullable', 'max:255'],
-            'description' => ['nullable'],
-        ]);
-
-        Category::create([
-            'name' => $data['name'],
-            'slug' => $data['slug']
-                ?: Str::slug($data['name']),
-            'description' => $data['description']
-                ?? null,
-        ]);
+        $save->execute(new Category, $request->validated(), $request->user());
 
         return back()->with(
             'success',
@@ -42,22 +32,11 @@ class CategoryController extends Controller
     }
 
     public function update(
-        Request $request,
-        Category $category
+        TaxonomyRequest $request,
+        Category $category,
+        SaveTaxonomy $save
     ): RedirectResponse {
-        $data = $request->validate([
-            'name' => ['required', 'max:255'],
-            'slug' => ['nullable', 'max:255'],
-            'description' => ['nullable'],
-        ]);
-
-        $category->update([
-            'name' => $data['name'],
-            'slug' => $data['slug']
-                ?: Str::slug($data['name']),
-            'description' => $data['description']
-                ?? null,
-        ]);
+        $save->execute($category, $request->validated(), $request->user());
 
         return back()->with(
             'success',
@@ -66,9 +45,10 @@ class CategoryController extends Controller
     }
 
     public function destroy(
-        Category $category
+        Category $category,
+        DeleteTaxonomy $delete
     ): RedirectResponse {
-        $category->delete();
+        $delete->execute($category, request()->user());
 
         return back()->with(
             'success',
