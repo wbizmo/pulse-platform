@@ -24,70 +24,143 @@
             </div>
 
             <nav class="pulse-nav">
+                @can('dashboard.view')
+
                 <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">dashboard</span>
                     Dashboard
                 </a>
+
+                @endcan
+
+                @can('media.manage')
+
 
                 <a href="{{ route('admin.media') }}" class="{{ request()->routeIs('admin.media*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">perm_media</span>
                     Media
                 </a>
 
+
+                @endcan
+
+                @can('pages.manage')
+
+
                 <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages*') && ! request()->routeIs('admin.pages.builder*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">article</span>
                     Pages
                 </a>
+
+
+                @endcan
+
+                @can('pages.manage')
+
 
                 <a href="{{ route('admin.pages') }}" class="{{ request()->routeIs('admin.pages.builder*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">view_quilt</span>
                     Page Builder
                 </a>
 
+
+                @endcan
+
+                @can('posts.manage')
+
+
                 <a href="{{ route('admin.posts') }}" class="{{ request()->routeIs('admin.posts*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">edit_note</span>
                     Posts
                 </a>
+
+
+                @endcan
+
+                @can('taxonomy.manage')
+
 
                 <a href="{{ route('admin.categories') }}" class="{{ request()->routeIs('admin.categories*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">category</span>
                     Categories
                 </a>
 
+
+                @endcan
+
+                @can('taxonomy.manage')
+
+
                 <a href="{{ route('admin.tags') }}" class="{{ request()->routeIs('admin.tags*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">sell</span>
                     Tags
                 </a>
+
+
+                @endcan
+
+                @can('menus.manage')
+
 
                 <a href="{{ route('admin.menus') }}" class="{{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">menu_open</span>
                     Menus
                 </a>
 
+
+                @endcan
+
+                @can('plugins.manage')
+
+
                 <a href="{{ route('admin.plugins') }}" class="{{ request()->routeIs('admin.plugins*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">extension</span>
                     Plugins
                 </a>
+
+
+                @endcan
+
+                @can('themes.manage')
+
 
                 <a href="{{ route('admin.themes') }}" class="{{ request()->routeIs('admin.themes*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">palette</span>
                     Themes
                 </a>
 
+
+                @endcan
+
+                @can('seo.manage')
+
+
                 <a href="{{ route('admin.seo') }}" class="{{ request()->routeIs('admin.seo*') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">travel_explore</span>
                     SEO
                 </a>
+
+
+                @endcan
+
+                @can('settings.manage')
+
 
                 <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">
                     <span class="material-symbols-rounded">tune</span>
                     Settings
                 </a>
 
+
+                @endcan
+
                 <a href="#">
                     <span class="material-symbols-rounded">monitor_heart</span>
                     Site Health
                 </a>
+
+                @can('system.manage')
+
 
                 <form method="POST" action="{{ route('admin.system.clear-cache') }}" class="pulse-sidebar-cache-form">
                     @csrf
@@ -97,6 +170,9 @@
                         Clear Cache
                     </button>
                 </form>
+
+
+                @endcan
             </nav>
 
             <div class="pulse-sidebar-footer">

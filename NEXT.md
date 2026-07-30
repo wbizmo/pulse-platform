@@ -1,12 +1,13 @@
 # Recovery checkpoint
 
-- **Completed milestone:** M0 governance and runnable baseline: durable contracts/audit/roadmap, restored locked dependencies, deterministic asset build, test-environment key, login throttling, and disabled-account enforcement.
+- **Completed milestone:** M1 RBAC foundation: canonical permission catalogue; normalized roles, permissions and pivots; deterministic migration of legacy assignments; protected system/super-administrator markers; Gate integration; permission enforcement on every administrative capability; permission-aware navigation; and authorization matrix regression tests.
+- **Verified prior checkpoint:** Merge commit `b14a9b5` contains focused M0 commit `072ee7f`, confirming the governance and administrator-authentication baseline was merged before this work began.
 - **Current branch:** `work`.
-- **Latest commit:** The focused M0 checkpoint commit at current `HEAD` (run `git log -1 --oneline` for its immutable identifier after handoff).
-- **Files/modules changed:** Root governance/recovery documents; `cms` authentication request/middleware/controller/routes/factory/tests; PHPUnit environment; Vite/CSS deterministic font configuration; repository-wide PHP formatting normalized by Pint.
-- **Tests run:** `composer validate --strict`; `vendor/bin/pint --test`; `php artisan test`; `php artisan route:list --except-vendor`; `npm run build`.
-- **Results:** All listed gates pass: 6 PHPUnit tests / 21 assertions; 63 application routes listed; production assets compiled. Locked Composer and npm dependencies installed locally.
-- **Unresolved issues:** Admin authorization remains absent beyond active-account enforcement; predictable seeded credentials remain; auth verification/reset/sessions/MFA and all M2–M11 capabilities remain roadmap work.
-- **Next exact milestone:** Begin M1 RBAC foundation: add canonical permission catalogue, normalized roles and pivots, migrate legacy role assignments, Gate integration and deny-by-default route enforcement with authorization matrix tests; then build safe user/role administration.
-- **Blockers:** No Git remote is configured, so branch push/confirmation is impossible; preserve focused local commits and use the available PR workflow.
-- **Required owner input:** Production gateway credentials, final jurisdiction/tax rules and final brand assets are not needed for current milestones. They will be required for live payment certification/release branding later.
+- **Latest commit:** The focused RBAC-foundation commit at current `HEAD` (run `git log -1 --oneline` after handoff for its identifier).
+- **Files/modules changed:** Access permission enum; Role/Permission/User models; RBAC migration; Gate provider; admin routes/navigation; RBAC feature tests; RBAC/security/architecture/debt/roadmap/changelog documentation.
+- **Domain and failure rules:** Unknown legacy roles migrate to author; users without authority receive 403; disabled accounts are logged out before Gate evaluation; only normalized super-administrator roles bypass permission checks; administrative navigation mirrors backend ability checks.
+- **Tests run:** `composer validate --strict`; `vendor/bin/pint --test`; `php artisan test`; `php artisan route:list --except-vendor`; `npm run build`; application smoke via `php artisan serve` plus `curl` of `/admin/login`.
+- **Results:** All gates pass: 11 PHPUnit tests / 35 assertions; 61 application routes listed; production assets compiled; the isolated test-environment server returned HTTP 200 and rendered the admin login workflow.
+- **Next exact milestone:** Continue M1 with complete safe user and role administration: Form Requests and actions, paginated accessible UI, protected system-role invariants, prevention of self-escalation/delegation beyond the actor, last-super-administrator deletion/disable/demotion protection, security audit records, and direct-access/validation/concurrency-oriented tests. Then complete verification/reset/confirmation/profile/session controls and privileged MFA.
+- **Unresolved issues:** Legacy `users.role` remains for compatibility; predictable seed credentials, remaining identity flows, audit infrastructure, and M2–M11 work remain.
+- **Blockers:** No Git remote is configured, so push is impossible; use the available PR workflow after the focused local commit.

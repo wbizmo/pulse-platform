@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Domain\Access\Permission;
+use App\Models\User;
 use App\Pulse\Plugins\PluginManager;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,6 +21,12 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        Gate::before(function (User $user): ?bool {
+            return $user->isSuperAdministrator() ? true : null;
+        });
+
+        foreach (Permission::cases() as $permission) {
+            Gate::define($permission->value, fn (User $user): bool => $user->hasPermission($permission->value));
+        }
     }
 }
