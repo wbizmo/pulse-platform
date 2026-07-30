@@ -1,16 +1,8 @@
-@extends('admin.layouts.app', [
-    'title' => 'Create Page',
-    'heading' => 'Create Page',
-    'subheading' => 'Add a new page with content, template controls, and SEO details.'
-])
-
+@extends('admin.layouts.app', ['title' => 'Create Page', 'heading' => 'Create Page'])
 @section('content')
-    <form method="POST" action="{{ route('admin.pages.store') }}" class="pulse-editor-form">
-        @csrf
-
-        @include('admin.pages.partials.form', [
-            'page' => null,
-            'buttonText' => 'Create page'
-        ])
+    <x-pulse.page-header title="Create page" description="Add content, presentation controls, and search metadata." />
+    <x-pulse.errors />
+    <form method="POST" action="{{ route('admin.pages.store') }}" class="p-form">@csrf
+        @include('admin.pages.partials.form', ['page' => null, 'buttonText' => 'Create page'])
     </form>
 @endsection

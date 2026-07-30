@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Page;
+use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -77,6 +79,41 @@ class AdminShellTest extends TestCase
             ->assertSee('data-confirm-title="Delete category?"', false)
             ->assertDontSee('class="pulse-', false)
             ->assertDontSee('confirm(', false);
+    }
+
+    public function test_migrated_page_and_post_screens_use_pulse_components(): void
+    {
+        $page = Page::create(['title' => 'About', 'slug' => 'about']);
+        $post = Post::create(['title' => 'Launch', 'slug' => 'launch']);
+        $actor = $this->super();
+
+        $this->actingAs($actor)->withSession(['mfa_passed' => true])
+            ->get(route('admin.pages'))
+            ->assertOk()
+            ->assertSee('class="p-table p-table-responsive"', false)
+            ->assertSee('data-confirm-title="Delete page?"', false)
+            ->assertDontSee('class="pulse-', false);
+
+        $this->actingAs($actor)->withSession(['mfa_passed' => true])
+            ->get(route('admin.pages.edit', $page))
+            ->assertOk()
+            ->assertSee('for="is_homepage"', false)
+            ->assertSee('id="canonical_url"', false)
+            ->assertDontSee('class="pulse-', false);
+
+        $this->actingAs($actor)->withSession(['mfa_passed' => true])
+            ->get(route('admin.posts'))
+            ->assertOk()
+            ->assertSee('class="p-table p-table-responsive"', false)
+            ->assertSee('data-confirm-title="Delete post?"', false)
+            ->assertDontSee('class="pulse-', false);
+
+        $this->actingAs($actor)->withSession(['mfa_passed' => true])
+            ->get(route('admin.posts.edit', $post))
+            ->assertOk()
+            ->assertSee('id="published_at"', false)
+            ->assertSee('Post content')
+            ->assertDontSee('class="pulse-', false);
     }
 
     public function test_administration_assets_do_not_use_native_alerts_or_confirms(): void

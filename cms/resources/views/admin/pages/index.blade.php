@@ -1,124 +1,46 @@
-@extends('admin.layouts.app', [
-    'title' => 'Pulse Pages',
-    'heading' => 'Pages',
-    'subheading' => 'Create, manage, publish, optimize, and visually build your site pages.'
-])
+@extends('admin.layouts.app', ['title' => 'Pages', 'heading' => 'Pages'])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-pulse.page-header title="Pages" description="Create, publish, optimize, and visually build site pages.">
+        <x-slot:actions><a class="p-button" href="{{ route('admin.pages.create') }}">Create page</a></x-slot:actions>
+    </x-pulse.page-header>
 
-    <div class="pulse-page-head">
-        <div>
-            <h2>Site Pages</h2>
-            <p>Manage regular pages, homepage, blog page, templates, visibility, SEO metadata, and builder layouts.</p>
-        </div>
-
-        <a href="{{ route('admin.pages.create') }}" class="pulse-inline-btn">
-            <span class="material-symbols-rounded">add</span>
-            New page
-        </a>
-    </div>
-
-    <section class="pulse-table-card">
-        <div class="pulse-table-wrap">
-            <table class="pulse-table">
-                <thead>
-                    <tr>
-                        <th>Page</th>
-                        <th>Status</th>
-                        <th>Template</th>
-                        <th>Flags</th>
-                        <th>Updated</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
+    <x-pulse.card>
+        @if ($pages->isEmpty())
+            <x-pulse.empty title="No pages yet">Create your first page to start building your site.</x-pulse.empty>
+        @else
+            <x-pulse.table>
+                <thead><tr><th>Page</th><th>Status</th><th>Template</th><th>Flags</th><th>Updated</th><th><span class="sr-only">Actions</span></th></tr></thead>
                 <tbody>
-                    @forelse ($pages as $page)
+                    @foreach ($pages as $page)
                         <tr>
-                            <td>
-                                <strong>{{ $page->title }}</strong>
-                                <span>{{ $page->slug }}</span>
-                            </td>
-
-                            <td>
-                                <span class="pulse-status {{ $page->status === 'published' ? 'published' : 'draft' }}">
-                                    {{ ucfirst($page->status) }}
-                                </span>
-                            </td>
-
-                            <td>{{ ucfirst($page->template) }}</td>
-
-                            <td>
-                                <div class="pulse-mini-tags">
-                                    @if ($page->is_homepage)
-                                        <span>Homepage</span>
-                                    @endif
-
-                                    @if ($page->is_blog_page)
-                                        <span>Blog</span>
-                                    @endif
-
-                                    @if ($page->builder_data)
-                                        <span>Builder</span>
-                                    @endif
-
-                                    @if (! $page->show_header)
-                                        <span>No header</span>
-                                    @endif
-
-                                    @if (! $page->show_footer)
-                                        <span>No footer</span>
-                                    @endif
+                            <td data-label="Page"><strong>{{ $page->title }}</strong><br><span class="p-muted">{{ $page->slug }}</span></td>
+                            <td data-label="Status"><x-pulse.badge :variant="$page->status === 'published' ? 'success' : 'neutral'">{{ ucfirst($page->status) }}</x-pulse.badge></td>
+                            <td data-label="Template">{{ ucfirst(str_replace('-', ' ', $page->template)) }}</td>
+                            <td data-label="Flags">
+                                <div class="p-actions">
+                                    @if ($page->is_homepage)<x-pulse.badge>Homepage</x-pulse.badge>@endif
+                                    @if ($page->is_blog_page)<x-pulse.badge>Blog</x-pulse.badge>@endif
+                                    @if ($page->builder_data)<x-pulse.badge>Builder</x-pulse.badge>@endif
+                                    @if (! $page->show_header)<x-pulse.badge>No header</x-pulse.badge>@endif
+                                    @if (! $page->show_footer)<x-pulse.badge>No footer</x-pulse.badge>@endif
                                 </div>
                             </td>
-
-                            <td>{{ $page->updated_at?->diffForHumans() }}</td>
-
-                            <td>
-                                <div class="pulse-row-actions">
-                                    <a href="{{ route('admin.pages.builder', $page) }}">
-                                        Builder
-                                    </a>
-
-                                    <a href="{{ route('admin.pages.edit', $page) }}">
-                                        Edit
-                                    </a>
-
-                                    <form method="POST" action="{{ route('admin.pages.destroy', $page) }}">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="button" data-confirm data-confirm-title="Delete page?" data-confirm-message="This permanently deletes the page and cannot be undone.">
-                                            Delete
-                                        </button>
+                            <td data-label="Updated">{{ $page->updated_at?->diffForHumans() }}</td>
+                            <td data-label="Actions">
+                                <x-pulse.action-bar>
+                                    <a class="p-button p-button--subtle" href="{{ route('admin.pages.builder', $page) }}">Builder</a>
+                                    <a class="p-button p-button--secondary" href="{{ route('admin.pages.edit', $page) }}">Edit</a>
+                                    <form method="POST" action="{{ route('admin.pages.destroy', $page) }}">@csrf @method('DELETE')
+                                        <x-pulse.button variant="danger" data-confirm data-confirm-title="Delete page?" data-confirm-message="This permanently deletes the page and cannot be undone.">Delete</x-pulse.button>
                                     </form>
-                                </div>
+                                </x-pulse.action-bar>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6">
-                                <div class="pulse-empty">
-                                    <span class="material-symbols-rounded">article</span>
-                                    <h3>No pages yet</h3>
-                                    <p>Create your first page to start building your Pulse CMS site.</p>
-                                    <a href="{{ route('admin.pages.create') }}" class="pulse-inline-btn">Create page</a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
-            </table>
-        </div>
-
-        <div class="pulse-pagination">
-            {{ $pages->links() }}
-        </div>
-    </section>
+            </x-pulse.table>
+        @endif
+        <x-pulse.pagination :paginator="$pages" />
+    </x-pulse.card>
 @endsection

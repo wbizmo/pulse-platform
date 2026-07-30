@@ -19,4 +19,6 @@ M2 follow-up coverage renders a representative legacy content administration scr
 
 The incremental direct-component coverage asserts that taxonomy renders the `p-*` component contract without legacy classes, uses unique repeated-form control identifiers, and retains the custom destructive confirmation trigger.
 
+Direct-component coverage also renders page and post resource lists and editors, verifies responsive table markup, labelled settings, publishing controls, and custom deletion triggers, and rejects legacy class output on those screens.
+
 The administration login smoke gate must exercise a real CLI-server request, not only Laravel's in-process HTTP test client. Build Vite assets and clear configuration, route, event, and compiled-view caches first; then run `php artisan serve` with the isolated testing key, SQLite connection, and both `file` and `array` session drivers. Capture server stdout and stderr separately, require HTTP 200 and the `Sign in to Pulse` heading, and require empty stderr and an empty Laravel log. The feature regression additionally verifies that the anonymous response renders before the session and CSRF cookies are emitted.
