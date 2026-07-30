@@ -62,11 +62,11 @@
                                 <div class="pulse-row-actions">
                                     <a href="{{ route('admin.menus.edit', $menu) }}">Edit</a>
 
-                                    <form method="POST" action="{{ route('admin.menus.destroy', $menu) }}" onsubmit="return confirm('Delete this menu and its items?')">
+                                    <form method="POST" action="{{ route('admin.menus.destroy', $menu) }}">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit">Delete</button>
+                                        <button type="button" data-confirm data-confirm-title="Delete menu?" data-confirm-message="This permanently deletes the menu and all of its items.">Delete</button>
                                     </form>
                                 </div>
                             </td>

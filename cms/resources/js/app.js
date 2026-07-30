@@ -30,20 +30,33 @@ let activeDialog = null;
 let dialogTrigger = null;
 document.querySelectorAll('[data-confirm]').forEach((trigger) => trigger.addEventListener('click', () => {
     const dialog = document.getElementById('pulse-confirm-dialog');
-    const form = trigger.closest('form');
+    const form = trigger.form || trigger.closest('form');
     if (!dialog || !form) return;
     dialogTrigger = trigger;
     dialog.querySelector('[data-confirm-title]').textContent = trigger.dataset.confirmTitle || 'Confirm action';
     dialog.querySelector('[data-confirm-message]').textContent = trigger.dataset.confirmMessage || 'This action cannot be undone.';
     dialog.querySelector('[data-confirm-submit]').onclick = () => {
         dialog.querySelector('[data-confirm-submit]').disabled = true;
-        form.requestSubmit();
+        form.requestSubmit(trigger);
     };
     activeDialog = dialog;
     dialog.showModal();
 }));
 document.querySelectorAll('[data-dialog-cancel]').forEach((button) => button.addEventListener('click', () => activeDialog?.close()));
 document.getElementById('pulse-confirm-dialog')?.addEventListener('close', () => { dialogTrigger?.focus(); activeDialog = null; });
+
+window.PulseConfirm = (title, message) => new Promise((resolve) => {
+    const dialog = document.getElementById('pulse-confirm-dialog');
+    if (!dialog) { resolve(false); return; }
+    dialog.querySelector('[data-confirm-title]').textContent = title;
+    dialog.querySelector('[data-confirm-message]').textContent = message;
+    const submit = dialog.querySelector('[data-confirm-submit]');
+    submit.disabled = false;
+    submit.onclick = () => { dialog.close(); resolve(true); };
+    dialog.addEventListener('close', () => resolve(false), { once: true });
+    activeDialog = dialog;
+    dialog.showModal();
+});
 
 window.PulseToast = {
     show(message, variant = 'info', options = {}) {

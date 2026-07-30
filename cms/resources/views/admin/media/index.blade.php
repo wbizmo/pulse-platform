@@ -82,11 +82,11 @@
                             Open
                         </a>
 
-                        <form method="POST" action="{{ route('admin.media.destroy', $media) }}" onsubmit="return confirm('Delete this media file?')">
+                        <form method="POST" action="{{ route('admin.media.destroy', $media) }}">
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit">
+                            <button type="button" data-confirm data-confirm-title="Delete media file?" data-confirm-message="This permanently deletes the media record and stored file.">
                                 <span class="material-symbols-rounded">delete</span>
                                 Delete
                             </button>

@@ -16,3 +16,7 @@ Responsive CSS uses small (36rem), medium (48rem), and large (64rem) token value
 * Blade/CSS component classes use `p-`; variants use `p-component--variant`.
 
 New components should first reuse existing semantic tokens. Add a primitive only when it is broadly reusable, then expose a semantic alias. Runtime font, icon, CSS, or JavaScript CDNs are prohibited for essential administration UI.
+
+## Legacy module bridge
+
+Existing module templates retained during incremental hardening consume a bounded `pulse-*` presentation bridge in `resources/css/app.css`. The bridge is built exclusively from Pulse tokens and supplies responsive cards, grids, controls, tables, actions, status, and builder regions. New templates use `p-*` components directly; each owning vertical removes its bridged selectors as it migrates rather than duplicating the bridge.

@@ -13,6 +13,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added permission-derived privileged-user TOTP MFA with encrypted secrets, one-way single-use recovery codes, replay/rate-limit controls, password-confirmed lifecycle operations, audited administrator recovery, and accessible enrollment/challenge interfaces.
 
 ### Fixed
+- Applied the Pulse token and responsive component contracts to remaining legacy administration module layouts, replaced native confirmation prompts across content and builder workflows with the shared accessible dialog, and removed an empty malformed frontend asset.
 - Made frontend asset compilation deterministic by removing its build-time remote font dependency.
 
 ### Security

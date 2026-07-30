@@ -62,11 +62,11 @@
                                 <div class="pulse-row-actions">
                                     <a href="{{ route('admin.posts.edit', $post) }}">Edit</a>
 
-                                    <form method="POST" action="{{ route('admin.posts.destroy', $post) }}" onsubmit="return confirm('Delete this post?')">
+                                    <form method="POST" action="{{ route('admin.posts.destroy', $post) }}">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit">Delete</button>
+                                        <button type="button" data-confirm data-confirm-title="Delete post?" data-confirm-message="This permanently deletes the post and cannot be undone.">Delete</button>
                                     </form>
                                 </div>
                             </td>
