@@ -4,7 +4,7 @@ Milestones are dependency ordered and complete only with migrations, authorizati
 
 1. **M0 Governance and runnable baseline** — permanent instructions/audit/recovery; restore locked dependencies; repair boot/schema blockers; baseline tests/build/smoke.
 2. **M1 Identity and deny-by-default RBAC (complete)** — hardened authentication and lifecycle controls, normalized RBAC, safe user/role administration, capability-derived privileged-user TOTP MFA, recovery and backend enforcement, and the expanded adversarial identity authorization matrix are complete.
-3. **M2 Pulse design system and admin shell (in progress: foundation, M1 workflow migration, legacy module presentation/confirmation bridge, and taxonomy/page/post component conversion complete)** — tokens and reusable accessible components, custom safe toast/dialog/drawer system; responsive admin/public foundations; remove dead UI/assets.
+3. **M2 Pulse design system and admin shell (complete)** — tokens and reusable accessible components, custom safe toast/dialog/drawer system; responsive admin/public foundations; remove dead UI/assets.
 4. **M3 Content verticals** — page/post lifecycle, taxonomy, media security/processing, menus, SEO and forms; bounded queries, audits and complete CRUD authorization.
 5. **M4 Builder V4** — versioned validated nested schema, full block catalogue, reusable sections/templates, responsive preview, draft recovery, unsaved warnings and optimistic concurrency; restrict custom HTML.
 6. **M5 Theme platform** — validated/versioned lifecycle, preview/activation/rollback/settings and polished Pulse Studio, Corporate and Commerce themes with graceful commerce absence.

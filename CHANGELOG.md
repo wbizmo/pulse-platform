@@ -13,6 +13,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added permission-derived privileged-user TOTP MFA with encrypted secrets, one-way single-use recovery codes, replay/rate-limit controls, password-confirmed lifecycle operations, audited administrator recovery, and accessible enrollment/challenge interfaces.
 
 ### Fixed
+- Completed the M2 administration presentation migration for media, menus, builder, themes and customizer, plugins and settings, site settings, and SEO; retired administration `pulse-*` bridge consumers while preserving authorized workflows, shared confirmation dialogs, and safe toasts.
 - Migrated page and post administration lists and editors from the legacy presentation bridge to reusable Pulse page-header, card, table, form, badge, action, pagination, empty-state, and confirmation components.
 - Migrated category and tag administration from the legacy presentation bridge to direct Pulse form, card, action, empty-state, and confirmation components, with unique accessible control identifiers for repeated edit forms.
 - Applied the Pulse token and responsive component contracts to remaining legacy administration module layouts, replaced native confirmation prompts across content and builder workflows with the shared accessible dialog, and removed an empty malformed frontend asset.

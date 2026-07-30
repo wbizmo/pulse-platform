@@ -5,14 +5,8 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <section class="pulse-plugins-hero">
+    <section class="p-module-plugins-hero">
         <div>
             <span class="material-symbols-rounded">extension</span>
 
@@ -25,35 +19,35 @@
             </p>
         </div>
 
-        <div class="pulse-plugin-status">
+        <div class="p-module-plugin-status">
             <strong>{{ $pluginsCount }}</strong>
             <span>Bundled modules</span>
         </div>
     </section>
 
-    <section class="pulse-plugin-groups">
+    <section class="p-module-plugin-groups">
         @foreach ($plugins as $category => $group)
-            <div class="pulse-plugin-group">
+            <div class="p-module-plugin-group">
 
-                <div class="pulse-plugin-group-head">
+                <div class="p-module-plugin-group-head">
                     <h3>{{ ucfirst(str_replace('-', ' ', $category)) }}</h3>
                     <span>{{ $group->count() }} plugins</span>
                 </div>
 
-                <div class="pulse-plugin-grid">
+                <div class="p-module-plugin-grid">
                     @foreach ($group as $plugin)
 
-                        <article class="pulse-plugin-card {{ $plugin->is_active ? 'active' : '' }}">
+                        <article class="p-module-plugin-card {{ $plugin->is_active ? 'active' : '' }}">
 
-                            <div class="pulse-plugin-icon">
+                            <div class="p-module-plugin-icon">
                                 <span class="material-symbols-rounded">
                                     {{ $plugin->icon }}
                                 </span>
                             </div>
 
-                            <div class="pulse-plugin-body">
+                            <div class="p-module-plugin-body">
 
-                                <div class="pulse-plugin-title">
+                                <div class="p-module-plugin-title">
 
                                     <div>
                                         <h4>{{ $plugin->name }}</h4>
@@ -71,26 +65,26 @@
                                     >
                                         @csrf
 
-                                        <label class="pulse-switch pulse-plugin-switch">
+                                        <label class="p-module-switch p-module-plugin-switch">
                                             <input
                                                 type="checkbox"
                                                 onchange="this.form.submit()"
                                                 @checked($plugin->is_active)
                                             >
 
-                                            <span class="pulse-switch-track">
-                                                <span class="pulse-switch-thumb"></span>
+                                            <span class="p-module-switch-track">
+                                                <span class="p-module-switch-thumb"></span>
                                             </span>
                                         </label>
                                     </form>
 
                                 </div>
 
-                                <p class="pulse-plugin-description">
+                                <p class="p-module-plugin-description">
                                     {{ $plugin->description }}
                                 </p>
 
-                                <div class="pulse-plugin-tags">
+                                <div class="p-module-plugin-tags">
 
                                     @if ($plugin->is_active)
                                         <span class="active">
@@ -120,7 +114,7 @@
 
                                     <a
                                         href="{{ route('admin.plugins.settings', $plugin) }}"
-                                        class="pulse-plugin-settings-btn"
+                                        class="p-button p-button--secondary"
                                     >
                                         <span class="material-symbols-rounded">
                                             settings

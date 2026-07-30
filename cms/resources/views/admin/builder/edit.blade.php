@@ -5,30 +5,19 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
+    <x-pulse.errors />
 
-    @if ($errors->any())
-        <div class="pulse-alert">
-            {{ $errors->first() }}
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('admin.pages.builder.update', $page) }}" class="pulse-builder-form">
+    <form method="POST" action="{{ route('admin.pages.builder.update', $page) }}" class="p-module-builder-form">
         @csrf
 
-        <section class="pulse-builder-shell">
-            <aside class="pulse-builder-sidebar">
-                <div class="pulse-panel-head">
+        <section class="p-module-builder-shell">
+            <aside class="p-module-builder-sidebar">
+                <div class="p-card-head">
                     <h3>Blocks</h3>
                     <p>Add ready-made sections to the page.</p>
                 </div>
 
-                <div class="pulse-builder-block-list">
+                <div class="p-module-builder-block-list">
                     <button type="button" data-builder-add="hero">
                         <span class="material-symbols-rounded">auto_awesome</span>
                         Hero
@@ -81,14 +70,14 @@
                 </div>
             </aside>
 
-            <section class="pulse-builder-main">
-                <div class="pulse-builder-top">
+            <section class="p-module-builder-main">
+                <div class="p-module-builder-top">
                     <div>
                         <h3>{{ $page->title }}</h3>
                         <p>Visual builder. Add, edit, duplicate, reorder, collapse, and import page sections.</p>
                     </div>
 
-                    <a href="{{ route('admin.pages.edit', $page) }}" class="pulse-inline-btn pulse-inline-btn-soft">
+                    <a href="{{ route('admin.pages.edit', $page) }}" class="p-button p-button--secondary">
                         <span class="material-symbols-rounded">edit</span>
                         Page settings
                     </a>
@@ -96,12 +85,12 @@
 
                 @include('admin.builder.templates.index')
 
-                <div id="pulseBuilderCanvas" class="pulse-builder-canvas"></div>
+                <div id="pulseBuilderCanvas" class="p-module-builder-canvas"></div>
 
                 <textarea
                     name="builder_data"
                     id="pulseBuilderData"
-                    class="pulse-builder-json"
+                    class="p-module-builder-json"
                     rows="18"
                 >{{ old('builder_data', json_encode($page->builder_data ?? [], JSON_PRETTY_PRINT)) }}</textarea>
             </section>
@@ -109,24 +98,24 @@
             @include('admin.builder.sidebar')
         </section>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>Page Builder</strong>
                 <span>Save builder layout blocks for frontend rendering.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Save builder</span>
                 <span class="material-symbols-rounded">save</span>
             </button>
         </div>
     </form>
 
-    <div class="pulse-media-picker" id="pulseMediaPicker" hidden>
-        <div class="pulse-media-picker-backdrop" data-media-close></div>
+    <div class="p-module-media-picker" id="pulseMediaPicker" hidden>
+        <div class="p-module-media-picker-backdrop" data-media-close></div>
 
-        <section class="pulse-media-picker-panel">
-            <div class="pulse-media-picker-head">
+        <section class="p-module-media-picker-panel">
+            <div class="p-module-media-picker-head">
                 <div>
                     <h3>Select Media</h3>
                     <p>Choose an uploaded image for the selected builder block.</p>
@@ -137,8 +126,8 @@
                 </button>
             </div>
 
-            <div id="pulseMediaPickerGrid" class="pulse-media-picker-grid">
-                <div class="pulse-empty">
+            <div id="pulseMediaPickerGrid" class="p-module-media-picker-grid">
+                <div class="p-empty">
                     <span class="material-symbols-rounded">hourglass_empty</span>
                     <h3>Loading media...</h3>
                 </div>

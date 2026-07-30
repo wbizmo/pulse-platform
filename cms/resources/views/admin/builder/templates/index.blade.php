@@ -1,4 +1,4 @@
-<div class="pulse-builder-template-bar">
+<div class="p-module-builder-template-bar">
     <button type="button" data-builder-template="business-home">
         <span class="material-symbols-rounded">business_center</span>
         Business Home

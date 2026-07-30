@@ -5,24 +5,18 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <form method="POST" action="{{ route('admin.themes.settings.update', $theme) }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.themes.settings.update', $theme) }}" class="p-module-settings-form">
         @csrf
 
-        <div class="pulse-settings-grid">
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+        <div class="p-module-settings-grid">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Brand & Colors</h3>
                     <p>Theme-specific branding overrides for the active public website.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Logo URL</span>
                         <input type="text" name="logo_url" value="{{ $settings['logo_url'] ?? '' }}" placeholder="/images/logo.png">
@@ -67,13 +61,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Homepage & Blog</h3>
                     <p>Assign important public-facing pages for frontend rendering.</p>
                 </div>
 
-                <div class="pulse-form-grid pulse-form-grid-single">
+                <div class="p-module-form-grid p-module-form-grid-single">
                     <label>
                         <span>Homepage</span>
                         <select name="homepage_id">
@@ -99,24 +93,24 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
-                    <label class="pulse-toggle-row">
+                <div class="p-module-toggle-list p-module-settings-spacer">
+                    <label class="p-module-toggle-row">
                         <span>Use boxed layout</span>
-                        <span class="pulse-switch">
+                        <span class="p-module-switch">
                             <input type="checkbox" name="boxed_layout" value="1" @checked(($settings['boxed_layout'] ?? '0') == '1')>
-                            <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                            <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                         </span>
                     </label>
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Header Controls</h3>
                     <p>Configure public header behavior for this theme.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Header button label</span>
                         <input type="text" name="header_button_label" value="{{ $settings['header_button_label'] ?? 'Contact us' }}">
@@ -128,31 +122,31 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
+                <div class="p-module-toggle-list p-module-settings-spacer">
                     @foreach ([
                         'show_header' => 'Show header',
                         'sticky_header' => 'Sticky header',
                         'show_topbar' => 'Show topbar',
                         'show_social_links' => 'Show social links in header',
                     ] as $key => $label)
-                        <label class="pulse-toggle-row">
+                        <label class="p-module-toggle-row">
                             <span>{{ $label }}</span>
-                            <span class="pulse-switch">
+                            <span class="p-module-switch">
                                 <input type="checkbox" name="{{ $key }}" value="1" @checked(($settings[$key] ?? ($key === 'show_header' ? '1' : '0')) == '1')>
-                                <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                                <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                             </span>
                         </label>
                     @endforeach
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Footer Controls</h3>
                     <p>Footer content, branding, newsletter, and copyright behavior.</p>
                 </div>
 
-                <div class="pulse-form-grid pulse-form-grid-single">
+                <div class="p-module-form-grid p-module-form-grid-single">
                     <label>
                         <span>Footer tagline</span>
                         <textarea name="footer_tagline" rows="4">{{ $settings['footer_tagline'] ?? 'A flexible CMS for modern websites.' }}</textarea>
@@ -164,17 +158,17 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
+                <div class="p-module-toggle-list p-module-settings-spacer">
                     @foreach ([
                         'show_footer' => 'Show footer',
                         'show_footer_branding' => 'Show footer branding',
                         'show_newsletter_box' => 'Show newsletter box',
                     ] as $key => $label)
-                        <label class="pulse-toggle-row">
+                        <label class="p-module-toggle-row">
                             <span>{{ $label }}</span>
-                            <span class="pulse-switch">
+                            <span class="p-module-switch">
                                 <input type="checkbox" name="{{ $key }}" value="1" @checked(($settings[$key] ?? ($key === 'show_footer' ? '1' : '0')) == '1')>
-                                <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                                <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                             </span>
                         </label>
                     @endforeach
@@ -182,13 +176,13 @@
             </section>
         </div>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>{{ $theme->name }}</strong>
                 <span>Save theme appearance, layout, header, footer, and homepage behavior.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Save theme settings</span>
                 <span class="material-symbols-rounded">save</span>
             </button>

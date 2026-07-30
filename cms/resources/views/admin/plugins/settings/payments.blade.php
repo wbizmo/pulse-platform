@@ -5,24 +5,18 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}" class="p-module-settings-form">
         @csrf
 
-        <div class="pulse-settings-grid">
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+        <div class="p-module-settings-grid">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Payment Credentials</h3>
                     <p>Store public keys, secret keys, webhook secrets, and provider mode for payment plugins.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Public / Publishable Key</span>
                         <input type="text" name="public_key" value="{{ $settings['public_key'] ?? '' }}">
@@ -44,32 +38,32 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
-                    <label class="pulse-toggle-row">
+                <div class="p-module-toggle-list p-module-settings-spacer">
+                    <label class="p-module-toggle-row">
                         <span>Enable test/sandbox mode</span>
-                        <span class="pulse-switch">
+                        <span class="p-module-switch">
                             <input type="checkbox" name="test_mode" value="1" @checked(($settings['test_mode'] ?? '1') == '1')>
-                            <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                            <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                         </span>
                     </label>
 
-                    <label class="pulse-toggle-row">
+                    <label class="p-module-toggle-row">
                         <span>Show this payment method on frontend checkout</span>
-                        <span class="pulse-switch">
+                        <span class="p-module-switch">
                             <input type="checkbox" name="show_on_frontend" value="1" @checked(($settings['show_on_frontend'] ?? '1') == '1')>
-                            <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                            <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                         </span>
                     </label>
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Crypto Wallets</h3>
                     <p>Used by the crypto payments plugin when active.</p>
                 </div>
 
-                <div class="pulse-form-grid pulse-form-grid-single">
+                <div class="p-module-form-grid p-module-form-grid-single">
                     <label>
                         <span>BTC wallet</span>
                         <input type="text" name="btc_wallet" value="{{ $settings['btc_wallet'] ?? '' }}">
@@ -98,13 +92,13 @@
             </section>
         </div>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>{{ $plugin->name }}</strong>
                 <span>Save payment provider keys, webhook secrets, and wallet addresses.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Save settings</span>
                 <span class="material-symbols-rounded">save</span>
             </button>

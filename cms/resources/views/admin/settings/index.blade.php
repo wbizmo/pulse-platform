@@ -5,24 +5,18 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <form method="POST" action="{{ route('admin.settings.update') }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.settings.update') }}" class="p-module-settings-form">
         @csrf
 
-        <div class="pulse-settings-grid">
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+        <div class="p-module-settings-grid">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Site Identity</h3>
                     <p>Basic information used across your website, themes, SEO, and admin area.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Site name</span>
                         <input type="text" name="site_name" value="{{ $settings['site_name'] ?? 'Pulse CMS' }}">
@@ -45,13 +39,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Contact Details</h3>
                     <p>Information that themes and contact sections can display on the frontend.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Email address</span>
                         <input type="email" name="contact_email" value="{{ $settings['contact_email'] ?? 'hello@example.com' }}">
@@ -62,20 +56,20 @@
                         <input type="text" name="contact_phone" value="{{ $settings['contact_phone'] ?? '' }}">
                     </label>
 
-                    <label class="pulse-form-wide">
+                    <label class="p-module-form-wide">
                         <span>Business address</span>
                         <textarea name="contact_address" rows="4">{{ $settings['contact_address'] ?? '' }}</textarea>
                     </label>
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Visibility Controls</h3>
                     <p>Use these switches to decide which public-facing contact elements should appear.</p>
                 </div>
 
-                <div class="pulse-toggle-list">
+                <div class="p-module-toggle-list">
                     @php
                         $toggles = [
                             'show_email' => 'Show email address',
@@ -88,10 +82,10 @@
                     @endphp
 
                     @foreach ($toggles as $key => $label)
-                        <label class="pulse-toggle-row">
+                        <label class="p-module-toggle-row">
                             <span>{{ $label }}</span>
 
-                            <span class="pulse-switch">
+                            <span class="p-module-switch">
                                 <input
                                     type="checkbox"
                                     name="{{ $key }}"
@@ -99,8 +93,8 @@
                                     @checked(($settings[$key] ?? '0') == '1')
                                 >
 
-                                <span class="pulse-switch-track">
-                                    <span class="pulse-switch-thumb"></span>
+                                <span class="p-module-switch-track">
+                                    <span class="p-module-switch-thumb"></span>
                                 </span>
                             </span>
                         </label>
@@ -108,13 +102,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Social Links</h3>
                     <p>Used by themes, footers, headers, contact blocks, and future widgets.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Facebook</span>
                         <input type="url" name="social_facebook" value="{{ $settings['social_facebook'] ?? '' }}">
@@ -148,13 +142,13 @@
             </section>
         </div>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>Settings Engine</strong>
                 <span>Changes are saved to the database and can be used by themes, plugins, and frontend templates.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Save settings</span>
                 <span class="material-symbols-rounded">save</span>
             </button>

@@ -5,22 +5,18 @@
 ])
 
 @section('content')
-    @if ($errors->any())
-        <div class="pulse-alert">
-            {{ $errors->first() }}
-        </div>
-    @endif
+    <x-pulse.errors />
 
-    <form method="POST" action="{{ route('admin.menus.store') }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.menus.store') }}" class="p-module-settings-form">
         @csrf
 
-        <section class="pulse-panel">
-            <div class="pulse-panel-head">
+        <section class="p-card">
+            <div class="p-card-head">
                 <h3>Menu Details</h3>
                 <p>Choose a menu name, slug, and frontend location.</p>
             </div>
 
-            <div class="pulse-form-grid">
+            <div class="p-module-form-grid">
                 <label>
                     <span>Name</span>
                     <input type="text" name="name" value="{{ old('name') }}" required placeholder="Main Navigation">
@@ -42,26 +38,26 @@
                     </select>
                 </label>
 
-                <label class="pulse-toggle-row">
+                <label class="p-module-toggle-row">
                     <span>Menu active</span>
 
-                    <span class="pulse-switch">
+                    <span class="p-module-switch">
                         <input type="checkbox" name="is_active" value="1" checked>
-                        <span class="pulse-switch-track">
-                            <span class="pulse-switch-thumb"></span>
+                        <span class="p-module-switch-track">
+                            <span class="p-module-switch-thumb"></span>
                         </span>
                     </span>
                 </label>
             </div>
         </section>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>Menu Manager</strong>
                 <span>Create the menu, then add page or custom URL items.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Create menu</span>
                 <span class="material-symbols-rounded">save</span>
             </button>

@@ -5,26 +5,20 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <div class="pulse-page-head">
+    <div class="p-module-page-head">
         <div>
             <h2>Media Library</h2>
             <p>Manage uploaded files that can be used by pages, themes, builders, forms, blog posts, and plugins.</p>
         </div>
 
-        <a href="{{ route('admin.media.upload') }}" class="pulse-inline-btn">
+        <a href="{{ route('admin.media.upload') }}" class="p-button">
             <span class="material-symbols-rounded">upload</span>
             Upload files
         </a>
     </div>
 
-    <form method="GET" action="{{ route('admin.media') }}" class="pulse-media-filter">
+    <form method="GET" action="{{ route('admin.media') }}" class="p-module-media-filter">
         <label>
             <span>Search media</span>
             <input type="search" name="search" value="{{ $search }}" placeholder="Search file name or mime type">
@@ -41,16 +35,16 @@
             </select>
         </label>
 
-        <button type="submit" class="pulse-btn pulse-btn-dark pulse-media-filter-btn">
+        <button type="submit" class="p-button">
             <span>Filter</span>
             <span class="material-symbols-rounded">search</span>
         </button>
     </form>
 
-    <section class="pulse-media-grid">
+    <section class="p-module-media-grid">
         @forelse ($mediaItems as $media)
-            <article class="pulse-media-card">
-                <div class="pulse-media-preview">
+            <article class="p-module-media-card">
+                <div class="p-module-media-preview">
                     @if ($media->type === 'image')
                         <img src="{{ $media->url }}" alt="{{ $media->alt_text ?: $media->name }}">
                     @elseif ($media->type === 'video')
@@ -62,21 +56,21 @@
                     @endif
                 </div>
 
-                <div class="pulse-media-body">
+                <div class="p-module-media-body">
                     <h3>{{ $media->name }}</h3>
                     <p>{{ $media->original_name }}</p>
 
-                    <div class="pulse-media-meta">
+                    <div class="p-module-media-meta">
                         <span>{{ strtoupper($media->extension ?? 'FILE') }}</span>
                         <span>{{ $media->readable_size }}</span>
                         <span>{{ ucfirst($media->type) }}</span>
                     </div>
 
-                    <div class="pulse-media-url">
+                    <div class="p-module-media-url">
                         <input type="text" value="{{ url($media->url) }}" readonly onclick="this.select()">
                     </div>
 
-                    <div class="pulse-media-actions">
+                    <div class="p-module-media-actions">
                         <a href="{{ $media->url }}" target="_blank">
                             <span class="material-symbols-rounded">open_in_new</span>
                             Open
@@ -95,16 +89,16 @@
                 </div>
             </article>
         @empty
-            <div class="pulse-empty pulse-media-empty">
+            <div class="p-empty p-module-media-empty">
                 <span class="material-symbols-rounded">perm_media</span>
                 <h3>No media uploaded yet</h3>
                 <p>Upload images, PDFs, videos, and documents so they can be used across Pulse CMS.</p>
-                <a href="{{ route('admin.media.upload') }}" class="pulse-inline-btn">Upload media</a>
+                <a href="{{ route('admin.media.upload') }}" class="p-button">Upload media</a>
             </div>
         @endforelse
     </section>
 
-    <div class="pulse-pagination">
+    <div class="p-module-pagination">
         {{ $mediaItems->links() }}
     </div>
 @endsection
