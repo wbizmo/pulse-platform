@@ -1,8 +1,8 @@
-<div class="pulse-template-modal" id="pulseTemplateModal" hidden>
-    <div class="pulse-template-modal-backdrop" data-template-close></div>
+<div class="p-module-template-modal" id="pulseTemplateModal" hidden>
+    <div class="p-module-template-modal-backdrop" data-template-close></div>
 
-    <section class="pulse-template-modal-panel">
-        <div class="pulse-template-modal-head">
+    <section class="p-module-template-modal-panel">
+        <div class="p-module-template-modal-head">
             <div>
                 <h3>Import Template</h3>
                 <p>Choose a starter layout and load it into this page.</p>
@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        <div class="pulse-template-grid">
+        <div class="p-module-template-grid">
             <button type="button" data-builder-template="business-home">
                 <span class="material-symbols-rounded">business_center</span>
                 <strong>Business Home</strong>

@@ -5,24 +5,17 @@
 ])
 
 @section('content')
-    @if(session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('admin.themes.customizer.update', $theme) }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.themes.customizer.update', $theme) }}" class="p-module-settings-form">
         @csrf
 
-        <div class="pulse-settings-grid">
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+        <div class="p-module-settings-grid">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Branding</h3>
                     <p>Control visual branding assets.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Logo URL</span>
                         <input type="text" name="logo_url" value="{{ $settings['logo_url'] ?? '' }}">
@@ -35,13 +28,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Colors</h3>
                     <p>Theme color configuration.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Primary Color</span>
                         <input type="color" name="primary_color" value="{{ $settings['primary_color'] ?? '#111827' }}">
@@ -54,13 +47,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Typography</h3>
                     <p>Choose frontend type and button shape.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Font Family</span>
                         <select name="font_family">
@@ -84,13 +77,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Layout</h3>
                     <p>Control public header, footer, and utility behavior.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Header Style</span>
                         <select name="header_style">
@@ -114,22 +107,22 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
-                    <label class="pulse-toggle-row">
+                <div class="p-module-toggle-list p-module-settings-spacer">
+                    <label class="p-module-toggle-row">
                         <span>Show public back-to-top button</span>
 
-                        <span class="pulse-switch">
+                        <span class="p-module-switch">
                             <input type="checkbox" name="show_back_to_top" value="1" @checked(($settings['show_back_to_top'] ?? '1') == '1')>
-                            <span class="pulse-switch-track">
-                                <span class="pulse-switch-thumb"></span>
+                            <span class="p-module-switch-track">
+                                <span class="p-module-switch-thumb"></span>
                             </span>
                         </span>
                     </label>
                 </div>
             </section>
 
-            <section class="pulse-panel pulse-form-wide">
-                <div class="pulse-panel-head">
+            <section class="p-card p-module-form-wide">
+                <div class="p-card-head">
                     <h3>Custom CSS</h3>
                     <p>Additional frontend CSS.</p>
                 </div>
@@ -138,13 +131,13 @@
             </section>
         </div>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>Theme Customizer</strong>
                 <span>Save changes to this theme.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 Save Theme Settings
             </button>
         </div>

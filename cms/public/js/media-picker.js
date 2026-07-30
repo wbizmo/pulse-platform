@@ -19,7 +19,7 @@ window.PulseMediaPicker = (() => {
         } catch (error) {
 
             grid.innerHTML = `
-                <div class="pulse-empty">
+                <div class="p-module-empty">
                     <span class="material-symbols-rounded">
                         error
                     </span>
@@ -37,7 +37,7 @@ window.PulseMediaPicker = (() => {
         if (!items.length) {
 
             grid.innerHTML = `
-                <div class="pulse-empty">
+                <div class="p-module-empty">
                     <span class="material-symbols-rounded">
                         perm_media
                     </span>
@@ -54,7 +54,7 @@ window.PulseMediaPicker = (() => {
         grid.innerHTML = items.map(item => `
             <button
                 type="button"
-                class="pulse-media-picker-item"
+                class="p-module-media-picker-item"
                 data-url="${item.url}"
             >
                 <img
@@ -101,7 +101,7 @@ window.PulseMediaPicker = (() => {
         }
 
         const mediaItem = event.target.closest(
-            ".pulse-media-picker-item"
+            ".p-module-media-picker-item"
         );
 
         if (!mediaItem) {

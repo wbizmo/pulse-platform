@@ -116,6 +116,45 @@ class AdminShellTest extends TestCase
             ->assertDontSee('class="pulse-', false);
     }
 
+    public function test_remaining_m2_administration_interfaces_use_component_contracts(): void
+    {
+        $actor = $this->super();
+        $page = Page::create(['title' => 'Builder page', 'slug' => 'builder-page']);
+
+        $routes = [
+            route('admin.media'),
+            route('admin.media.upload'),
+            route('admin.menus'),
+            route('admin.menus.create'),
+            route('admin.themes'),
+            route('admin.plugins'),
+            route('admin.settings'),
+            route('admin.seo'),
+            route('admin.pages.builder', $page),
+        ];
+
+        foreach ($routes as $route) {
+            $this->actingAs($actor)->withSession(['mfa_passed' => true])->get($route)
+                ->assertOk()
+                ->assertSee('data-toast-region', false)
+                ->assertDontSee('class="pulse-', false)
+                ->assertDontSee('confirm(', false);
+        }
+    }
+
+    public function test_no_administration_template_uses_the_retired_bridge_classes(): void
+    {
+        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(resource_path('views/admin')));
+
+        foreach ($files as $file) {
+            if (! $file->isFile()) {
+                continue;
+            }
+
+            $this->assertStringNotContainsString('class="pulse-', file_get_contents($file->getPathname()), $file->getPathname());
+        }
+    }
+
     public function test_administration_assets_do_not_use_native_alerts_or_confirms(): void
     {
         $paths = [resource_path('views/admin'), resource_path('js'), public_path('js')];

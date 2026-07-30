@@ -7,3 +7,7 @@ Use `x-pulse.field` with a stable `name`, visible `label`, appropriate autocompl
 Page and post administration are reference compositions for responsive resource tables and editor forms. Tables provide `data-label` values for narrow-screen rows; editor checkboxes retain native inputs, explicit identifiers, and visible labels inside the responsive card grid.
 
 Add `data-confirm` to the submit button inside a destructive form, plus `data-confirm-title` and a concise `data-confirm-message`. The shared dialog submits the original form with the initiating button as submitter, preserving validated `formaction` behavior, once and disables its confirmation control. Server-rendered flash keys `success`, `status`, `warning`, `error`, and `info` become escaped toasts. Asynchronous destructive behavior calls the Promise-based `window.PulseConfirm(title, message)`. Asynchronous feedback code calls `window.PulseToast.show(message, variant, options)`; the implementation uses `textContent`, supports persistent messages and optional safe links, and allows simultaneous queued messages.
+
+## Completed M2 compositions
+
+Media, menu, builder, theme/customizer, plugin/settings, global settings, and SEO views now compose the same button, card, error-summary, feedback, empty-state, action, and responsive contracts. Domain-specific `p-module-*` hooks are permitted only for structures without a generic semantic equivalent; they consume the shared token layer.

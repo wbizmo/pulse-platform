@@ -5,3 +5,5 @@ The implemented foundation targets WCAG 2.2 AA: semantic navigation and main lan
 Responsive table cells carry their column labels at small widths. Toast content is escaped by Blade on the server and assigned with `textContent` in JavaScript. Dialog title and consequence text are also assigned with `textContent`. Content, media, navigation, and builder destructive actions use the same custom dialog without native browser prompts. Destructive actions remain ordinary CSRF-protected forms; the dialog only confirms intent and never replaces server authorization.
 
 Browser/assistive-technology verification remains required before release. Automated rendered-markup tests cover the principal structural contracts but do not establish full WCAG conformance.
+
+The completed M2 administration conversion retains visible labels, keyboard-native inputs, unique server-rendered control identifiers, responsive structures, shared error summaries, toast announcements, and focus-restoring confirmation triggers across all registered module views. Browser and assistive-technology inspection remains explicitly open as TD-005.

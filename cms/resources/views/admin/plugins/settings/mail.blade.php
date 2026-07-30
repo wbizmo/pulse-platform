@@ -5,24 +5,18 @@
 ])
 
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
 
-    <form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}" class="pulse-settings-form">
+    <form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}" class="p-module-settings-form">
         @csrf
 
-        <div class="pulse-settings-grid">
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+        <div class="p-module-settings-grid">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Mailer Credentials</h3>
                     <p>Use this section for SMTP or API-based mail providers like Resend.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>Provider</span>
                         <select name="provider">
@@ -77,13 +71,13 @@
                 </div>
             </section>
 
-            <section class="pulse-panel">
-                <div class="pulse-panel-head">
+            <section class="p-card">
+                <div class="p-card-head">
                     <h3>Sender Identity</h3>
                     <p>Used for forms, system notifications, registration, and future plugin emails.</p>
                 </div>
 
-                <div class="pulse-form-grid">
+                <div class="p-module-form-grid">
                     <label>
                         <span>From name</span>
                         <input type="text" name="from_name" value="{{ $settings['from_name'] ?? 'Pulse CMS' }}">
@@ -105,25 +99,25 @@
                     </label>
                 </div>
 
-                <div class="pulse-toggle-list pulse-settings-spacer">
-                    <label class="pulse-toggle-row">
+                <div class="p-module-toggle-list p-module-settings-spacer">
+                    <label class="p-module-toggle-row">
                         <span>Use HTML emails where supported</span>
-                        <span class="pulse-switch">
+                        <span class="p-module-switch">
                             <input type="checkbox" name="html_email_enabled" value="1" @checked(($settings['html_email_enabled'] ?? '1') == '1')>
-                            <span class="pulse-switch-track"><span class="pulse-switch-thumb"></span></span>
+                            <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
                         </span>
                     </label>
                 </div>
             </section>
         </div>
 
-        <div class="pulse-save-bar">
+        <div class="p-module-save-bar">
             <div>
                 <strong>{{ $plugin->name }}</strong>
                 <span>Save mail provider credentials and sender configuration.</span>
             </div>
 
-            <button type="submit" class="pulse-btn pulse-btn-dark pulse-save-btn">
+            <button type="submit" class="p-button">
                 <span>Save settings</span>
                 <span class="material-symbols-rounded">save</span>
             </button>

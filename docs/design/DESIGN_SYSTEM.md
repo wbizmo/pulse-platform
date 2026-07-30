@@ -17,6 +17,6 @@ Responsive CSS uses small (36rem), medium (48rem), and large (64rem) token value
 
 New components should first reuse existing semantic tokens. Add a primitive only when it is broadly reusable, then expose a semantic alias. Runtime font, icon, CSS, or JavaScript CDNs are prohibited for essential administration UI.
 
-## Legacy module bridge
+## M2 administration completion
 
-Existing module templates retained during incremental hardening consume a bounded `pulse-*` presentation bridge in `resources/css/app.css`. The bridge is built exclusively from Pulse tokens and supplies responsive cards, grids, controls, tables, actions, status, and builder regions. New templates use `p-*` components directly; each owning vertical removes its bridged selectors as it migrates rather than duplicating the bridge.
+The administration bridge is retired: registered admin templates use shared `p-*` contracts and narrowly named `p-module-*` layout hooks for domain-specific media, navigation, theme, plugin, and builder structures. These hooks extend shared tokens rather than recreate a second visual vocabulary. Public theme markup remains separately scoped and is not an administration bridge consumer.

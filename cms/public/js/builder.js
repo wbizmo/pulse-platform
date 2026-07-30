@@ -319,7 +319,7 @@ function renderBuilder() {
 
     if (!blocks.length) {
         builderCanvas.innerHTML = `
-            <div class="pulse-builder-empty">
+            <div class="p-module-builder-empty">
                 <span class="material-symbols-rounded">view_quilt</span>
                 <h3>No blocks yet</h3>
                 <p>Add a block or import a starter template to begin building this page.</p>
@@ -337,18 +337,18 @@ function renderBuilder() {
 
         return `
             <article
-                class="pulse-builder-item ${selectedIndex === index ? "pulse-builder-selected" : ""} ${isCollapsed ? "pulse-builder-collapsed" : ""}"
+                class="p-module-builder-item ${selectedIndex === index ? "p-module-builder-selected" : ""} ${isCollapsed ? "p-module-builder-collapsed" : ""}"
                 data-select-block="${index}"
                 draggable="true"
                 data-drag-index="${index}"
             >
-                <div class="pulse-builder-item-head">
+                <div class="p-module-builder-item-head">
                     <div>
                         <strong>${escapeHtml(block.type)}</strong>
                         <span>Block ${index + 1}${isCollapsed ? " · Collapsed" : ""}</span>
                     </div>
 
-                    <div class="pulse-builder-item-actions">
+                    <div class="p-module-builder-item-actions">
                         <button type="button" data-duplicate="${index}" title="Duplicate block">
                             <span class="material-symbols-rounded">content_copy</span>
                         </button>
@@ -383,7 +383,7 @@ function renderBlockPreview(block) {
     switch (block.type) {
         case "hero":
             return `
-                <div class="pulse-builder-preview pulse-builder-preview-hero">
+                <div class="p-module-builder-preview p-module-builder-preview-hero">
                     <span>${escapeHtml(block.eyebrow)}</span>
                     <h2>${escapeHtml(block.title)}</h2>
                     <p>${escapeHtml(block.description)}</p>
@@ -393,26 +393,26 @@ function renderBlockPreview(block) {
 
         case "text":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <p>${escapeHtml(block.content)}</p>
                 </div>
             `;
 
         case "image":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     ${
                         block.url
-                            ? `<img class="pulse-builder-preview-image" src="${escapeAttribute(block.url)}" alt="${escapeAttribute(block.alt)}">`
-                            : `<div class="pulse-builder-placeholder"><span class="material-symbols-rounded">image</span><p>No image selected</p></div>`
+                            ? `<img class="p-module-builder-preview-image" src="${escapeAttribute(block.url)}" alt="${escapeAttribute(block.alt)}">`
+                            : `<div class="p-module-builder-placeholder"><span class="material-symbols-rounded">image</span><p>No image selected</p></div>`
                     }
                 </div>
             `;
 
         case "video":
             return `
-                <div class="pulse-builder-preview">
-                    <div class="pulse-builder-placeholder">
+                <div class="p-module-builder-preview">
+                    <div class="p-module-builder-placeholder">
                         <span class="material-symbols-rounded">smart_display</span>
                         <p>${block.embed ? "Video embed added" : "No video embed added"}</p>
                     </div>
@@ -421,7 +421,7 @@ function renderBlockPreview(block) {
 
         case "cta":
             return `
-                <div class="pulse-builder-preview pulse-builder-preview-cta">
+                <div class="p-module-builder-preview p-module-builder-preview-cta">
                     <h2>${escapeHtml(block.title)}</h2>
                     <p>${escapeHtml(block.description)}</p>
                     ${block.button_label ? `<button type="button">${escapeHtml(block.button_label)}</button>` : ""}
@@ -430,10 +430,10 @@ function renderBlockPreview(block) {
 
         case "features":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <h3>${escapeHtml(block.title)}</h3>
                     <p>${escapeHtml(block.description)}</p>
-                    <div class="pulse-builder-preview-grid">
+                    <div class="p-module-builder-preview-grid">
                         ${(block.items || []).map(item => `
                             <div>
                                 <strong>${escapeHtml(item.title)}</strong>
@@ -446,8 +446,8 @@ function renderBlockPreview(block) {
 
         case "stats":
             return `
-                <div class="pulse-builder-preview">
-                    <div class="pulse-builder-preview-grid">
+                <div class="p-module-builder-preview">
+                    <div class="p-module-builder-preview-grid">
                         ${(block.items || []).map(item => `
                             <div>
                                 <strong>${escapeHtml(item.value)}</strong>
@@ -460,10 +460,10 @@ function renderBlockPreview(block) {
 
         case "accordion":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <h3>${escapeHtml(block.title)}</h3>
                     ${(block.items || []).map(item => `
-                        <div class="pulse-builder-preview-row">
+                        <div class="p-module-builder-preview-row">
                             <strong>${escapeHtml(item.question)}</strong>
                             <span>${escapeHtml(item.answer)}</span>
                         </div>
@@ -473,7 +473,7 @@ function renderBlockPreview(block) {
 
         case "testimonial":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <p>“${escapeHtml(block.quote)}”</p>
                     <strong>${escapeHtml(block.name)}</strong>
                     <span>${escapeHtml(block.role)}</span>
@@ -482,14 +482,14 @@ function renderBlockPreview(block) {
 
         case "html":
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <pre>${escapeHtml(block.html)}</pre>
                 </div>
             `;
 
         default:
             return `
-                <div class="pulse-builder-preview">
+                <div class="p-module-builder-preview">
                     <pre>${escapeHtml(JSON.stringify(block, null, 2))}</pre>
                 </div>
             `;
@@ -499,7 +499,7 @@ function renderBlockPreview(block) {
 function renderInspector() {
     if (selectedIndex === null || !blocks[selectedIndex]) {
         builderInspector.innerHTML = `
-            <div class="pulse-builder-inspector-empty">
+            <div class="p-module-builder-inspector-empty">
                 <span class="material-symbols-rounded">touch_app</span>
                 <h4>No block selected</h4>
                 <p>Click any builder block to edit its content.</p>
@@ -511,8 +511,8 @@ function renderInspector() {
     const block = blocks[selectedIndex];
 
     builderInspector.innerHTML = `
-        <div class="pulse-builder-inspector-active">
-            <div class="pulse-builder-inspector-title">
+        <div class="p-module-builder-inspector-active">
+            <div class="p-module-builder-inspector-title">
                 <strong>${escapeHtml(block.type)} block</strong>
                 <span>Editing block ${selectedIndex + 1}</span>
             </div>
@@ -539,7 +539,7 @@ function renderFields(block) {
         case "image":
             return `
                 ${inputField("url", "Image URL", block.url)}
-                <button type="button" class="pulse-builder-inspector-btn" data-inspector-image>
+                <button type="button" class="p-module-builder-inspector-btn" data-inspector-image>
                     <span class="material-symbols-rounded">perm_media</span>
                     Choose from media library
                 </button>
@@ -590,7 +590,7 @@ function renderFields(block) {
 
 function inputField(key, label, value = "") {
     return `
-        <div class="pulse-builder-form-group">
+        <div class="p-module-builder-form-group">
             <label>${label}</label>
             <input type="text" data-builder-field="${key}" value="${escapeAttribute(value)}">
         </div>
@@ -599,7 +599,7 @@ function inputField(key, label, value = "") {
 
 function textareaField(key, label, value = "", rows = 5) {
     return `
-        <div class="pulse-builder-form-group">
+        <div class="p-module-builder-form-group">
             <label>${label}</label>
             <textarea rows="${rows}" data-builder-field="${key}">${escapeHtml(value)}</textarea>
         </div>
@@ -608,7 +608,7 @@ function textareaField(key, label, value = "", rows = 5) {
 
 function jsonField(key, label, value) {
     return `
-        <div class="pulse-builder-form-group">
+        <div class="p-module-builder-form-group">
             <label>${label}</label>
             <textarea rows="8" data-builder-json-field="${key}">${escapeHtml(JSON.stringify(value || [], null, 2))}</textarea>
         </div>
@@ -758,14 +758,14 @@ builderCanvas.addEventListener("dragstart", event => {
     }
 
     event.dataTransfer.setData("text/plain", item.dataset.dragIndex);
-    item.classList.add("pulse-builder-dragging");
+    item.classList.add("p-module-builder-dragging");
 });
 
 builderCanvas.addEventListener("dragend", event => {
     const item = event.target.closest("[data-drag-index]");
 
     if (item) {
-        item.classList.remove("pulse-builder-dragging");
+        item.classList.remove("p-module-builder-dragging");
     }
 });
 
