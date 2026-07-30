@@ -1,94 +1,33 @@
-@extends('admin.layouts.app', [
-    'title' => 'Pulse Posts',
-    'heading' => 'Posts',
-    'subheading' => 'Create, manage, publish, and optimize blog posts.'
-])
-
+@extends('admin.layouts.app', ['title' => 'Posts', 'heading' => 'Posts'])
 @section('content')
-    @if (session('success'))
-        <div class="pulse-success">
-            <span class="material-symbols-rounded">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div class="pulse-page-head">
-        <div>
-            <h2>Blog Posts</h2>
-            <p>Manage drafts, published posts, categories, authors, featured images, and SEO metadata.</p>
-        </div>
-
-        <a href="{{ route('admin.posts.create') }}" class="pulse-inline-btn">
-            <span class="material-symbols-rounded">add</span>
-            New post
-        </a>
-    </div>
-
-    <section class="pulse-table-card">
-        <div class="pulse-table-wrap">
-            <table class="pulse-table">
-                <thead>
-                    <tr>
-                        <th>Post</th>
-                        <th>Status</th>
-                        <th>Category</th>
-                        <th>Author</th>
-                        <th>Published</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
+    <x-pulse.page-header title="Posts" description="Create, publish, categorize, and optimize blog posts.">
+        <x-slot:actions><a class="p-button" href="{{ route('admin.posts.create') }}">Create post</a></x-slot:actions>
+    </x-pulse.page-header>
+    <x-pulse.card>
+        @if ($posts->isEmpty())
+            <x-pulse.empty title="No posts yet">Create your first blog post to start publishing.</x-pulse.empty>
+        @else
+            <x-pulse.table>
+                <thead><tr><th>Post</th><th>Status</th><th>Category</th><th>Author</th><th>Published</th><th><span class="sr-only">Actions</span></th></tr></thead>
                 <tbody>
-                    @forelse ($posts as $post)
+                    @foreach ($posts as $post)
                         <tr>
-                            <td>
-                                <strong>{{ $post->title }}</strong>
-                                <span>{{ $post->slug }}</span>
-                            </td>
-
-                            <td>
-                                <span class="pulse-status {{ $post->status === 'published' ? 'published' : 'draft' }}">
-                                    {{ ucfirst($post->status) }}
-                                </span>
-                            </td>
-
-                            <td>{{ $post->category?->name ?? 'Uncategorized' }}</td>
-
-                            <td>{{ $post->author?->name ?? 'System' }}</td>
-
-                            <td>{{ $post->published_at?->format('M d, Y') ?? 'Not published' }}</td>
-
-                            <td>
-                                <div class="pulse-row-actions">
-                                    <a href="{{ route('admin.posts.edit', $post) }}">Edit</a>
-
-                                    <form method="POST" action="{{ route('admin.posts.destroy', $post) }}">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="button" data-confirm data-confirm-title="Delete post?" data-confirm-message="This permanently deletes the post and cannot be undone.">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
+                            <td data-label="Post"><strong>{{ $post->title }}</strong><br><span class="p-muted">{{ $post->slug }}</span></td>
+                            <td data-label="Status"><x-pulse.badge :variant="$post->status === 'published' ? 'success' : 'neutral'">{{ ucfirst($post->status) }}</x-pulse.badge></td>
+                            <td data-label="Category">{{ $post->category?->name ?? 'Uncategorized' }}</td>
+                            <td data-label="Author">{{ $post->author?->name ?? 'System' }}</td>
+                            <td data-label="Published">{{ $post->published_at?->format('M d, Y') ?? 'Not published' }}</td>
+                            <td data-label="Actions"><x-pulse.action-bar>
+                                <a class="p-button p-button--secondary" href="{{ route('admin.posts.edit', $post) }}">Edit</a>
+                                <form method="POST" action="{{ route('admin.posts.destroy', $post) }}">@csrf @method('DELETE')
+                                    <x-pulse.button variant="danger" data-confirm data-confirm-title="Delete post?" data-confirm-message="This permanently deletes the post and cannot be undone.">Delete</x-pulse.button>
+                                </form>
+                            </x-pulse.action-bar></td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6">
-                                <div class="pulse-empty">
-                                    <span class="material-symbols-rounded">edit_note</span>
-                                    <h3>No posts yet</h3>
-                                    <p>Create your first blog post to start publishing content with Pulse CMS.</p>
-                                    <a href="{{ route('admin.posts.create') }}" class="pulse-inline-btn">Create post</a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
-            </table>
-        </div>
-
-        <div class="pulse-pagination">
-            {{ $posts->links() }}
-        </div>
-    </section>
+            </x-pulse.table>
+        @endif
+        <x-pulse.pagination :paginator="$posts" />
+    </x-pulse.card>
 @endsection
