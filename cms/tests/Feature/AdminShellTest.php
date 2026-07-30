@@ -12,6 +12,16 @@ class AdminShellTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_anonymous_login_page_renders_with_session_headers(): void
+    {
+        $this->get(route('admin.login'))
+            ->assertOk()
+            ->assertHeader('content-type', 'text/html; charset=utf-8')
+            ->assertCookie(config('session.cookie'))
+            ->assertSee('Sign in to Pulse')
+            ->assertSee('name="_token"', false);
+    }
+
     private function super(): User
     {
         $user = User::factory()->create(['status' => 'active']);
