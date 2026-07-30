@@ -7,6 +7,7 @@ use App\Domain\Content\ContentStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -40,6 +41,7 @@ class SaveContent
             if ($tagIds !== null && method_exists($content, 'tags')) {
                 $content->tags()->sync($tagIds);
             }
+            Cache::forget('content.sitemap');
             $this->audit->execute($actor, $creating ? 'content.created' : 'content.updated', $content, ['status' => $status->value]);
 
             return $content;

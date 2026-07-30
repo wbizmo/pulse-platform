@@ -11,11 +11,13 @@ class PostRequest extends ContentRequest
 
     public function rules(): array
     {
+        $canAssignTaxonomy = $this->user()?->can('taxonomy.manage') ?? false;
+
         return $this->lifecycleRules() + [
             'excerpt' => ['nullable', 'string', 'max:2000'], 'content' => ['nullable', 'string'],
             'featured_image' => ['nullable', 'url', 'max:2048'],
-            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
-            'tags' => ['array', 'max:50'], 'tags.*' => ['integer', 'distinct', 'exists:tags,id'],
+            'category_id' => [$canAssignTaxonomy ? 'nullable' : 'prohibited', 'integer', 'exists:categories,id'],
+            'tags' => [$canAssignTaxonomy ? 'sometimes' : 'prohibited', 'array', 'max:50'], 'tags.*' => ['integer', 'distinct', 'exists:tags,id'],
             'meta_title' => ['nullable', 'string', 'max:255'], 'meta_description' => ['nullable', 'string', 'max:1000'],
             'og_image' => ['nullable', 'url', 'max:2048'],
         ];

@@ -1,10 +1,10 @@
 @extends('frontend.layout', [
     'page' => (object) [
-        'title' => 'Blog',
-        'meta_title' => 'Blog',
-        'meta_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
+        'title' => $archiveTitle ?? 'Blog',
+        'meta_title' => isset($archiveTitle) ? $archiveTitle.' '.$archiveType : 'Blog',
+        'meta_description' => $archiveDescription ?? ($settings['site_tagline'] ?? 'Latest posts and updates.'),
         'meta_keywords' => '',
-        'canonical_url' => route('frontend.blog'),
+        'canonical_url' => $archiveCanonical ?? route('frontend.blog'),
         'og_title' => 'Blog',
         'og_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
         'og_image' => null,
@@ -19,9 +19,9 @@
 @section('content')
     <section class="pulse-blog-hero">
         <div class="pulse-site-container">
-            <span class="pulse-eyebrow">Pulse Blog</span>
-            <h1>Latest Posts</h1>
-            <p>Read the latest posts, updates, insights, and announcements published from Pulse CMS.</p>
+            <span class="pulse-eyebrow">{{ $archiveType ?? 'Pulse Blog' }}</span>
+            <h1>{{ $archiveTitle ?? 'Latest Posts' }}</h1>
+            <p>{{ $archiveDescription ?? 'Read the latest posts, updates, insights, and announcements published from Pulse CMS.' }}</p>
         </div>
     </section>
 
@@ -65,8 +65,8 @@
                 @empty
                     <div class="pulse-blog-empty">
                         <span class="material-symbols-rounded">edit_note</span>
-                        <h2>No posts published yet</h2>
-                        <p>Create and publish your first post from the Pulse CMS admin dashboard.</p>
+                        <h2>No published posts</h2>
+                        <p>There are no publicly available posts in this archive.</p>
                     </div>
                 @endforelse
             </div>
