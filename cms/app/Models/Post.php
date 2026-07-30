@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Domain\Content\ContentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,10 +23,12 @@ class Post extends Model
         'meta_title',
         'meta_description',
         'og_image',
+        'lock_version',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'status' => ContentStatus::class,
     ];
 
     public function author(): BelongsTo
@@ -40,5 +44,10 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function scopePubliclyVisible(Builder $query): Builder
+    {
+        return $query->where('status', ContentStatus::Published)->whereNotNull('published_at')->where('published_at', '<=', now());
     }
 }

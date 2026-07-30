@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Domain\Content\ContentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -30,6 +32,7 @@ class Page extends Model
         'twitter_description',
         'twitter_image',
         'published_at',
+        'lock_version',
     ];
 
     protected $casts = [
@@ -39,10 +42,16 @@ class Page extends Model
         'show_header' => 'boolean',
         'show_footer' => 'boolean',
         'published_at' => 'datetime',
+        'status' => ContentStatus::class,
     ];
 
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function scopePubliclyVisible(Builder $query): Builder
+    {
+        return $query->where('status', ContentStatus::Published)->whereNotNull('published_at')->where('published_at', '<=', now());
     }
 }

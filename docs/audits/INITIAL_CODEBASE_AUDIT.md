@@ -26,3 +26,7 @@ The checked-out app declares PHP 8.3, Laravel 13.8 and PHPUnit 12.5. Dependencie
 ## M1 identity follow-up
 
 The identity recovery/session checkpoint was verified at merge `eed503a` (focused commit `e207b53`). The previously absent privileged MFA boundary is now implemented with capability-derived enforcement, encrypted TOTP secrets, hashed recovery codes, replay/throttle controls, audited recovery, and an expanded adversarial authorization matrix.
+
+## M3 content lifecycle follow-up
+
+The initial page/post implementation mixed inline validation and persistence, accepted arbitrary status/taxonomy/time values, leaked draft pages through the catch-all route, omitted effective-time checks from posts and sitemap, offered no scheduler, audit, signed preview, or lost-update protection, and used unbounded taxonomy selectors. The lifecycle slice replaces those paths with focused requests/actions, a shared public scope, conditional scheduled publishing, bounded selectors, signed private preview routes, optimistic versions, audit events, and composite publication indexes.

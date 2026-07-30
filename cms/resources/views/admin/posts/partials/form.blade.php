@@ -8,8 +8,9 @@
             <x-pulse.field name="title" label="Title" :value="$post?->title" required />
             <x-pulse.field name="slug" label="Slug" :value="$post?->slug" placeholder="auto-generated-from-title" />
             <x-pulse.select name="category_id" label="Category"><option value="">Uncategorized</option>@foreach ($categories as $category)<option value="{{ $category->id }}" @selected(old('category_id', $post?->category_id) == $category->id)>{{ $category->name }}</option>@endforeach</x-pulse.select>
-            <x-pulse.select name="status" label="Status"><option value="draft" @selected(old('status', $post?->status ?? 'draft') === 'draft')>Draft</option><option value="published" @selected(old('status', $post?->status) === 'published')>Published</option></x-pulse.select>
+            <x-pulse.select name="status" label="Status">@foreach (['draft' => 'Draft', 'scheduled' => 'Scheduled', 'published' => 'Published', 'archived' => 'Archived'] as $value => $label)<option value="{{ $value }}" @selected(old('status', $post?->status?->value ?? 'draft') === $value)>{{ $label }}</option>@endforeach</x-pulse.select>
             <x-pulse.field name="published_at" label="Published at" type="datetime-local" :value="$post?->published_at?->format('Y-m-d\TH:i')" />
+            <input type="hidden" name="lock_version" value="{{ $post?->lock_version ?? 0 }}">
             <x-pulse.field name="featured_image" label="Featured image URL" type="url" :value="$post?->featured_image" />
             <x-pulse.textarea name="excerpt" label="Excerpt" :value="$post?->excerpt" rows="4" />
             <x-pulse.textarea name="content" label="Content" :value="$post?->content" rows="14" />

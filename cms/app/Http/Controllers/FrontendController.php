@@ -20,8 +20,8 @@ class FrontendController extends Controller
             : null;
 
         $page = $homepageId
-            ? Page::find($homepageId)
-            : Page::where('slug', 'home')->first();
+            ? Page::publiclyVisible()->find($homepageId)
+            : Page::publiclyVisible()->where('slug', 'home')->first();
 
         abort_if(! $page, 404);
 
@@ -36,7 +36,7 @@ class FrontendController extends Controller
             $this->frontendData($theme),
             [
                 'posts' => Post::with(['category', 'tags', 'author'])
-                    ->where('status', 'published')
+                    ->publiclyVisible()
                     ->latest('published_at')
                     ->paginate(9),
             ]
@@ -48,7 +48,7 @@ class FrontendController extends Controller
         $theme = Theme::where('is_active', true)->first();
 
         $post = Post::with(['category', 'tags', 'author'])
-            ->where('status', 'published')
+            ->publiclyVisible()
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -62,14 +62,14 @@ class FrontendController extends Controller
 
     public function page(string $slug): View
     {
-        $page = Page::where('slug', $slug)->firstOrFail();
+        $page = Page::publiclyVisible()->where('slug', $slug)->firstOrFail();
 
         $theme = Theme::where('is_active', true)->first();
 
         return $this->renderPage($page, $theme);
     }
 
-    protected function renderPage(Page $page, ?Theme $theme): View
+    public function renderPage(Page $page, ?Theme $theme): View
     {
         return view('frontend.page', array_merge(
             $this->frontendData($theme),
@@ -79,7 +79,7 @@ class FrontendController extends Controller
         ));
     }
 
-    protected function frontendData(?Theme $theme): array
+    public function frontendData(?Theme $theme): array
     {
         $settings = Setting::pluck('value', 'key');
 

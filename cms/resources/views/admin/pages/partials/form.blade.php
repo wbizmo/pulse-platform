@@ -5,9 +5,11 @@
             <x-pulse.field name="title" label="Title" :value="$page?->title" required />
             <x-pulse.field name="slug" label="Slug" :value="$page?->slug" placeholder="auto-generated-from-title" />
             <x-pulse.select name="status" label="Status">
-                <option value="draft" @selected(old('status', $page?->status ?? 'draft') === 'draft')>Draft</option>
-                <option value="published" @selected(old('status', $page?->status) === 'published')>Published</option>
+                <option value="draft" @selected(old('status', $page?->status?->value ?? 'draft') === 'draft')>Draft</option>
+                @foreach (['scheduled' => 'Scheduled', 'published' => 'Published', 'archived' => 'Archived'] as $value => $label)<option value="{{ $value }}" @selected(old('status', $page?->status?->value) === $value)>{{ $label }}</option>@endforeach
             </x-pulse.select>
+            <x-pulse.field name="published_at" label="Publication time ({{ config('app.timezone') }})" type="datetime-local" :value="$page?->published_at?->format('Y-m-d\TH:i')" />
+            <input type="hidden" name="lock_version" value="{{ $page?->lock_version ?? 0 }}">
             <x-pulse.select name="template" label="Template">
                 @foreach (['default', 'landing', 'full-width', 'blog', 'shop', 'school', 'portfolio'] as $template)
                     <option value="{{ $template }}" @selected(old('template', $page?->template ?? 'default') === $template)>{{ ucfirst(str_replace('-', ' ', $template)) }}</option>
