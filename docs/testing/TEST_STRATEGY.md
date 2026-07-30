@@ -13,3 +13,6 @@ The M1 matrix exercises MFA enrollment enforcement, current-session challenge st
 
 
 M2 rendered-interface feature tests cover permission-aware and active navigation, mobile drawer landmarks, escaped flash-to-toast rendering, validation summaries, and destructive dialog triggers. Production Vite compilation is a required frontend gate; browser interaction remains a separate, explicitly reported gate.
+
+
+M2 follow-up coverage renders a representative legacy content administration screen, verifies its custom destructive-dialog trigger, and scans administration views and JavaScript for prohibited native `alert()` or `confirm()` calls.

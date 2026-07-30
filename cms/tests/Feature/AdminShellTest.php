@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -51,6 +52,37 @@ class AdminShellTest extends TestCase
         $this->actingAs($actor)->withSession(['mfa_passed' => true])->get(route('admin.users.index'))
             ->assertOk()
             ->assertSee('data-confirm-title="Delete user?"', false);
+    }
+
+    public function test_legacy_content_screen_uses_custom_destructive_confirmation(): void
+    {
+        Category::create(['name' => 'News', 'slug' => 'news']);
+
+        $response = $this->actingAs($this->super())->withSession(['mfa_passed' => true])
+            ->get(route('admin.categories'));
+
+        $response->assertOk()
+            ->assertSee('class="pulse-editor-grid"', false)
+            ->assertSee('data-confirm-title="Delete category?"', false)
+            ->assertDontSee('confirm(', false);
+    }
+
+    public function test_administration_assets_do_not_use_native_alerts_or_confirms(): void
+    {
+        $paths = [resource_path('views/admin'), resource_path('js'), public_path('js')];
+
+        foreach ($paths as $path) {
+            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+
+            foreach ($files as $file) {
+                if (! $file->isFile()) {
+                    continue;
+                }
+
+                $contents = file_get_contents($file->getPathname());
+                $this->assertDoesNotMatchRegularExpression('/\b(?:alert|confirm)\s*\(/', $contents, $file->getPathname());
+            }
+        }
     }
 
     public function test_login_errors_have_an_accessible_summary(): void

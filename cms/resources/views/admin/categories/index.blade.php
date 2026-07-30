@@ -55,15 +55,19 @@
                             </button>
 
                             <button
-                                type="submit"
+                                type="button"
+                                form="delete-category-{{ $category->id }}"
                                 formaction="{{ route('admin.categories.destroy', $category) }}"
                                 formmethod="POST"
-                                onclick="event.preventDefault(); if(confirm('Delete this category?')) this.closest('form').submit();"
-                                class="pulse-danger-btn"
+                                class="pulse-danger-btn" data-confirm data-confirm-title="Delete category?" data-confirm-message="This permanently deletes the category and cannot be undone."
                             >
                                 Delete
                             </button>
                         </div>
+                    </form>
+                    <form id="delete-category-{{ $category->id }}" method="POST" action="{{ route('admin.categories.destroy', $category) }}" hidden>
+                        @csrf
+                        @method('DELETE')
                     </form>
                 @empty
                     <div class="pulse-empty">

@@ -162,11 +162,11 @@
                             {{ $item->is_active ? 'Active' : 'Inactive' }}
                         </span>
 
-                        <form method="POST" action="{{ route('admin.menus.items.destroy', $item) }}" onsubmit="return confirm('Delete this menu item?')">
+                        <form method="POST" action="{{ route('admin.menus.items.destroy', $item) }}">
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit">
+                            <button type="button" data-confirm data-confirm-title="Delete menu item?" data-confirm-message="This permanently removes the item from this menu.">
                                 <span class="material-symbols-rounded">delete</span>
                             </button>
                         </form>

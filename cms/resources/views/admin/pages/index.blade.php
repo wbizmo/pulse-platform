@@ -90,11 +90,11 @@
                                         Edit
                                     </a>
 
-                                    <form method="POST" action="{{ route('admin.pages.destroy', $page) }}" onsubmit="return confirm('Delete this page?')">
+                                    <form method="POST" action="{{ route('admin.pages.destroy', $page) }}">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit">
+                                        <button type="button" data-confirm data-confirm-title="Delete page?" data-confirm-message="This permanently deletes the page and cannot be undone.">
                                             Delete
                                         </button>
                                     </form>

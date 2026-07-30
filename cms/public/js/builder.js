@@ -621,12 +621,12 @@ function resetSelectionIfNeeded() {
     }
 }
 
-function loadStarterTemplate(name) {
+async function loadStarterTemplate(name) {
     if (!starterTemplates[name]) {
         return;
     }
 
-    if (blocks.length && !confirm("Replace current builder blocks with this template?")) {
+    if (blocks.length && !(await window.PulseConfirm("Replace builder layout?", "This replaces every current builder block with the selected template."))) {
         return;
     }
 
@@ -638,12 +638,12 @@ function loadStarterTemplate(name) {
     renderInspector();
 }
 
-function clearBuilder() {
+async function clearBuilder() {
     if (!blocks.length) {
         return;
     }
 
-    if (!confirm("Clear all builder blocks?")) {
+    if (!(await window.PulseConfirm("Clear all builder blocks?", "This removes every block from the current layout. Save the page to make the change permanent."))) {
         return;
     }
 

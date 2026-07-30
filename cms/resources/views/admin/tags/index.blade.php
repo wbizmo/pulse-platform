@@ -50,15 +50,19 @@
                             </button>
 
                             <button
-                                type="submit"
+                                type="button"
+                                form="delete-tag-{{ $tag->id }}"
                                 formaction="{{ route('admin.tags.destroy', $tag) }}"
                                 formmethod="POST"
-                                onclick="event.preventDefault(); if(confirm('Delete this tag?')) this.closest('form').submit();"
-                                class="pulse-danger-btn"
+                                class="pulse-danger-btn" data-confirm data-confirm-title="Delete tag?" data-confirm-message="This permanently deletes the tag and cannot be undone."
                             >
                                 Delete
                             </button>
                         </div>
+                    </form>
+                    <form id="delete-tag-{{ $tag->id }}" method="POST" action="{{ route('admin.tags.destroy', $tag) }}" hidden>
+                        @csrf
+                        @method('DELETE')
                     </form>
                 @empty
                     <div class="pulse-empty">

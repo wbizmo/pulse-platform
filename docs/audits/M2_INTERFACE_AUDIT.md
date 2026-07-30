@@ -14,6 +14,10 @@ Pages, media, menus, posts, categories/tags, themes, plugins, settings, SEO, and
 
 The remote font/icon dependency, obsolete direct bundles, disconnected Site Health entry, fake dashboard metrics/actions, native immediate destructive submissions in M1 screens, and divergent identity layouts were removed. Tokens, Vite assets, shared shell, safe toast/dialog JavaScript, accessible error output, responsive M1 tables/forms, permission-grouped navigation, and reusable Blade primitives now provide the migration target.
 
+## Follow-up slice
+
+The legacy pages, media, menus, posts, taxonomy, themes, plugins, settings, SEO, and builder class vocabulary now maps to the Pulse token, control, card, form, table, responsive, and focus contracts. Native `confirm()` calls were removed from content and builder behavior in favor of the shared accessible dialog, and the empty malformed `public/js/frontend.jsphp` artifact was removed. Automated coverage prevents native alert/confirm regression and renders a representative legacy content screen. This bridge preserves working module markup without claiming the domain hardening assigned to M3–M6.
+
 ## Remaining audit work
 
-Migrate and functionally validate each legacy module view; remove obsolete `pulse-*` rules as each disappears; inspect the suspicious `public/js/frontend.jsphp`; add real browser keyboard, focus, toast, dialog, drawer, and representative viewport checks; and conduct assistive-technology/contrast review. These are recorded in `NEXT.md` and the debt register rather than hidden as code comments.
+Convert each legacy module to Blade components while functionally hardening it in its owning milestone; remove the presentation bridge as legacy `pulse-*` rules disappear; add real browser keyboard, focus, toast, dialog, drawer, and representative viewport checks; and conduct assistive-technology/contrast review. These are recorded in `NEXT.md` and the debt register rather than hidden as code comments.
