@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Access\RecordAudit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +17,7 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
-    public function login(LoginRequest $request): RedirectResponse
+    public function login(LoginRequest $request, RecordAudit $audit): RedirectResponse
     {
         $request->authenticate();
 
@@ -28,12 +29,14 @@ class AuthController extends Controller
             'last_login_at' => now(),
             'last_login_ip' => $request->ip(),
         ]);
+        $audit->execute($user, 'identity.login_succeeded', $user);
 
         return redirect()->route('admin.dashboard');
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request, RecordAudit $audit): RedirectResponse
     {
+        $audit->execute($request->user(), 'identity.logout', $request->user());
         Auth::logout();
 
         $request->session()->invalidate();

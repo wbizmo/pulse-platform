@@ -210,6 +210,10 @@
                         Logout
                     </button>
                 </form>
+                <a class="pulse-logout" href="{{ route('admin.profile.edit') }}">
+                    <span class="material-symbols-rounded">account_circle</span>
+                    Profile
+                </a>
             </header>
 
             <section class="pulse-content">
