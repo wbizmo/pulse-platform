@@ -21,9 +21,9 @@ class MediaController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($mediaQuery) use ($request) {
                 $mediaQuery
-                    ->where('name', 'like', '%' . $request->search . '%')
-                    ->orWhere('original_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('mime_type', 'like', '%' . $request->search . '%');
+                    ->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('original_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('mime_type', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -76,7 +76,7 @@ class MediaController extends Controller
             $originalName = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
             $mimeType = $file->getMimeType();
-            $fileName = Str::uuid() . '.' . $extension;
+            $fileName = Str::uuid().'.'.$extension;
             $path = $file->storeAs('media', $fileName, 'public');
 
             Media::create([

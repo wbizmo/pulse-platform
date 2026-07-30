@@ -31,13 +31,13 @@ class Media extends Model
     public function getReadableSizeAttribute(): string
     {
         if ($this->size >= 1048576) {
-            return round($this->size / 1048576, 2) . ' MB';
+            return round($this->size / 1048576, 2).' MB';
         }
 
         if ($this->size >= 1024) {
-            return round($this->size / 1024, 2) . ' KB';
+            return round($this->size / 1024, 2).' KB';
         }
 
-        return $this->size . ' B';
+        return $this->size.' B';
     }
 }

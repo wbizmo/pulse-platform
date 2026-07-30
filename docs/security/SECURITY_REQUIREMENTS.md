@@ -1,0 +1,19 @@
+# Security requirements
+
+## Baseline
+
+Assume every external value is hostile. Use allow-list validation, contextual output escaping/sanitization, parameterized persistence, guarded assignment, CSRF, session regeneration, secure cookie configuration, rate limits, non-enumerating authentication errors, safe local redirects, least privilege and deny-by-default authorization. Enforce capabilities in routes/controllers/requests/policies/services/jobs/commands/APIs and not merely navigation or buttons.
+
+Explicitly test broken access control/IDOR, privilege escalation, CSRF, stored/reflected XSS, SQL/command injection, mass assignment, traversal/ZIP-slip, SSRF, open redirects, unsafe image/SVG upload, session fixation, brute force, CSV formulas and sensitive-log leakage. Prevent deletion, disabling or demotion of the final super administrator and prevent permission delegation beyond the actor's authority.
+
+## Secrets and sensitive data
+
+Never commit or log credentials. Encrypt provider secrets, reveal them only on initial entry, display only redacted metadata afterward, require step-up confirmation for changes, and audit access/change without secret values. Redact authorization headers, cookies, tokens, passwords, keys, signatures, personal data and payment details from logs, exceptions, audits and UI.
+
+## Payments and extensibility
+
+Never accept browser returns as payment proof. Verify provider server responses/webhook signatures, timestamps and amounts; record unique provider event IDs; reject replay; make processing duplicate/out-of-order safe and transactional. Do not retry charges without provider idempotency. Validate plugin/theme manifests, paths, archives and compatibility; contain plugin failures and prohibit runtime arbitrary upload/execution without narrowly controlled authorization.
+
+## Audit and response
+
+Append meaningful actor, capability, target, outcome, request correlation, safe context and timestamp for authentication, RBAC, configuration/secret, plugin/theme, content publication, export/download, inventory, order/payment/refund and operational actions. Protect audit/log access with dedicated permissions and tamper-resistant retention. Security regressions block release.

@@ -74,7 +74,7 @@ class MenuController extends Controller
 
         if ($data['type'] === 'page') {
             $page = Page::find($data['page_id']);
-            $data['url'] = $page ? '/' . $page->slug : null;
+            $data['url'] = $page ? '/'.$page->slug : null;
         } else {
             $data['page_id'] = null;
         }
@@ -104,7 +104,7 @@ class MenuController extends Controller
     {
         return $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:menus,slug,' . $menuId],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:menus,slug,'.$menuId],
             'location' => ['required', 'in:main,footer,legal,sidebar,custom'],
         ]);
     }
