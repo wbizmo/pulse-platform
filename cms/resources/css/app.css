@@ -59,6 +59,12 @@ button,input,select,textarea { font: inherit; } a { color: var(--p-action); } im
 @media (max-width: 35.99rem) { .p-page-header { align-items:stretch; flex-direction:column; } .p-topbar-user-name { display:none; } .p-card,.p-panel { padding:var(--p-space-4); } .p-table-responsive thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); } .p-table-responsive tr,.p-table-responsive td { display:block; } .p-table-responsive tr { padding:var(--p-space-3); border-bottom:1px solid var(--p-border); } .p-table-responsive td { padding:var(--p-space-1); border:0; } .p-table-responsive td::before { content:attr(data-label) ": "; color:var(--p-text-muted); font-weight:var(--p-weight-medium); } }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
 
+.p-editor-grid { display:grid; gap:var(--p-space-5); grid-template-columns:minmax(0,2fr) minmax(16rem,1fr); }
+.p-stack { display:grid; gap:var(--p-space-4); }
+.p-record { padding-block:var(--p-space-4); border-bottom:1px solid var(--p-border); }
+.p-record:last-child { border-bottom:0; }
+@media (max-width:63.99rem) { .p-editor-grid { grid-template-columns:1fr; } }
+
 /* M2 module presentation bridge: legacy module markup now consumes Pulse tokens and contracts. */
 .pulse-panel,.pulse-stat-card,.pulse-theme-card,.pulse-plugin-card,.pulse-media-card,.pulse-builder-sidebar,.pulse-builder-main,.pulse-builder-properties { padding:var(--p-card-padding); background:var(--p-surface-raised); border:1px solid var(--p-border); border-radius:var(--p-radius-lg); box-shadow:var(--p-shadow-sm); }
 .pulse-panel-head { margin-bottom:var(--p-space-5); }

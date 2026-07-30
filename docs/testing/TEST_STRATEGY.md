@@ -16,3 +16,5 @@ M2 rendered-interface feature tests cover permission-aware and active navigation
 
 
 M2 follow-up coverage renders a representative legacy content administration screen, verifies its custom destructive-dialog trigger, and scans administration views and JavaScript for prohibited native `alert()` or `confirm()` calls.
+
+The incremental direct-component coverage asserts that taxonomy renders the `p-*` component contract without legacy classes, uses unique repeated-form control identifiers, and retains the custom destructive confirmation trigger.

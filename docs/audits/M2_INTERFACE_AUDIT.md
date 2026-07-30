@@ -20,4 +20,6 @@ The legacy pages, media, menus, posts, taxonomy, themes, plugins, settings, SEO,
 
 ## Remaining audit work
 
-Convert each legacy module to Blade components while functionally hardening it in its owning milestone; remove the presentation bridge as legacy `pulse-*` rules disappear; add real browser keyboard, focus, toast, dialog, drawer, and representative viewport checks; and conduct assistive-technology/contrast review. These are recorded in `NEXT.md` and the debt register rather than hidden as code comments.
+Category and tag administration now compose the shared page header, error summary, card, field, textarea, action, button, and empty-state components directly. Repeated edit controls have stable unique identifiers while retaining the scalar request field names expected by the existing workflows.
+
+Convert each remaining legacy module to Blade components while functionally hardening it in its owning milestone; remove the presentation bridge as legacy `pulse-*` rules disappear; add real browser keyboard, focus, toast, dialog, drawer, and representative viewport checks; and conduct assistive-technology/contrast review. These are recorded in `NEXT.md` and the debt register rather than hidden as code comments.

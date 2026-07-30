@@ -54,16 +54,18 @@ class AdminShellTest extends TestCase
             ->assertSee('data-confirm-title="Delete user?"', false);
     }
 
-    public function test_legacy_content_screen_uses_custom_destructive_confirmation(): void
+    public function test_migrated_taxonomy_screen_uses_pulse_components_and_custom_confirmation(): void
     {
-        Category::create(['name' => 'News', 'slug' => 'news']);
+        $category = Category::create(['name' => 'News', 'slug' => 'news']);
 
         $response = $this->actingAs($this->super())->withSession(['mfa_passed' => true])
             ->get(route('admin.categories'));
 
         $response->assertOk()
-            ->assertSee('class="pulse-editor-grid"', false)
+            ->assertSee('class="p-editor-grid"', false)
+            ->assertSee('id="category-'.$category->id.'-name"', false)
             ->assertSee('data-confirm-title="Delete category?"', false)
+            ->assertDontSee('class="pulse-', false)
             ->assertDontSee('confirm(', false);
     }
 
