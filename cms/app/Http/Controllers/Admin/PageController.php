@@ -79,7 +79,7 @@ class PageController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:pages,slug,' . $pageId],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:pages,slug,'.$pageId],
             'status' => ['required', 'in:draft,published'],
             'template' => ['required', 'string', 'max:100'],
             'content' => ['nullable', 'string'],

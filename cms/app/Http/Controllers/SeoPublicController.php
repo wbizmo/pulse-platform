@@ -45,7 +45,7 @@ class SeoPublicController extends Controller
         }
 
         $content = $settings['seo_robots_content']
-            ?? "User-agent: *\nAllow: /\n\nSitemap: " . url('/sitemap.xml');
+            ?? "User-agent: *\nAllow: /\n\nSitemap: ".url('/sitemap.xml');
 
         $content = str_replace('/sitemap.xml', url('/sitemap.xml'), $content);
 

@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -20,8 +20,8 @@ class PostController extends Controller
             'category',
             'author',
         ])
-        ->latest()
-        ->paginate(20);
+            ->latest()
+            ->paginate(20);
 
         return view('admin.posts.index', [
             'posts' => $posts,

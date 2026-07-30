@@ -39,7 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'account.active'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::post('/system/clear-cache', [SystemController::class, 'clearCache'])->name('system.clear-cache');

@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
         require_once app_path('Pulse/Plugins/helpers.php');
 
         $this->app->singleton(PluginManager::class, function () {
-            return new PluginManager();
+            return new PluginManager;
         });
     }
 
