@@ -24,6 +24,7 @@
             </div>
 
             <nav class="pulse-nav">
+                <a href="{{ route('admin.mfa.show') }}" class="{{ request()->routeIs('admin.mfa.*') ? 'active' : '' }}"><span class="material-symbols-rounded">security</span>Security</a>
                 @can('dashboard.view')
 
                 <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">

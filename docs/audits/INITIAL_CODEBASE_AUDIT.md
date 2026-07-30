@@ -22,3 +22,7 @@ Date: 2026-07-30. Scope: repository structure, routes, controllers, models, migr
 ## Environment and assets
 
 The checked-out app declares PHP 8.3, Laravel 13.8 and PHPUnit 12.5. Dependencies and `.env` were absent during the baseline inspection. Git is on `work`, configured as `Codex <codex@openai.com>`, with no remote. Existing implementation is retained and evolved incrementally; this audit does not assert runtime success before dependencies and tests execute.
+
+## M1 identity follow-up
+
+The identity recovery/session checkpoint was verified at merge `eed503a` (focused commit `e207b53`). The previously absent privileged MFA boundary is now implemented with capability-derived enforcement, encrypted TOTP secrets, hashed recovery codes, replay/throttle controls, audited recovery, and an expanded adversarial authorization matrix.

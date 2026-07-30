@@ -17,3 +17,10 @@ Never accept browser returns as payment proof. Verify provider server responses/
 ## Audit and response
 
 Append meaningful actor, capability, target, outcome, request correlation, safe context and timestamp for authentication, RBAC, configuration/secret, plugin/theme, content publication, export/download, inventory, order/payment/refund and operational actions. Protect audit/log access with dedicated permissions and tamper-resistant retention. Security regressions block release.
+
+
+## Privileged MFA
+
+A user is privileged whenever current normalized roles grant any administrative permission, including through the super-administrator capability; role names are not the enforcement input. Privileged routes require a verified active account, confirmed TOTP configuration, and a challenge completed in the current server-side session. Secrets are cryptographically random, encrypted at rest, hidden from serialization, and displayed only by the enrollment response. Recovery codes are random, individually one-way hashed, displayed only on generation, and removed after use. TOTP permits an adjacent 30-second window for clock skew and rejects current-step reuse. Challenges are throttled and all lifecycle outcomes are audited without secret material.
+
+Enrollment, disablement, replacement, and recovery-code regeneration require recent password confirmation. A user who loses an authenticator should use one stored recovery code and immediately regenerate the set. If both factors are lost, a different active operator with `users.manage`, completed MFA, and recent password confirmation may reset MFA after verifying identity out of band. The affected privileged user is denied privileged access until re-enrollment. An operator cannot administratively reset their own MFA. SMS is not supported.

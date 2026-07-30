@@ -32,6 +32,9 @@ class UserFactory extends Factory
             'role' => 'author',
             'status' => 'active',
             'remember_token' => Str::random(10),
+            'mfa_secret' => 'JBSWY3DPEHPK3PXP',
+            'mfa_recovery_codes' => [],
+            'mfa_confirmed_at' => now(),
         ];
     }
 

@@ -20,3 +20,8 @@ Every administrative route except login and logout declares a permission through
 | Users/roles | Yes | Yes | No | No |
 
 User and role administration routes are not yet implemented, so their catalogue permissions do not currently expose an administrative operation. The next M1 slice must add validated administration actions, safe delegation, protected-system-role rules, last-super-administrator protection, audit records, accessible interfaces, and direct-access tests before roles can be changed through the application.
+
+
+## MFA relationship
+
+Any assignment granting one or more catalogue permissions makes the user privileged and activates MFA immediately. Removing all permissions removes that requirement; adding or changing a role cannot bypass it. Super administrators remain privileged through capability bypass rather than a display-name check.

@@ -14,6 +14,12 @@ class UserRoleAdministrationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withSession(['mfa_passed' => true]);
+    }
+
     private function super(): User
     {
         $user = User::factory()->create(['status' => 'active']);
