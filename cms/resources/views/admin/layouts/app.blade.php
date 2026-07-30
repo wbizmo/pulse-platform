@@ -33,6 +33,13 @@
 
                 @endcan
 
+                @can('users.manage')
+                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><span class="material-symbols-rounded">group</span>Users</a>
+                @endcan
+                @can('roles.manage')
+                <a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><span class="material-symbols-rounded">admin_panel_settings</span>Roles</a>
+                @endcan
+
                 @can('media.manage')
 
 
