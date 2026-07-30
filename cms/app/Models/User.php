@@ -34,6 +34,8 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
     protected $hidden = [
         'password',
         'remember_token',
+        'mfa_secret',
+        'mfa_recovery_codes',
     ];
 
     protected function casts(): array
@@ -42,6 +44,9 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
             'password' => 'hashed',
+            'mfa_secret' => 'encrypted',
+            'mfa_recovery_codes' => 'array',
+            'mfa_confirmed_at' => 'datetime',
         ];
     }
 
@@ -69,5 +74,15 @@ class User extends Authenticatable implements CanResetPasswordContract, MustVeri
         }
 
         return $this->roles()->with('permissions')->get()->flatMap->permissions->pluck('name')->unique()->values()->all();
+    }
+
+    public function isPrivileged(): bool
+    {
+        return $this->isSuperAdministrator() || $this->permissionNames() !== [];
+    }
+
+    public function hasConfirmedMfa(): bool
+    {
+        return $this->mfa_confirmed_at !== null && filled($this->mfa_secret);
     }
 }

@@ -7,3 +7,6 @@ Maintain an authorization matrix for anonymous, disabled, unverified, each permi
 Frontend interaction/browser coverage validates builder drag/reorder/nesting/recovery/concurrency, dialogs/toasts, uploads, keyboard/focus behavior, safe escaping, reduced motion, and desktop/tablet/mobile layouts. Use real sandbox gateways only when credentials are explicitly supplied; deterministic fakes may test contracts but never masquerade as shipped integrations.
 
 Baseline commands from `cms/`: `composer validate --strict`, `vendor/bin/pint --test`, `php artisan test`, `php artisan route:list`, and `npm run build`. Release checks add clean database migrations/seed, queue and scheduler exercise, application login/workflow smoke tests, security/config review, and clean import/boot against release SQL. Record exact commands and honest outcomes in `NEXT.md`; never infer success from compilation.
+
+
+The M1 matrix exercises MFA enrollment enforcement, current-session challenge state, permission-driven enforcement changes, password confirmation, encrypted and hidden secrets, one-way single-use recovery codes, plus denial precedence for disabled and unverified identities. Lifecycle regressions retain signed verification tampering, session and profile ownership, and final-super-administrator invariants.

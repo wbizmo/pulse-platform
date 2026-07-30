@@ -13,6 +13,12 @@ class AdminAuthorizationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withSession(['mfa_passed' => true]);
+    }
+
     public function test_authenticated_user_without_roles_is_denied_by_default(): void
     {
         $user = User::factory()->create();

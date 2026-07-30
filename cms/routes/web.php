@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IdentityController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MfaController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PluginController;
@@ -59,7 +60,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/profile/sessions/{session}', [IdentityController::class, 'revokeSession'])->middleware('password.confirm:admin.password.confirm')->name('profile.sessions.destroy');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        Route::middleware('verified:admin.verification.notice')->group(function () {
+        Route::get('/mfa', [MfaController::class, 'show'])->name('mfa.show');
+        Route::post('/mfa/enroll', [MfaController::class, 'enroll'])->middleware('password.confirm:admin.password.confirm')->name('mfa.enroll');
+        Route::post('/mfa/confirm', [MfaController::class, 'confirm'])->middleware('password.confirm:admin.password.confirm')->name('mfa.confirm');
+        Route::get('/mfa/challenge', [MfaController::class, 'challenge'])->name('mfa.challenge');
+        Route::post('/mfa/challenge', [MfaController::class, 'verify'])->middleware('throttle:10,1')->name('mfa.verify');
+        Route::post('/mfa/recovery-codes', [MfaController::class, 'regenerate'])->middleware('password.confirm:admin.password.confirm')->name('mfa.recovery.regenerate');
+        Route::delete('/mfa', [MfaController::class, 'disable'])->middleware('password.confirm:admin.password.confirm')->name('mfa.disable');
+        Route::delete('/users/{user}/mfa', [MfaController::class, 'administrativeReset'])->middleware(['verified:admin.verification.notice', 'privileged.mfa', 'can:'.Permission::ManageUsers->value, 'password.confirm:admin.password.confirm'])->name('users.mfa.reset');
+
+        Route::middleware(['verified:admin.verification.notice', 'privileged.mfa'])->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:'.Permission::ViewDashboard->value)->name('dashboard');
 
             Route::resource('users', UserController::class)->except('show')->middleware('can:'.Permission::ManageUsers->value);
