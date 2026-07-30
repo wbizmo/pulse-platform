@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Access\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,5 +52,14 @@ class User extends Authenticatable
         return $this->roles()
             ->whereHas('permissions', fn ($query) => $query->where('name', $permission))
             ->exists();
+    }
+
+    public function permissionNames(): array
+    {
+        if ($this->isSuperAdministrator()) {
+            return Permission::values();
+        }
+
+        return $this->roles()->with('permissions')->get()->flatMap->permissions->pluck('name')->unique()->values()->all();
     }
 }

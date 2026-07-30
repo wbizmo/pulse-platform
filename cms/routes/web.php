@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SystemController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\ThemeCustomizerController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SeoPublicController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +44,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware(['auth', 'account.active'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:'.Permission::ViewDashboard->value)->name('dashboard');
+
+        Route::resource('users', UserController::class)->except('show')->middleware('can:'.Permission::ManageUsers->value);
+        Route::resource('roles', RoleController::class)->except('show')->middleware('can:'.Permission::ManageRoles->value);
 
         Route::post('/system/clear-cache', [SystemController::class, 'clearCache'])->middleware('can:'.Permission::ManageSystem->value)->name('system.clear-cache');
 
