@@ -14,6 +14,7 @@ class PageRequest extends ContentRequest
         return $this->lifecycleRules() + [
             'template' => ['required', 'string', 'in:default,landing,full-width,blog,shop,school,portfolio'],
             'content' => ['nullable', 'string'],
+            'featured_media_id' => [$this->user()?->can('media.manage') ? 'nullable' : 'prohibited', 'integer', 'exists:media,id'],
             'is_homepage' => ['nullable', 'boolean'], 'is_blog_page' => ['nullable', 'boolean'],
             'show_header' => ['nullable', 'boolean'], 'show_footer' => ['nullable', 'boolean'],
             'meta_title' => ['nullable', 'string', 'max:255'], 'meta_description' => ['nullable', 'string', 'max:1000'],

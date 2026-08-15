@@ -15,7 +15,7 @@ class PostRequest extends ContentRequest
 
         return $this->lifecycleRules() + [
             'excerpt' => ['nullable', 'string', 'max:2000'], 'content' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'url', 'max:2048'],
+            'featured_media_id' => [$this->user()?->can('media.manage') ? 'nullable' : 'prohibited', 'integer', 'exists:media,id'],
             'category_id' => [$canAssignTaxonomy ? 'nullable' : 'prohibited', 'integer', 'exists:categories,id'],
             'tags' => [$canAssignTaxonomy ? 'sometimes' : 'prohibited', 'array', 'max:50'], 'tags.*' => ['integer', 'distinct', 'exists:tags,id'],
             'meta_title' => ['nullable', 'string', 'max:255'], 'meta_description' => ['nullable', 'string', 'max:1000'],

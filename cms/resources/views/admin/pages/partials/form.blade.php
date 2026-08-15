@@ -15,6 +15,13 @@
                     <option value="{{ $template }}" @selected(old('template', $page?->template ?? 'default') === $template)>{{ ucfirst(str_replace('-', ' ', $template)) }}</option>
                 @endforeach
             </x-pulse.select>
+            @can('media.manage')
+            <x-pulse.select name="featured_media_id" label="Featured image">
+                <option value="">No featured image</option>
+                @foreach ($mediaItems as $media)<option value="{{ $media->id }}" @selected(old('featured_media_id', $page?->featured_media_id) == $media->id)>{{ $media->name }}</option>@endforeach
+            </x-pulse.select>
+            <p class="p-muted">Showing the 100 most recently uploaded managed images.</p>
+            @endcan
             <x-pulse.textarea name="content" label="Content" :value="$page?->content" rows="12" />
         </x-pulse.form-section>
     </x-pulse.card>

@@ -7,6 +7,7 @@ use App\Actions\Content\SaveContent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 use App\Models\Category;
+use App\Models\Media;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +23,7 @@ class PostController extends Controller
 
     public function create(): View
     {
-        return view('admin.posts.create', $this->taxonomies());
+        return view('admin.posts.create', $this->taxonomies() + ['mediaItems' => $this->mediaChoices()]);
     }
 
     public function store(PostRequest $request, SaveContent $save): RedirectResponse
@@ -38,7 +39,7 @@ class PostController extends Controller
 
     public function edit(Post $post): View
     {
-        return view('admin.posts.edit', ['post' => $post->load('tags')] + $this->taxonomies());
+        return view('admin.posts.edit', ['post' => $post->load('tags'), 'mediaItems' => $this->mediaChoices()] + $this->taxonomies());
     }
 
     public function update(PostRequest $request, Post $post, SaveContent $save): RedirectResponse
@@ -59,6 +60,11 @@ class PostController extends Controller
         });
 
         return back()->with('success', 'Post deleted successfully.');
+    }
+
+    private function mediaChoices()
+    {
+        return Media::query()->where('type', 'image')->latest()->limit(100)->get(['id', 'name', 'path', 'disk']);
     }
 
     private function taxonomies(): array

@@ -9,7 +9,7 @@
     <div class="p-module-page-head">
         <div>
             <h2>Media Library</h2>
-            <p>Manage uploaded files that can be used by pages, themes, builders, forms, blog posts, and plugins.</p>
+            <p>Manage safely decoded images used by pages and posts.</p>
         </div>
 
         <a href="{{ route('admin.media.upload') }}" class="p-button">
@@ -29,9 +29,7 @@
             <select name="type">
                 <option value="">All files</option>
                 <option value="image" @selected($activeType === 'image')>Images</option>
-                <option value="video" @selected($activeType === 'video')>Videos</option>
-                <option value="document" @selected($activeType === 'document')>Documents</option>
-                <option value="file" @selected($activeType === 'file')>Other files</option>
+
             </select>
         </label>
 
@@ -46,7 +44,7 @@
             <article class="p-module-media-card">
                 <div class="p-module-media-preview">
                     @if ($media->type === 'image')
-                        <img src="{{ $media->url }}" alt="{{ $media->alt_text ?: $media->name }}">
+                        <img src="{{ $media->public_url }}" alt="{{ $media->alt_text ?: $media->name }}">
                     @elseif ($media->type === 'video')
                         <span class="material-symbols-rounded">smart_display</span>
                     @elseif ($media->type === 'document')
@@ -67,11 +65,20 @@
                     </div>
 
                     <div class="p-module-media-url">
-                        <input type="text" value="{{ url($media->url) }}" readonly onclick="this.select()">
+                        <input type="text" value="{{ url($media->public_url) }}" readonly onclick="this.select()">
                     </div>
 
+                    <form method="POST" action="{{ route('admin.media.update', $media) }}" class="p-stack">
+                        @csrf
+                        @method('PATCH')
+                        <x-pulse.field name="name" label="Display name" :value="$media->name" />
+                        <x-pulse.field name="alt_text" label="Alternative text" :value="$media->alt_text" />
+                        <x-pulse.textarea name="caption" label="Caption" :value="$media->caption" rows="2" />
+                        <x-pulse.button type="submit">Save details</x-pulse.button>
+                    </form>
+                    <p class="p-muted">{{ $media->width }} × {{ $media->height }} px · Uploaded by {{ $media->user?->name ?? 'Deleted user' }} · Used {{ $media->pages_count + $media->posts_count }} times</p>
                     <div class="p-module-media-actions">
-                        <a href="{{ $media->url }}" target="_blank">
+                        <a href="{{ $media->public_url }}" target="_blank">
                             <span class="material-symbols-rounded">open_in_new</span>
                             Open
                         </a>
@@ -92,7 +99,7 @@
             <div class="p-empty p-module-media-empty">
                 <span class="material-symbols-rounded">perm_media</span>
                 <h3>No media uploaded yet</h3>
-                <p>Upload images, PDFs, videos, and documents so they can be used across Pulse CMS.</p>
+                <p>Upload a supported image to use it across Pulse CMS.</p>
                 <a href="{{ route('admin.media.upload') }}" class="p-button">Upload media</a>
             </div>
         @endforelse

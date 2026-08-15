@@ -30,3 +30,7 @@ Enrollment, disablement, replacement, and recovery-code regeneration require rec
 Public queries must use the shared publication-eligibility scope. Unpublished preview requires an authenticated, authorized account and an unexpired signed URL, and responses must be private, uncached, and noindex. Slugs reject reserved system paths and retain database uniqueness. Stale editor versions must fail closed rather than overwrite newer content.
 
 Taxonomy creation, update, deletion, and post assignment require `taxonomy.manage` independently of post editing. Submitted identifiers must exist and be distinct, archive queries must use centralized public visibility, and assigned taxonomy records must not be deleted. Category and tag names and slugs are normalized and protected by per-type database uniqueness.
+
+## Managed media
+
+Administrative media upload is capability, verified-account, active-account, and privileged-MFA protected. Accepted content is limited to configured-size JPEG, PNG, WebP, and GIF images that pass server-side MIME, dimension, pixel-count, and decode checks. SVG and non-image documents are rejected. Storage names and directories are server-controlled; original names are display metadata only. Restrictive foreign keys and application checks prevent deletion of referenced media.
