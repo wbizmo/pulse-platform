@@ -7,8 +7,18 @@
 @section('content')
     <x-pulse.errors />
 
+    @if ($legacyBuilderData)
+        <div class="p-alert p-alert--warning" role="alert"><strong>Legacy layout preserved.</strong> It is not rendered because it does not satisfy Builder V4 security rules. Saving starts a new empty V4 document; export the database value first if recovery is required.</div>
+    @endif
+    <div id="pulseBuilderRecovery" class="p-alert p-alert--info" role="status" hidden>
+        <span>A matching unsaved local draft is available.</span>
+        <button type="button" class="p-button" data-builder-restore>Restore draft</button>
+        <button type="button" class="p-button p-button--secondary" data-builder-discard-draft>Discard</button>
+    </div>
+
     <form method="POST" action="{{ route('admin.pages.builder.update', $page) }}" class="p-module-builder-form">
         @csrf
+        <input type="hidden" name="lock_version" value="{{ $page->lock_version }}">
 
         <section class="p-module-builder-shell">
             <aside class="p-module-builder-sidebar">
@@ -17,56 +27,12 @@
                     <p>Add ready-made sections to the page.</p>
                 </div>
 
+                <div class="p-module-builder-block-list" aria-label="Block library">
+                    @foreach($registry as $block)<button type="button" data-builder-add="{{ $block['type'] }}"><span class="material-symbols-rounded">add_box</span>{{ $block['label'] }}</button>@endforeach
+                </div>
+                <h3>Reusable templates</h3>
                 <div class="p-module-builder-block-list">
-                    <button type="button" data-builder-add="hero">
-                        <span class="material-symbols-rounded">auto_awesome</span>
-                        Hero
-                    </button>
-
-                    <button type="button" data-builder-add="text">
-                        <span class="material-symbols-rounded">notes</span>
-                        Text
-                    </button>
-
-                    <button type="button" data-builder-add="image">
-                        <span class="material-symbols-rounded">image</span>
-                        Image
-                    </button>
-
-                    <button type="button" data-builder-add="video">
-                        <span class="material-symbols-rounded">smart_display</span>
-                        Video
-                    </button>
-
-                    <button type="button" data-builder-add="cta">
-                        <span class="material-symbols-rounded">ads_click</span>
-                        CTA
-                    </button>
-
-                    <button type="button" data-builder-add="features">
-                        <span class="material-symbols-rounded">grid_view</span>
-                        Features
-                    </button>
-
-                    <button type="button" data-builder-add="stats">
-                        <span class="material-symbols-rounded">bar_chart</span>
-                        Stats
-                    </button>
-
-                    <button type="button" data-builder-add="accordion">
-                        <span class="material-symbols-rounded">expand_circle_down</span>
-                        Accordion
-                    </button>
-
-                    <button type="button" data-builder-add="testimonial">
-                        <span class="material-symbols-rounded">format_quote</span>
-                        Testimonial
-                    </button>
-
-                    <button type="button" data-builder-add="html">
-                        <span class="material-symbols-rounded">code</span>
-                        Custom HTML
-                    </button>
+                    @forelse($templates as $template)<button type="button" data-builder-template-document='@json($template->document)'>Insert {{ $template->name }}</button>@empty<p>No reusable templates yet.</p>@endforelse
                 </div>
             </aside>
 
@@ -87,12 +53,19 @@
 
                 <div id="pulseBuilderCanvas" class="p-module-builder-canvas"></div>
 
+                <div class="p-module-builder-top" aria-label="Responsive preview controls">
+                    <button type="button" class="p-button p-button--secondary" data-builder-viewport="desktop">Desktop</button>
+                    <button type="button" class="p-button p-button--secondary" data-builder-viewport="tablet">Tablet</button>
+                    <button type="button" class="p-button p-button--secondary" data-builder-viewport="mobile">Mobile</button>
+                    <a class="p-button p-button--secondary" href="{{ URL::temporarySignedRoute('admin.pages.preview', now()->addMinutes(15), ['page' => $page]) }}" target="_blank" rel="noopener">Secure preview</a>
+                </div>
+
                 <textarea
                     name="builder_data"
                     id="pulseBuilderData"
                     class="p-module-builder-json"
                     rows="18"
-                >{{ old('builder_data', json_encode($page->builder_data ?? [], JSON_PRETTY_PRINT)) }}</textarea>
+                >{{ old('builder_data', json_encode($document, JSON_PRETTY_PRINT)) }}</textarea>
             </section>
 
             @include('admin.builder.sidebar')
@@ -109,6 +82,14 @@
                 <span class="material-symbols-rounded">save</span>
             </button>
         </div>
+    </form>
+
+    <form method="POST" action="{{ route('admin.builder.templates.store') }}" class="p-card p-stack">
+        @csrf
+        <label for="builder_template_name">Save current document as reusable snapshot template</label>
+        <input id="builder_template_name" name="name" maxlength="120" required>
+        <input type="hidden" name="builder_data" id="pulseBuilderTemplateData">
+        <button class="p-button" type="submit">Create reusable template</button>
     </form>
 
     <div class="p-module-media-picker" id="pulseMediaPicker" hidden>
@@ -138,9 +119,7 @@
     @include('admin.builder.templates.modal')
 
     <script>
-        window.PULSE_MEDIA_LIBRARY_URL = "{{ route('admin.media.library', ['type' => 'image']) }}";
+        window.PULSE_BUILDER = @json(['page' => $page->id, 'version' => $page->lock_version, 'registry' => $registry]);
     </script>
-
-    <script src="{{ asset('js/media-picker.js') }}"></script>
     <script src="{{ asset('js/builder.js') }}"></script>
 @endsection

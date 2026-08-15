@@ -9,12 +9,13 @@ use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\Theme;
+use App\Services\Builder\BuilderRenderer;
 use App\Services\Seo\SeoResolver;
 use Illuminate\View\View;
 
 class FrontendController extends Controller
 {
-    public function __construct(private readonly SeoResolver $seo) {}
+    public function __construct(private readonly SeoResolver $seo, private readonly BuilderRenderer $builder) {}
 
     public function home(): View
     {
@@ -120,6 +121,7 @@ class FrontendController extends Controller
             $data,
             [
                 'page' => $page,
+                'builder' => $this->builder->forPage($page),
                 'seo' => $this->seo->resolve($page, $data['settings'], $page->is_homepage ? route('frontend.home') : route('frontend.page', $page->slug), $page->is_homepage ? 'site' : 'page'),
             ]
         ));

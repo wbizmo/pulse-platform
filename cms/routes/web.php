@@ -2,6 +2,7 @@
 
 use App\Domain\Access\Permission;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BuilderTemplateController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContentPreviewController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -120,6 +121,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/pages/{page}/preview', [ContentPreviewController::class, 'page'])->middleware(['can:'.Permission::ManagePages->value, 'signed'])->name('pages.preview');
             Route::get('/pages/{page}/builder', [PageBuilderController::class, 'edit'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder');
             Route::post('/pages/{page}/builder', [PageBuilderController::class, 'update'])->middleware('can:'.Permission::ManagePages->value)->name('pages.builder.update');
+            Route::post('/builder/templates', [BuilderTemplateController::class, 'store'])->middleware('can:'.Permission::ManagePages->value)->name('builder.templates.store');
+            Route::delete('/builder/templates/{template}', [BuilderTemplateController::class, 'destroy'])->middleware('can:'.Permission::ManagePages->value)->name('builder.templates.destroy');
 
             Route::get('/menus', [MenuController::class, 'index'])->middleware('can:'.Permission::ManageMenus->value)->name('menus');
             Route::get('/menus/create', [MenuController::class, 'create'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.create');

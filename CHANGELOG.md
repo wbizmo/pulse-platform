@@ -13,6 +13,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added permission-derived privileged-user TOTP MFA with encrypted secrets, one-way single-use recovery codes, replay/rate-limit controls, password-confirmed lifecycle operations, audited administrator recovery, and accessible enrollment/challenge interfaces.
 
 ### Fixed
+- Repaired the Forms submissions inbox Blade structure exposed by the deferred real CLI-server acceptance smoke; the authenticated inbox now compiles and renders under the production view compiler.
 - Completed the M2 administration presentation migration for media, menus, builder, themes and customizer, plugins and settings, site settings, and SEO; retired administration `pulse-*` bridge consumers while preserving authorized workflows, shared confirmation dialogs, and safe toasts.
 - Migrated page and post administration lists and editors from the legacy presentation bridge to reusable Pulse page-header, card, table, form, badge, action, pagination, empty-state, and confirmation components.
 - Migrated category and tag administration from the legacy presentation bridge to direct Pulse form, card, action, empty-state, and confirmation components, with unique accessible control identifiers for repeated edit forms.
@@ -45,3 +46,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M3 Forms
 - Added first-party forms, closed-schema ordered fields, durable immutable submission snapshots, active public rendering, strict server-side validation, CSRF, honeypot and anonymous rate limiting.
 - Added MFA-protected `forms.manage` administration, bounded submission inbox/detail views, conservative retention, parent-scoped atomic field operations, audits that exclude submitted values, and adversarial coverage.
+
+### M4 Builder V4
+- Replaced arbitrary Builder JSON persistence with a server-authoritative schema-v1 decoder, stable UUID node identity, closed block registry, strict known-key validation, bounded trees/collections/responsive tokens, and safe URL/video policies.
+- Added atomic Page-version concurrency, metadata-only audits, managed-image reference validation and deletion protection, persisted snapshot templates, secure shared public/preview rendering, and fail-closed legacy handling that never executes stored HTML.
+- Rebuilt the editor contract around server-provided metadata, keyboard-operable ordering/duplication/deletion, responsive controls, secure preview, dirty-state navigation protection, and bounded page/version-specific local recovery.

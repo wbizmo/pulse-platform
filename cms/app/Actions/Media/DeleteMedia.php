@@ -4,6 +4,7 @@ namespace App\Actions\Media;
 
 use App\Actions\Access\RecordAudit;
 use App\Models\Media;
+use App\Models\Page;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,17 @@ class DeleteMedia
     public function execute(Media $media, User $actor): void
     {
         $seoReference = Setting::query()->whereIn('key', ['seo_default_media_id', 'seo_organization_media_id'])->where('value', (string) $media->id)->exists();
-        if ($media->pages()->exists() || $media->posts()->exists() || $seoReference) {
+        $builderReference = false;
+        Page::query()->whereNotNull('builder_data')->select(['id', 'builder_data'])->chunkById(100, function ($pages) use (&$builderReference, $media): bool {
+            if ($pages->contains(fn (Page $page) => $this->referencesBuilderMedia($page->builder_data, $media->id))) {
+                $builderReference = true;
+
+                return false;
+            }
+
+            return true;
+        });
+        if ($media->pages()->exists() || $media->posts()->exists() || $seoReference || $builderReference) {
             throw ValidationException::withMessages(['media' => 'This image is in use by content or SEO settings and cannot be deleted.']);
         }
         $disk = Storage::disk($media->disk);
@@ -40,5 +51,22 @@ class DeleteMedia
 
             throw $exception;
         }
+    }
+
+    private function referencesBuilderMedia(?array $document, int $mediaId): bool
+    {
+        $walk = function (array $nodes) use (&$walk, $mediaId): bool {
+            foreach ($nodes as $node) {
+                if (($node['type'] ?? null) === 'image' && ($node['props']['media_id'] ?? null) === $mediaId) {
+                    return true;
+                } if (is_array($node['children'] ?? null) && $walk($node['children'])) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        return is_array($document) && is_array($document['nodes'] ?? null) && $walk($document['nodes']);
     }
 }

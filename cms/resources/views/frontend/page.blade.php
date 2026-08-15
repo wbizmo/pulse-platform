@@ -1,9 +1,10 @@
 @extends('frontend.layout')
 
 @section('content')
-    @if ($page->builder_data)
+    @if ($builder)
         @include('frontend.builder.render', [
-            'blocks' => $page->builder_data,
+            'nodes' => $builder['document']['nodes'],
+            'builderMedia' => $builder['media'],
         ])
     @else
         <section class="pulse-hero">
