@@ -26,3 +26,7 @@ Menu mutations now use focused requests and transactional actions. Main and foot
 ## M3 SEO
 
 SEO settings now use an explicit request and transactional action rather than arbitrary setting-key persistence. `seo.manage` independently protects global and per-content metadata. Public rendering receives a resolved SEO document with same-origin canonical overrides, context-aware Open Graph/Twitter and safely encoded WebSite/WebPage/BlogPosting data. Global social images are managed-media references protected from deletion. Robots output is normalized and sitemap output is cached with explicit content/taxonomy/SEO invalidation, lazy bounded queries, 50,000-URL enforcement, real modification timestamps, homepage deduplication, and public category/tag archives.
+
+## Forms
+
+First-party forms use normalized unique slugs, explicit active state, a closed ten-type field schema, bounded ordered fields, compiled trusted validation, and immutable submission snapshots. Public POSTs are CSRF and rate-limit protected and reject unknown keys. Administration and submission access require `forms.manage`, verified active identity, and privileged MFA; submission contents are never audited.

@@ -35,3 +35,5 @@ M3 menu coverage exercises normalized validation, singleton activation, hostile 
 
 
 M3 SEO coverage exercises setting-key injection, scalar/type/length/control validation, independent SEO authority, unsafe canonical rejection, deterministic robots directives, visibility-safe bounded sitemap content, homepage deduplication, taxonomy archives, escaped metadata, article JSON-LD, pagination canonicals, and global noindex semantics.
+
+M3 Forms coverage exercises active-state behavior, trusted schema validation, unexpected keys, scalar confusion, immutable snapshots, cross-form mutation/reorder, atomic failure, retention, escaping, throttling, deny-by-default Forms authority, and privileged MFA. SQLite covers fresh migration and Forms migration rollback/reapply; MySQL and browser interaction remain separate release gates.

@@ -17,4 +17,9 @@ final class ReservedSlug
     {
         return in_array(Str::lower($slug), self::VALUES, true);
     }
+
+    public static function values(): array
+    {
+        return [...self::VALUES, 'forms'];
+    }
 }

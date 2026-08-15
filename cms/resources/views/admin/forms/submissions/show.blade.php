@@ -1,0 +1,2 @@
+@extends('admin.layouts.app',['title'=>'Submission','heading'=>'Submission'])
+@section('content')<x-pulse.page-header title="Submission #{{$submission->id}}" :description="$submission->created_at->toDayDateTimeString()" /><x-pulse.card><dl class="p-stack">@foreach($submission->field_snapshot as $field)<div><dt><strong>{{ $field['label'] }}</strong></dt><dd>@php($value=$submission->values[$field['key']]??null){{ is_bool($value)?($value?'Yes':'No'):(is_scalar($value)?$value:'—') }}</dd></div>@endforeach</dl></x-pulse.card>@endsection

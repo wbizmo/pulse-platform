@@ -23,3 +23,5 @@ Menu hardening introduced no newly accepted debt. Navigation is deliberately fla
 
 
 SEO hardening introduced no accepted application debt. Legacy page/post social-image URL columns remain supported only as same-origin, validated compatibility fields; managed featured images and managed global defaults are the preferred path. Browser interaction remains TD-005 and real-MySQL migration verification remains a release-environment gate.
+
+Forms hardening introduced no accepted application debt. CSV export, notifications, attachments, autoresponders and automation are deliberately absent because current product scope does not require them. Browser interaction remains TD-005 and real-MySQL migration verification remains a release-environment gate.

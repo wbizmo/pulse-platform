@@ -1,0 +1,5 @@
+@extends('admin.layouts.app', ['title'=>'Forms','heading'=>'Forms'])
+@section('content')
+<x-pulse.page-header title="Forms" description="Build secure public forms and review retained submissions."><x-pulse.button href="{{ route('admin.forms.create') }}">Create form</x-pulse.button></x-pulse.page-header><x-pulse.errors />
+<x-pulse.card><div class="p-stack">@forelse($forms as $form)<div class="p-record"><h2><a href="{{ route('admin.forms.edit',$form) }}">{{ $form->name }}</a></h2><p class="p-muted">{{ $form->is_active?'Active':'Inactive' }} · {{ $form->fields_count }} fields · {{ $form->submissions_count }} submissions</p><x-pulse.action-bar><x-pulse.button href="{{ route('admin.forms.edit',$form) }}" variant="secondary">Edit</x-pulse.button><x-pulse.button href="{{ route('admin.forms.submissions',$form) }}" variant="secondary">Submissions</x-pulse.button></x-pulse.action-bar></div>@empty<x-pulse.empty title="No forms yet">Create a form to collect responses.</x-pulse.empty>@endforelse</div><x-pulse.pagination :paginator="$forms" /></x-pulse.card>
+@endsection
