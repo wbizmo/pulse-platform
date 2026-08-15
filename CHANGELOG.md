@@ -36,3 +36,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M3 menu and media follow-up
 - Made media deletion final-state audits truthful: storage failures retain the record and append a failure event, while completed events follow object removal and transactional row deletion.
 - Hardened flat navigation with singleton main/footer activation, bounded queries, focused requests/actions, parent-scoped item CRUD, atomic reorder, safe custom links, page-derived URLs, restrictive page references, publication-aware rendering, audits, and protected new-tab links.
+
+### M3 SEO
+- Hardened global SEO behind an explicit allow-listed request/action contract with bounded validation, transactional persistence, cache invalidation, managed-media selection, and bounded audits.
+- Enforced `seo.manage` independently on page/post metadata, restricted canonical overrides to same-origin HTTP(S), centralized escaped context-aware metadata and JSON-LD resolution, and added article/archive/pagination behavior.
+- Rebuilt robots and sitemap output with normalized deterministic text, safe absolute sitemap directives, truthful timestamps, homepage deduplication, public taxonomy URLs, lazy bounded queries, protocol URL limits, caching, and visibility-safe output.

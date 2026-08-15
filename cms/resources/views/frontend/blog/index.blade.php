@@ -1,20 +1,4 @@
-@extends('frontend.layout', [
-    'page' => (object) [
-        'title' => $archiveTitle ?? 'Blog',
-        'meta_title' => isset($archiveTitle) ? $archiveTitle.' '.$archiveType : 'Blog',
-        'meta_description' => $archiveDescription ?? ($settings['site_tagline'] ?? 'Latest posts and updates.'),
-        'meta_keywords' => '',
-        'canonical_url' => $archiveCanonical ?? route('frontend.blog'),
-        'og_title' => 'Blog',
-        'og_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
-        'og_image' => null,
-        'twitter_title' => 'Blog',
-        'twitter_description' => $settings['site_tagline'] ?? 'Latest posts and updates.',
-        'twitter_image' => null,
-        'show_header' => true,
-        'show_footer' => true,
-    ]
-])
+@extends('frontend.layout')
 
 @section('content')
     <section class="pulse-blog-hero">

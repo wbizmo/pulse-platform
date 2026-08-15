@@ -4,6 +4,7 @@ namespace App\Actions\Media;
 
 use App\Actions\Access\RecordAudit;
 use App\Models\Media;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,8 +16,9 @@ class DeleteMedia
 
     public function execute(Media $media, User $actor): void
     {
-        if ($media->pages()->exists() || $media->posts()->exists()) {
-            throw ValidationException::withMessages(['media' => 'This image is in use by page or post content and cannot be deleted.']);
+        $seoReference = Setting::query()->whereIn('key', ['seo_default_media_id', 'seo_organization_media_id'])->where('value', (string) $media->id)->exists();
+        if ($media->pages()->exists() || $media->posts()->exists() || $seoReference) {
+            throw ValidationException::withMessages(['media' => 'This image is in use by content or SEO settings and cannot be deleted.']);
         }
         $disk = Storage::disk($media->disk);
         $contents = $disk->get($media->path);

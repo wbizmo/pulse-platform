@@ -2,54 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
-use App\Models\Post;
 use App\Models\Setting;
+use App\Services\Seo\RobotsGenerator;
+use App\Services\Seo\SitemapGenerator;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 
 class SeoPublicController extends Controller
 {
-    public function sitemap(): Response
+    public function sitemap(SitemapGenerator $generator): Response
     {
-        $settings = Setting::pluck('value', 'key');
+        abort_if(Setting::getValue('seo_sitemap_enabled', '1') !== '1', 404);
+        $xml = Cache::remember('content.sitemap', 3600, fn () => $generator->generate());
 
-        if (($settings['seo_sitemap_enabled'] ?? '1') !== '1') {
-            abort(404);
-        }
-
-        $pages = Page::query()
-            ->publiclyVisible()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $posts = Post::query()
-            ->publiclyVisible()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $xml = view('seo.sitemap', [
-            'pages' => $pages,
-            'posts' => $posts,
-        ])->render();
-
-        return response($xml, 200)
-            ->header('Content-Type', 'application/xml');
+        return response($xml)->header('Content-Type', 'application/xml; charset=UTF-8');
     }
 
-    public function robots(): Response
+    public function robots(RobotsGenerator $generator): Response
     {
-        $settings = Setting::pluck('value', 'key');
+        abort_if(Setting::getValue('seo_robots_enabled', '1') !== '1', 404);
 
-        if (($settings['seo_robots_enabled'] ?? '1') !== '1') {
-            abort(404);
-        }
-
-        $content = $settings['seo_robots_content']
-            ?? "User-agent: *\nAllow: /\n\nSitemap: ".url('/sitemap.xml');
-
-        $content = str_replace('/sitemap.xml', url('/sitemap.xml'), $content);
-
-        return response($content, 200)
-            ->header('Content-Type', 'text/plain');
+        return response($generator->generate(Setting::getValue('seo_robots_content')))->header('Content-Type', 'text/plain; charset=UTF-8');
     }
 }

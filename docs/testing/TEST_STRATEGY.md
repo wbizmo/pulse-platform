@@ -32,3 +32,6 @@ M3 taxonomy coverage exercises normalization and case-equivalent duplicates, app
 M3 media coverage exercises direct authorization, real image metadata derivation, opaque traversal-resistant naming, SVG/executable/malformed rejection, cleanup, pagination and custom-dialog markup, forged featured-media IDs, model relations, and application/database deletion protection. SQLite verifies migrations during the suite; MySQL remains a release-environment gate.
 
 M3 menu coverage exercises normalized validation, singleton activation, hostile custom URLs, coherent item types, current page-derived links, publication filtering, dependency-protected deletion, complete atomic reorder, parent scoping, auditing, and protected new-tab rendering. SQLite foreign-key behavior is covered; real MySQL remains a release-environment gate.
+
+
+M3 SEO coverage exercises setting-key injection, scalar/type/length/control validation, independent SEO authority, unsafe canonical rejection, deterministic robots directives, visibility-safe bounded sitemap content, homepage deduplication, taxonomy archives, escaped metadata, article JSON-LD, pagination canonicals, and global noindex semantics.

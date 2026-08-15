@@ -22,7 +22,14 @@ class Post extends Model
         'published_at',
         'meta_title',
         'meta_description',
+        'meta_keywords',
+        'canonical_url',
+        'og_title',
+        'og_description',
         'og_image',
+        'twitter_title',
+        'twitter_description',
+        'twitter_image',
         'lock_version',
     ];
 

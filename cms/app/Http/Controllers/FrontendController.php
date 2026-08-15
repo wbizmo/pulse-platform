@@ -9,10 +9,13 @@ use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\Theme;
+use App\Services\Seo\SeoResolver;
 use Illuminate\View\View;
 
 class FrontendController extends Controller
 {
+    public function __construct(private readonly SeoResolver $seo) {}
+
     public function home(): View
     {
         $theme = Theme::where('is_active', true)->first();
@@ -34,13 +37,16 @@ class FrontendController extends Controller
     {
         $theme = Theme::where('is_active', true)->first();
 
+        $data = $this->frontendData($theme);
+
         return view('frontend.blog.index', array_merge(
-            $this->frontendData($theme),
+            $data,
             [
                 'posts' => Post::with(['category', 'tags', 'author', 'featuredMedia'])
                     ->publiclyVisible()
                     ->latest('published_at')
                     ->paginate(9),
+                'seo' => $this->seo->resolve((object) ['title' => 'Blog', 'meta_description' => $data['settings']['site_tagline'] ?? 'Latest posts and updates.'], $data['settings'], route('frontend.blog'), 'archive', request()->integer('page', 1)),
             ]
         ));
     }
@@ -54,10 +60,12 @@ class FrontendController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        $data = $this->frontendData($theme);
+
         return view('frontend.blog.show', array_merge(
-            $this->frontendData($theme),
+            $data,
             [
-                'post' => $post,
+                'post' => $post, 'seo' => $this->seo->resolve($post, $data['settings'], route('frontend.blog.show', $post->slug), 'post'),
             ]
         ));
     }
@@ -82,12 +90,16 @@ class FrontendController extends Controller
         $posts = $taxonomy->posts()->with(['category', 'tags', 'author', 'featuredMedia'])->publiclyVisible()
             ->orderByDesc('published_at')->orderByDesc('id')->paginate(9);
 
-        return view('frontend.blog.index', $this->frontendData($theme) + [
+        $data = $this->frontendData($theme);
+        $canonical = route('frontend.blog.'.strtolower($type), $taxonomy->slug);
+
+        return view('frontend.blog.index', $data + [
             'posts' => $posts,
             'archiveTitle' => $taxonomy->name,
             'archiveDescription' => $taxonomy instanceof Category ? $taxonomy->description : null,
-            'archiveCanonical' => route('frontend.blog.'.strtolower($type), $taxonomy->slug),
+            'archiveCanonical' => $canonical,
             'archiveType' => $type,
+            'seo' => $this->seo->resolve((object) ['title' => $taxonomy->name.' '.$type, 'meta_description' => $taxonomy instanceof Category ? $taxonomy->description : null], $data['settings'], $canonical, 'archive', request()->integer('page', 1)),
         ]);
     }
 
@@ -102,10 +114,13 @@ class FrontendController extends Controller
 
     public function renderPage(Page $page, ?Theme $theme): View
     {
+        $data = $this->frontendData($theme);
+
         return view('frontend.page', array_merge(
-            $this->frontendData($theme),
+            $data,
             [
                 'page' => $page,
+                'seo' => $this->seo->resolve($page, $data['settings'], $page->is_homepage ? route('frontend.home') : route('frontend.page', $page->slug), $page->is_homepage ? 'site' : 'page'),
             ]
         ));
     }

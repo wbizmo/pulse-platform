@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Seo\UpdateSeoSettings;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SeoSettingsRequest;
+use App\Models\Media;
 use App\Models\Setting;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SeoController extends Controller
@@ -14,33 +16,13 @@ class SeoController extends Controller
     {
         return view('admin.seo.index', [
             'settings' => Setting::pluck('value', 'key'),
+            'mediaItems' => Media::query()->where('type', 'image')->latest()->limit(100)->get(['id', 'name']),
         ]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(SeoSettingsRequest $request, UpdateSeoSettings $update): RedirectResponse
     {
-        $checkboxes = [
-            'seo_sitemap_enabled',
-            'seo_robots_enabled',
-            'seo_canonical_enabled',
-            'seo_noindex_enabled',
-            'seo_schema_enabled',
-            'seo_social_enabled',
-        ];
-
-        foreach ($checkboxes as $checkbox) {
-            Setting::updateOrCreate(
-                ['key' => $checkbox],
-                ['value' => $request->has($checkbox) ? '1' : '0']
-            );
-        }
-
-        foreach ($request->except(array_merge(['_token'], $checkboxes)) as $key => $value) {
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
-        }
+        $update->execute($request->validated(), $request->user());
 
         return back()->with('success', 'SEO settings saved successfully.');
     }
