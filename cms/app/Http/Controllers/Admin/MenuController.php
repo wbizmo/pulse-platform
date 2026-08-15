@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Access\RecordAudit;
+use App\Actions\Content\ReorderMenuItems;
+use App\Actions\Content\SaveMenu;
+use App\Actions\Content\SaveMenuItem;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\MenuItemRequest;
+use App\Http\Requests\Admin\MenuRequest;
+use App\Http\Requests\Admin\ReorderMenuItemsRequest;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use App\Models\Page;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class MenuController extends Controller
 {
     public function index(): View
     {
-        return view('admin.menus.index', [
-            'menus' => Menu::withCount('items')->latest()->get(),
-        ]);
+        return view('admin.menus.index', ['menus' => Menu::withCount('items')->orderBy('name')->orderBy('id')->paginate(15)]);
     }
 
     public function create(): View
@@ -25,87 +31,74 @@ class MenuController extends Controller
         return view('admin.menus.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(MenuRequest $request, SaveMenu $save): RedirectResponse
     {
-        $data = $this->validateMenu($request);
+        $save->execute(new Menu, $request->validated(), $request->user());
 
-        $data['slug'] = Str::slug($data['slug'] ?: $data['name']);
-        $data['is_active'] = $request->has('is_active');
-
-        Menu::create($data);
-
-        return redirect()
-            ->route('admin.menus')
-            ->with('success', 'Menu created successfully.');
+        return redirect()->route('admin.menus')->with('success', 'Menu created successfully.');
     }
 
-    public function edit(Menu $menu): View
+    public function edit(Request $request, Menu $menu): View
     {
-        return view('admin.menus.edit', [
-            'menu' => $menu->load('items.page'),
-            'pages' => Page::orderBy('title')->get(),
-        ]);
+        $pages = Page::query()->when($request->string('page_search')->isNotEmpty(), fn ($q) => $q->where('title', 'like', '%'.addcslashes($request->string('page_search')->toString(), '%_').'%'))->orderBy('title')->limit(50)->get(['id', 'title', 'slug']);
+
+        return view('admin.menus.edit', ['menu' => $menu->load(['items' => fn ($q) => $q->with('page')->orderBy('sort_order')->orderBy('id')]), 'pages' => $pages]);
     }
 
-    public function update(Request $request, Menu $menu): RedirectResponse
+    public function update(MenuRequest $request, Menu $menu, SaveMenu $save): RedirectResponse
     {
-        $data = $this->validateMenu($request, $menu->id);
-
-        $data['slug'] = Str::slug($data['slug'] ?: $data['name']);
-        $data['is_active'] = $request->has('is_active');
-
-        $menu->update($data);
+        $save->execute($menu, $request->validated(), $request->user());
 
         return back()->with('success', 'Menu updated successfully.');
     }
 
-    public function storeItem(Request $request, Menu $menu): RedirectResponse
+    public function storeItem(MenuItemRequest $request, Menu $menu, SaveMenuItem $save): RedirectResponse
     {
-        $data = $request->validate([
-            'label' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:page,custom'],
-            'page_id' => ['nullable', 'exists:pages,id'],
-            'url' => ['nullable', 'string', 'max:255'],
-            'target' => ['required', 'in:_self,_blank'],
-            'sort_order' => ['nullable', 'integer'],
-        ]);
-
-        $data['is_active'] = $request->has('is_active');
-
-        if ($data['type'] === 'page') {
-            $page = Page::find($data['page_id']);
-            $data['url'] = $page ? '/'.$page->slug : null;
-        } else {
-            $data['page_id'] = null;
-        }
-
-        $menu->items()->create($data);
+        $save->execute($menu, new MenuItem, $request->validated(), $request->user());
 
         return back()->with('success', 'Menu item added successfully.');
     }
 
-    public function destroyItem(MenuItem $item): RedirectResponse
+    public function updateItem(MenuItemRequest $request, Menu $menu, MenuItem $item, SaveMenuItem $save): RedirectResponse
     {
-        $item->delete();
+        $this->owned($menu, $item);
+        $save->execute($menu, $item, $request->validated(), $request->user());
+
+        return back()->with('success', 'Menu item updated successfully.');
+    }
+
+    public function reorder(ReorderMenuItemsRequest $request, Menu $menu, ReorderMenuItems $reorder): RedirectResponse
+    {
+        $reorder->execute($menu, $request->validated('items'), $request->user());
+
+        return back()->with('success', 'Menu order updated successfully.');
+    }
+
+    public function destroyItem(Request $request, Menu $menu, MenuItem $item, RecordAudit $audit): RedirectResponse
+    {
+        $this->owned($menu, $item);
+        DB::transaction(function () use ($request, $menu, $item, $audit): void {
+            $audit->execute($request->user(), 'menu.item_deleted', $item, ['menu_id' => $menu->id]);
+            $item->delete();
+        });
 
         return back()->with('success', 'Menu item deleted successfully.');
     }
 
-    public function destroy(Menu $menu): RedirectResponse
+    public function destroy(Request $request, Menu $menu, RecordAudit $audit): RedirectResponse
     {
-        $menu->delete();
+        DB::transaction(function () use ($request, $menu, $audit): void {
+            $audit->execute($request->user(), 'menu.deleted', $menu, ['location' => $menu->location, 'item_count' => $menu->items()->count()]);
+            $menu->delete();
+        });
 
-        return redirect()
-            ->route('admin.menus')
-            ->with('success', 'Menu deleted successfully.');
+        return redirect()->route('admin.menus')->with('success', 'Menu deleted successfully.');
     }
 
-    private function validateMenu(Request $request, ?int $menuId = null): array
+    private function owned(Menu $menu, MenuItem $item): void
     {
-        return $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:menus,slug,'.$menuId],
-            'location' => ['required', 'in:main,footer,legal,sidebar,custom'],
-        ]);
+        if ($item->menu_id !== $menu->id) {
+            throw ValidationException::withMessages(['item' => 'The menu item does not belong to this menu.']);
+        }
     }
 }

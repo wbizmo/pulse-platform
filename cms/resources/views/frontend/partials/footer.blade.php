@@ -10,8 +10,8 @@
 
             <div class="pulse-footer-links">
                 @if ($footerMenu)
-                    @foreach ($footerMenu->items->where('is_active', true) as $item)
-                        <a href="{{ $item->url ?: '#' }}" target="{{ $item->target }}">
+                    @foreach ($footerMenu->items as $item)
+                        <a href="{{ $item->href() }}" target="{{ $item->target }}" @if($item->rel()) rel="{{ $item->rel() }}" @endif>
                             {{ $item->label }}
                         </a>
                     @endforeach

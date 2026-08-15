@@ -34,3 +34,7 @@ Taxonomy creation, update, deletion, and post assignment require `taxonomy.manag
 ## Managed media
 
 Administrative media upload is capability, verified-account, active-account, and privileged-MFA protected. Accepted content is limited to configured-size JPEG, PNG, WebP, and GIF images that pass server-side MIME, dimension, pixel-count, and decode checks. SVG and non-image documents are rejected. Storage names and directories are server-controlled; original names are display metadata only. Restrictive foreign keys and application checks prevent deletion of referenced media.
+
+## Navigation
+
+Menu administration requires `menus.manage` and privileged-session controls. Custom links accept only safe root-relative, HTTP, or HTTPS destinations. Public page links use the shared publication scope and current slug. Restrictive foreign keys prevent orphaned page items, and new-tab links render with `noopener noreferrer`.

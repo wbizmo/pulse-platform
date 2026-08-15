@@ -14,6 +14,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Mockery;
 use Tests\TestCase;
 
 class MediaSecurityTest extends TestCase
@@ -85,6 +86,39 @@ class MediaSecurityTest extends TestCase
         $this->assertDatabaseHas('media', ['id' => $media->id]);
         $this->expectException(QueryException::class);
         DB::table('media')->where('id', $media->id)->delete();
+    }
+
+    public function test_successful_delete_removes_record_and_object_with_truthful_audit(): void
+    {
+        $actor = $this->super();
+        $media = $this->media($actor);
+        $path = $media->path;
+
+        app(DeleteMedia::class)->execute($media, $actor);
+
+        $this->assertDatabaseMissing('media', ['id' => $media->id]);
+        Storage::disk('public')->assertMissing($path);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'media.deleted', 'target_id' => $media->id]);
+    }
+
+    public function test_storage_delete_failure_keeps_record_and_records_failure_not_success(): void
+    {
+        $actor = $this->super();
+        $media = $this->media($actor);
+        $filesystem = Mockery::mock();
+        $filesystem->shouldReceive('get')->once()->with($media->path)->andReturn('image');
+        $filesystem->shouldReceive('delete')->once()->with($media->path)->andReturn(false);
+        Storage::shouldReceive('disk')->with('public')->andReturn($filesystem);
+
+        try {
+            app(DeleteMedia::class)->execute($media, $actor);
+            $this->fail('Storage failure should be surfaced.');
+        } catch (ValidationException) {
+        }
+
+        $this->assertDatabaseHas('media', ['id' => $media->id]);
+        $this->assertDatabaseHas('audit_logs', ['action' => 'media.delete_failed', 'target_id' => $media->id]);
+        $this->assertDatabaseMissing('audit_logs', ['action' => 'media.deleted', 'target_id' => $media->id]);
     }
 
     public function test_content_requests_reject_forged_featured_media_ids(): void

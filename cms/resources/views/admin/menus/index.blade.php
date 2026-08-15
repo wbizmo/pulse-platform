@@ -81,4 +81,5 @@
             </table>
         </div>
     </section>
+    <x-pulse.pagination :paginator="$menus" />
 @endsection

@@ -34,3 +34,7 @@ The initial page/post implementation mixed inline validation and persistence, ac
 ## M3 taxonomy follow-up
 
 The inherited taxonomy controllers performed inline validation and unaudited direct writes, allowed case-equivalent names, relied only on slug uniqueness, loaded all administration rows, silently detached relationships on deletion, and exposed no public archive contract. Post editors could assign taxonomy with only post permission. The hardened slice adds canonical normalization and database constraints, focused requests/actions, explicit assignment authority, bounded identifiers, dependency-blocking transactional deletion, usage counts/pagination, audits, and visibility-scoped public archives. Categories remain flat because no product behavior requires hierarchy.
+
+## M3 menu follow-up
+
+The inherited menu controller validated inline, mutated models directly, loaded every menu and page, copied page slugs into stale URL fields, accepted arbitrary custom URLs and sort values, and exposed unscoped item deletion. Public rendering selected an arbitrary active menu and could link unpublished pages. The hardened flat-menu slice adds focused requests/actions, bounded queries, singleton main/footer activation, safe links, parent-scoped item mutations, atomic reorder, restrictive page references, audits, and centralized publication-aware loading. Hierarchy remains deliberately out of scope because no current product behavior requires it.
