@@ -15,7 +15,13 @@
             <x-pulse.select name="status" label="Status">@foreach (['draft' => 'Draft', 'scheduled' => 'Scheduled', 'published' => 'Published', 'archived' => 'Archived'] as $value => $label)<option value="{{ $value }}" @selected(old('status', $post?->status?->value ?? 'draft') === $value)>{{ $label }}</option>@endforeach</x-pulse.select>
             <x-pulse.field name="published_at" label="Published at" type="datetime-local" :value="$post?->published_at?->format('Y-m-d\TH:i')" />
             <input type="hidden" name="lock_version" value="{{ $post?->lock_version ?? 0 }}">
-            <x-pulse.field name="featured_image" label="Featured image URL" type="url" :value="$post?->featured_image" />
+            @can('media.manage')
+            <x-pulse.select name="featured_media_id" label="Featured image">
+                <option value="">No featured image</option>
+                @foreach ($mediaItems as $media)<option value="{{ $media->id }}" @selected(old('featured_media_id', $post?->featured_media_id) == $media->id)>{{ $media->name }}</option>@endforeach
+            </x-pulse.select>
+            <p class="p-muted">Showing the 100 most recently uploaded managed images.</p>
+            @endcan
             <x-pulse.textarea name="excerpt" label="Excerpt" :value="$post?->excerpt" rows="4" />
             <x-pulse.textarea name="content" label="Content" :value="$post?->content" rows="14" />
         </x-pulse.form-section>

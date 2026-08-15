@@ -22,8 +22,8 @@ class FrontendController extends Controller
             : null;
 
         $page = $homepageId
-            ? Page::publiclyVisible()->find($homepageId)
-            : Page::publiclyVisible()->where('slug', 'home')->first();
+            ? Page::with('featuredMedia')->publiclyVisible()->find($homepageId)
+            : Page::with('featuredMedia')->publiclyVisible()->where('slug', 'home')->first();
 
         abort_if(! $page, 404);
 
@@ -37,7 +37,7 @@ class FrontendController extends Controller
         return view('frontend.blog.index', array_merge(
             $this->frontendData($theme),
             [
-                'posts' => Post::with(['category', 'tags', 'author'])
+                'posts' => Post::with(['category', 'tags', 'author', 'featuredMedia'])
                     ->publiclyVisible()
                     ->latest('published_at')
                     ->paginate(9),
@@ -49,7 +49,7 @@ class FrontendController extends Controller
     {
         $theme = Theme::where('is_active', true)->first();
 
-        $post = Post::with(['category', 'tags', 'author'])
+        $post = Post::with(['category', 'tags', 'author', 'featuredMedia'])
             ->publiclyVisible()
             ->where('slug', $slug)
             ->firstOrFail();
@@ -79,7 +79,7 @@ class FrontendController extends Controller
     private function taxonomyArchive(Category|Tag $taxonomy, string $type): View
     {
         $theme = Theme::where('is_active', true)->first();
-        $posts = $taxonomy->posts()->with(['category', 'tags', 'author'])->publiclyVisible()
+        $posts = $taxonomy->posts()->with(['category', 'tags', 'author', 'featuredMedia'])->publiclyVisible()
             ->orderByDesc('published_at')->orderByDesc('id')->paginate(9);
 
         return view('frontend.blog.index', $this->frontendData($theme) + [
@@ -93,7 +93,7 @@ class FrontendController extends Controller
 
     public function page(string $slug): View
     {
-        $page = Page::publiclyVisible()->where('slug', $slug)->firstOrFail();
+        $page = Page::with('featuredMedia')->publiclyVisible()->where('slug', $slug)->firstOrFail();
 
         $theme = Theme::where('is_active', true)->first();
 

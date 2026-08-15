@@ -14,6 +14,10 @@
 
                 <h1>{{ $page->title }}</h1>
 
+                @if ($page->featuredMedia)
+                    <img src="{{ $page->featuredMedia->public_url }}" alt="{{ $page->featuredMedia->alt_text ?: $page->title }}">
+                @endif
+
                 @if ($page->meta_description)
                     <p>{{ $page->meta_description }}</p>
                 @else

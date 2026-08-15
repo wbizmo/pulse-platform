@@ -84,6 +84,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/media/library', [MediaController::class, 'library'])->middleware('can:'.Permission::ManageMedia->value)->name('media.library');
             Route::get('/media/upload', [MediaController::class, 'upload'])->middleware('can:'.Permission::ManageMedia->value)->name('media.upload');
             Route::post('/media', [MediaController::class, 'store'])->middleware('can:'.Permission::ManageMedia->value)->name('media.store');
+            Route::patch('/media/{media}', [MediaController::class, 'update'])->middleware('can:'.Permission::ManageMedia->value)->name('media.update');
             Route::delete('/media/{media}', [MediaController::class, 'destroy'])->middleware('can:'.Permission::ManageMedia->value)->name('media.destroy');
 
             Route::get('/posts', [PostController::class, 'index'])->middleware('can:'.Permission::ManagePosts->value)->name('posts');

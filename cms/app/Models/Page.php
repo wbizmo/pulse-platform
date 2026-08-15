@@ -11,6 +11,7 @@ class Page extends Model
 {
     protected $fillable = [
         'author_id',
+        'featured_media_id',
         'title',
         'slug',
         'status',
@@ -44,6 +45,11 @@ class Page extends Model
         'published_at' => 'datetime',
         'status' => ContentStatus::class,
     ];
+
+    public function featuredMedia(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'featured_media_id');
+    }
 
     public function author(): BelongsTo
     {

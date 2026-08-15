@@ -2,62 +2,40 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Access\RecordAudit;
+use App\Actions\Media\DeleteMedia;
+use App\Actions\Media\StoreMedia;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreMediaRequest;
+use App\Http\Requests\Admin\UpdateMediaRequest;
 use App\Models\Media;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class MediaController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Media::latest();
-
-        if ($request->filled('search')) {
-            $query->where(function ($mediaQuery) use ($request) {
-                $mediaQuery
-                    ->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('original_name', 'like', '%'.$request->search.'%')
-                    ->orWhere('mime_type', 'like', '%'.$request->search.'%');
-            });
+        $validated = $request->validate(['search' => ['nullable', 'string', 'max:100'], 'type' => ['nullable', 'in:image']]);
+        $query = Media::query()->with('user:id,name')->withCount(['pages', 'posts'])->latest('id');
+        if (! empty($validated['search'])) {
+            $term = addcslashes($validated['search'], '%_\\');
+            $query->where(fn ($q) => $q->where('name', 'like', "%{$term}%")->orWhere('original_name', 'like', "%{$term}%"));
+        }
+        if (! empty($validated['type'])) {
+            $query->where('type', $validated['type']);
         }
 
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-
-        return view('admin.media.index', [
-            'mediaItems' => $query->paginate(18)->withQueryString(),
-            'activeType' => $request->type,
-            'search' => $request->search,
-        ]);
+        return view('admin.media.index', ['mediaItems' => $query->paginate(18)->withQueryString(), 'activeType' => $validated['type'] ?? null, 'search' => $validated['search'] ?? null]);
     }
 
     public function library(Request $request): JsonResponse
     {
-        $mediaItems = Media::query()
-            ->when($request->filled('type'), fn ($query) => $query->where('type', $request->type))
-            ->latest()
-            ->take(60)
-            ->get()
-            ->map(fn ($media) => [
-                'id' => $media->id,
-                'name' => $media->name,
-                'original_name' => $media->original_name,
-                'url' => url($media->url),
-                'type' => $media->type,
-                'mime_type' => $media->mime_type,
-                'size' => $media->readable_size,
-            ]);
+        $items = Media::query()->where('type', 'image')->latest('id')->paginate(30)->through(fn (Media $media) => ['id' => $media->id, 'name' => $media->name, 'url' => $media->public_url, 'mime_type' => $media->mime_type, 'size' => $media->readable_size]);
 
-        return response()->json([
-            'media' => $mediaItems,
-        ]);
+        return response()->json($items);
     }
 
     public function upload(): View
@@ -65,63 +43,27 @@ class MediaController extends Controller
         return view('admin.media.upload');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreMediaRequest $request, StoreMedia $store): RedirectResponse
     {
-        $request->validate([
-            'files' => ['required', 'array'],
-            'files.*' => ['required', 'file', 'max:20480'],
-        ]);
-
         foreach ($request->file('files') as $file) {
-            $originalName = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $mimeType = $file->getMimeType();
-            $fileName = Str::uuid().'.'.$extension;
-            $path = $file->storeAs('media', $fileName, 'public');
-
-            Media::create([
-                'user_id' => Auth::id(),
-                'name' => pathinfo($originalName, PATHINFO_FILENAME),
-                'original_name' => $originalName,
-                'file_name' => $fileName,
-                'mime_type' => $mimeType,
-                'extension' => $extension,
-                'disk' => 'public',
-                'path' => $path,
-                'url' => Storage::url($path),
-                'size' => $file->getSize(),
-                'type' => $this->detectType($mimeType),
-            ]);
+            $store->execute($file, $request->user());
         }
 
-        return redirect()
-            ->route('admin.media')
-            ->with('success', 'Media uploaded successfully.');
+        return redirect()->route('admin.media')->with('success', 'Media uploaded successfully.');
     }
 
-    public function destroy(Media $media): RedirectResponse
+    public function update(UpdateMediaRequest $request, Media $media, RecordAudit $audit): RedirectResponse
     {
-        Storage::disk($media->disk)->delete($media->path);
+        $media->update($request->validated());
+        $audit->execute($request->user(), 'media.updated', $media, ['fields' => array_keys($request->validated())]);
 
-        $media->delete();
+        return back()->with('success', 'Media details updated.');
+    }
+
+    public function destroy(Request $request, Media $media, DeleteMedia $delete): RedirectResponse
+    {
+        $delete->execute($media, $request->user());
 
         return back()->with('success', 'Media deleted successfully.');
-    }
-
-    private function detectType(string $mimeType): string
-    {
-        if (str_starts_with($mimeType, 'image/')) {
-            return 'image';
-        }
-
-        if (str_starts_with($mimeType, 'video/')) {
-            return 'video';
-        }
-
-        if (str_contains($mimeType, 'pdf')) {
-            return 'document';
-        }
-
-        return 'file';
     }
 }

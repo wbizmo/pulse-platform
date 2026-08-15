@@ -28,3 +28,5 @@ M2 completion coverage renders media, menus, themes, plugins, settings, SEO, and
 M3 content lifecycle tests cover draft/scheduled/archived public exclusion, sitemap exclusion, effective publication, idempotent scheduler transitions and audits, optimistic-lock conflicts, and direct preview authentication. Form Request coverage exercises invalid lifecycle/time combinations, reserved and colliding slugs, taxonomy identifiers, and route authorization.
 
 M3 taxonomy coverage exercises normalization and case-equivalent duplicates, application and database uniqueness, invalid/duplicate identifiers, foreign-key integrity, assigned-record deletion denial, audit creation, rendered pagination, and draft/scheduled/archived exclusion from public archives.
+
+M3 media coverage exercises direct authorization, real image metadata derivation, opaque traversal-resistant naming, SVG/executable/malformed rejection, cleanup, pagination and custom-dialog markup, forged featured-media IDs, model relations, and application/database deletion protection. SQLite verifies migrations during the suite; MySQL remains a release-environment gate.

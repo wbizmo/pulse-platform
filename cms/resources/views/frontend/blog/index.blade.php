@@ -30,9 +30,9 @@
             <div class="pulse-blog-grid">
                 @forelse ($posts as $post)
                     <article class="pulse-blog-card">
-                        @if ($post->featured_image)
+                        @if ($post->featuredMedia?->public_url)
                             <a href="{{ route('frontend.blog.show', $post->slug) }}" class="pulse-blog-image">
-                                <img src="{{ $post->featured_image }}" alt="{{ $post->title }}">
+                                <img src="{{ $post->featuredMedia?->public_url }}" alt="{{ $post->title }}">
                             </a>
                         @else
                             <a href="{{ route('frontend.blog.show', $post->slug) }}" class="pulse-blog-image pulse-blog-image-empty">

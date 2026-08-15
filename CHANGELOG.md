@@ -25,6 +25,10 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Required verified email addresses for administrative capabilities, step-up password confirmation for credential and session changes, active-account reset eligibility, session IDOR protection, and audit records for identity security events.
 - Enforced completed MFA at the backend before every privileged capability and expanded adversarial identity coverage across anonymous, disabled, unverified, ordinary, newly privileged, and challenged users.
 
+### M3 media
+- Added a managed raster-image domain with bounded hostile-upload validation, decoded dimensions, opaque filesystem paths, metadata editing, pagination, audits, dependency-protected deletion, and SVG/executable rejection.
+- Replaced page/post featured-image entry with nullable, restrictive media foreign keys, bounded editor choices, managed public rendering, and conservative retention of unconverted legacy post URLs as inactive archival data.
+
 ### M3 content lifecycle
 - Hardened page and post lifecycle states, centralized hostile-input validation and mutation, public visibility scopes, atomic scheduled publication, signed private previews, normalized/reserved slug protection, optimistic locking, bounded taxonomy choices, audit records, publication indexes, and adversarial lifecycle coverage.
 - Hardened the taxonomy domain with Unicode-aware normalized names, separate category/tag slug namespaces, database uniqueness, bounded assignment, independent assignment permission, dependency-safe transactional deletion, audits, paginated usage-aware administration, and public visibility-safe category/tag archives.

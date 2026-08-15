@@ -7,10 +7,10 @@
         'canonical_url' => route('frontend.blog.show', $post->slug),
         'og_title' => $post->meta_title ?: $post->title,
         'og_description' => $post->meta_description ?: $post->excerpt,
-        'og_image' => $post->og_image ?: $post->featured_image,
+        'og_image' => $post->og_image ?: $post->featuredMedia?->public_url,
         'twitter_title' => $post->meta_title ?: $post->title,
         'twitter_description' => $post->meta_description ?: $post->excerpt,
-        'twitter_image' => $post->og_image ?: $post->featured_image,
+        'twitter_image' => $post->og_image ?: $post->featuredMedia?->public_url,
         'show_header' => true,
         'show_footer' => true,
     ]
@@ -34,10 +34,10 @@
             </div>
         </header>
 
-        @if ($post->featured_image)
+        @if ($post->featuredMedia?->public_url)
             <section class="pulse-post-featured">
                 <div class="pulse-site-container">
-                    <img src="{{ $post->featured_image }}" alt="{{ $post->title }}">
+                    <img src="{{ $post->featuredMedia?->public_url }}" alt="{{ $post->title }}">
                 </div>
             </section>
         @endif

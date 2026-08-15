@@ -12,12 +12,12 @@ class Post extends Model
 {
     protected $fillable = [
         'user_id',
+        'featured_media_id',
         'category_id',
         'title',
         'slug',
         'excerpt',
         'content',
-        'featured_image',
         'status',
         'published_at',
         'meta_title',
@@ -30,6 +30,11 @@ class Post extends Model
         'published_at' => 'datetime',
         'status' => ContentStatus::class,
     ];
+
+    public function featuredMedia(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'featured_media_id');
+    }
 
     public function author(): BelongsTo
     {

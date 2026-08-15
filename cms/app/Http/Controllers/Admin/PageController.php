@@ -6,6 +6,7 @@ use App\Actions\Access\RecordAudit;
 use App\Actions\Content\SaveContent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PageRequest;
+use App\Models\Media;
 use App\Models\Page;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,7 @@ class PageController extends Controller
 
     public function create(): View
     {
-        return view('admin.pages.create');
+        return view('admin.pages.create', ['mediaItems' => $this->mediaChoices()]);
     }
 
     public function store(PageRequest $request, SaveContent $save): RedirectResponse
@@ -37,7 +38,7 @@ class PageController extends Controller
 
     public function edit(Page $page): View
     {
-        return view('admin.pages.edit', ['page' => $page]);
+        return view('admin.pages.edit', ['page' => $page, 'mediaItems' => $this->mediaChoices()]);
     }
 
     public function update(PageRequest $request, Page $page, SaveContent $save): RedirectResponse
@@ -60,6 +61,11 @@ class PageController extends Controller
         });
 
         return redirect()->route('admin.pages')->with('success', 'Page deleted successfully.');
+    }
+
+    private function mediaChoices()
+    {
+        return Media::query()->where('type', 'image')->latest()->limit(100)->get(['id', 'name', 'path', 'disk']);
     }
 
     private function normalizeCheckboxes(array &$data, PageRequest $request): void
