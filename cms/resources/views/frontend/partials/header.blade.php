@@ -17,8 +17,8 @@
 
         <nav class="pulse-site-nav">
             @if ($mainMenu)
-                @foreach ($mainMenu->items->where('is_active', true) as $item)
-                    <a href="{{ $item->url ?: '#' }}" target="{{ $item->target }}">
+                @foreach ($mainMenu->items as $item)
+                    <a href="{{ $item->href() }}" target="{{ $item->target }}" @if($item->rel()) rel="{{ $item->rel() }}" @endif>
                         {{ $item->label }}
                     </a>
                 @endforeach

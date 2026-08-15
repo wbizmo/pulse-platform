@@ -108,7 +108,7 @@
 
                         <label>
                             <span>Sort order</span>
-                            <input type="number" name="sort_order" value="0">
+                            <span>New items are appended. Use the accessible order controls below.</span>
                         </label>
 
                         <label class="p-module-toggle-row">
@@ -135,15 +135,20 @@
     <section class="p-card p-module-menu-items-panel">
         <div class="p-card-head">
             <h3>Menu Items</h3>
-            <p>Items appear according to their sort order. Drag-and-drop ordering comes later.</p>
+            <p>Items appear in this order. Use Move up and Move down, then save order.</p>
         </div>
 
-        <div class="p-module-menu-items">
+        <form id="menu-order-form" method="POST" action="{{ route('admin.menus.items.reorder', $menu) }}">
+            @csrf
+            @method('PUT')
+        </form>
+        <div class="p-module-menu-items" data-menu-order>
             @forelse ($menu->items as $item)
                 <div class="p-module-menu-item">
+                    <input type="hidden" form="menu-order-form" name="items[]" value="{{ $item->id }}">
                     <div>
                         <strong>{{ $item->label }}</strong>
-                        <span>{{ $item->type }} · {{ $item->url }}</span>
+                        <span>{{ $item->type }} · {{ $item->type === 'page' ? '/'.($item->page?->slug ?? '') : $item->url }}</span>
                     </div>
 
                     <div class="p-module-menu-item-actions">
@@ -151,7 +156,25 @@
                             {{ $item->is_active ? 'Active' : 'Inactive' }}
                         </span>
 
-                        <form method="POST" action="{{ route('admin.menus.items.destroy', $item) }}">
+                        <button type="button" data-move="up" aria-label="Move {{ $item->label }} up">Move up</button>
+                        <button type="button" data-move="down" aria-label="Move {{ $item->label }} down">Move down</button>
+
+                        <details>
+                            <summary>Edit</summary>
+                            <form method="POST" action="{{ route('admin.menus.items.update', [$menu, $item]) }}" class="p-module-settings-form">
+                                @csrf
+                                @method('PUT')
+                                <label><span>Label</span><input name="label" value="{{ $item->label }}" required></label>
+                                <label><span>Type</span><select name="type"><option value="page" @selected($item->type === 'page')>Page</option><option value="custom" @selected($item->type === 'custom')>Custom URL</option></select></label>
+                                <label><span>Page</span><select name="page_id"><option value="">Choose page</option>@foreach($pages as $page)<option value="{{ $page->id }}" @selected($item->page_id === $page->id)>{{ $page->title }}</option>@endforeach</select></label>
+                                <label><span>Custom URL</span><input name="url" value="{{ $item->url }}"></label>
+                                <label><span>Target</span><select name="target"><option value="_self" @selected($item->target === '_self')>Same tab</option><option value="_blank" @selected($item->target === '_blank')>New tab</option></select></label>
+                                <label><input type="checkbox" name="is_active" value="1" @checked($item->is_active)> Active</label>
+                                <button class="p-button" type="submit">Save item</button>
+                            </form>
+                        </details>
+
+                        <form method="POST" action="{{ route('admin.menus.items.destroy', [$menu, $item]) }}">
                             @csrf
                             @method('DELETE')
 
@@ -169,5 +192,15 @@
                 </div>
             @endforelse
         </div>
+        <button class="p-button" form="menu-order-form" type="submit">Save order</button>
     </section>
+    <script>
+        document.querySelectorAll('[data-move]').forEach((button) => button.addEventListener('click', () => {
+            const item = button.closest('.p-module-menu-item');
+            const sibling = button.dataset.move === 'up' ? item.previousElementSibling : item.nextElementSibling;
+            if (!sibling) return;
+            button.dataset.move === 'up' ? item.parentNode.insertBefore(item, sibling) : item.parentNode.insertBefore(sibling, item);
+            button.focus();
+        }));
+    </script>
 @endsection

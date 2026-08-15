@@ -19,3 +19,5 @@ Taxonomy now uses separate category and tag URL namespaces. Names are trimmed, w
 ## M3 media follow-up
 
 Media administration now accepts only bounded, successfully decoded JPEG, PNG, WebP, and GIF images; uses opaque public-disk paths; derives MIME and dimensions; paginates records; supports audited metadata changes; and blocks deletion while pages or posts reference an asset. Pages and posts use nullable restrictive media foreign keys and bounded editor choices. The former post URL column is retained as inactive `legacy_featured_image` data so deployment-specific URLs are not silently discarded or fabricated into managed records.
+
+Menu mutations now use focused requests and transactional actions. Main and footer activation is unambiguous, item operations are parent scoped, flat ordering is normalized atomically, page links derive from current slugs, and public navigation excludes page content outside the shared publication scope. Page deletion is restricted while navigation references exist.

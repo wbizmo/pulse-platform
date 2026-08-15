@@ -10,6 +10,7 @@ use App\Models\Media;
 use App\Models\Page;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -55,6 +56,9 @@ class PageController extends Controller
 
     public function destroy(Page $page, RecordAudit $audit): RedirectResponse
     {
+        if ($page->menuItems()->exists()) {
+            throw ValidationException::withMessages(['page' => 'This page is used by a navigation menu and cannot be deleted.']);
+        }
         DB::transaction(function () use ($page, $audit): void {
             $audit->execute(request()->user(), 'content.deleted', $page, ['status' => $page->status->value]);
             $page->delete();

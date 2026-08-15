@@ -12,6 +12,7 @@ class Menu extends Model
         'slug',
         'location',
         'is_active',
+        'active_singleton_location',
     ];
 
     protected $casts = [
@@ -20,6 +21,14 @@ class Menu extends Model
 
     public function items(): HasMany
     {
-        return $this->hasMany(MenuItem::class)->orderBy('sort_order');
+        return $this->hasMany(MenuItem::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    public static function publicAt(string $location): ?self
+    {
+        return static::query()->where('location', $location)->where('is_active', true)->orderBy('id')
+            ->with(['items' => fn ($query) => $query->where('is_active', true)->where(function ($items): void {
+                $items->where('type', 'custom')->orWhereHas('page', fn ($pages) => $pages->publiclyVisible());
+            })->with('page')])->first();
     }
 }

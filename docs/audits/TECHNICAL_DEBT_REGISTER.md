@@ -18,3 +18,5 @@ M1 privileged MFA introduced no newly accepted debt. QR rendering is intentional
 Taxonomy hardening introduced no accepted taxonomy debt. Browser interaction remains tracked by TD-005; MySQL collation and migration behavior still require release-environment integration verification.
 
 Media hardening introduced no newly accepted debt. Malware scanning is not claimed for the deliberately narrow, locally decoded raster-image allow-list; release storage configuration and MySQL behavior still require environment verification.
+
+Menu hardening introduced no newly accepted debt. Navigation is deliberately flat because the current contract requires no hierarchy. Browser interaction remains tracked by TD-005, and real-MySQL migration behavior remains a release-environment gate.

@@ -118,15 +118,8 @@ class FrontendController extends Controller
             ? $theme->settings()->pluck('value', 'key')
             : collect();
 
-        $mainMenu = Menu::with('items')
-            ->where('location', 'main')
-            ->where('is_active', true)
-            ->first();
-
-        $footerMenu = Menu::with('items')
-            ->where('location', 'footer')
-            ->where('is_active', true)
-            ->first();
+        $mainMenu = Menu::publicAt('main');
+        $footerMenu = Menu::publicAt('footer');
 
         return [
             'theme' => $theme,

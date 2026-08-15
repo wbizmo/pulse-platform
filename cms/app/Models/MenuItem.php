@@ -31,4 +31,14 @@ class MenuItem extends Model
     {
         return $this->belongsTo(Page::class);
     }
+
+    public function href(): string
+    {
+        return $this->type === 'page' ? '/'.$this->page->slug : (string) $this->url;
+    }
+
+    public function rel(): ?string
+    {
+        return $this->target === '_blank' ? 'noopener noreferrer' : null;
+    }
 }

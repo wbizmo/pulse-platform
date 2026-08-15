@@ -32,3 +32,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M3 content lifecycle
 - Hardened page and post lifecycle states, centralized hostile-input validation and mutation, public visibility scopes, atomic scheduled publication, signed private previews, normalized/reserved slug protection, optimistic locking, bounded taxonomy choices, audit records, publication indexes, and adversarial lifecycle coverage.
 - Hardened the taxonomy domain with Unicode-aware normalized names, separate category/tag slug namespaces, database uniqueness, bounded assignment, independent assignment permission, dependency-safe transactional deletion, audits, paginated usage-aware administration, and public visibility-safe category/tag archives.
+
+### M3 menu and media follow-up
+- Made media deletion final-state audits truthful: storage failures retain the record and append a failure event, while completed events follow object removal and transactional row deletion.
+- Hardened flat navigation with singleton main/footer activation, bounded queries, focused requests/actions, parent-scoped item CRUD, atomic reorder, safe custom links, page-derived URLs, restrictive page references, publication-aware rendering, audits, and protected new-tab links.

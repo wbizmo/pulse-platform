@@ -122,7 +122,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/menus/{menu}', [MenuController::class, 'update'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.update');
             Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.destroy');
             Route::post('/menus/{menu}/items', [MenuController::class, 'storeItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.store');
-            Route::delete('/menu-items/{item}', [MenuController::class, 'destroyItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.destroy');
+            Route::put('/menus/{menu}/items/{item}', [MenuController::class, 'updateItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.update');
+            Route::put('/menus/{menu}/items', [MenuController::class, 'reorder'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.reorder');
+            Route::delete('/menus/{menu}/items/{item}', [MenuController::class, 'destroyItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.destroy');
 
             Route::get('/plugins', [PluginController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins');
             Route::post('/plugins/{plugin}/toggle', [PluginController::class, 'toggle'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.toggle');
