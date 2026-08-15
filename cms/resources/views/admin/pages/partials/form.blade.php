@@ -33,6 +33,7 @@
                 @endforeach
             </x-pulse.form-section>
         </x-pulse.card>
+        @can('seo.manage')
         <x-pulse.card>
             <x-pulse.form-section title="SEO" description="Search engine and social sharing metadata.">
                 <x-pulse.field name="meta_title" label="Meta title" :value="$page?->meta_title" />
@@ -47,6 +48,7 @@
                 <x-pulse.field name="twitter_image" label="Twitter image URL" type="url" :value="$page?->twitter_image" />
             </x-pulse.form-section>
         </x-pulse.card>
+        @endcan
     </aside>
 </div>
 <x-pulse.action-bar><x-pulse.button type="submit">{{ $buttonText }}</x-pulse.button></x-pulse.action-bar>

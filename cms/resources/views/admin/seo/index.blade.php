@@ -8,6 +8,7 @@
 
     <form method="POST" action="{{ route('admin.seo.update') }}" class="p-module-settings-form">
         @csrf
+        <x-pulse.errors />
 
         <div class="p-module-settings-grid">
             <section class="p-card">
@@ -19,23 +20,20 @@
                 <div class="p-module-form-grid p-module-form-grid-single">
                     <label>
                         <span>Default meta title</span>
-                        <input type="text" name="seo_default_title" value="{{ $settings['seo_default_title'] ?? '' }}">
+                        <input type="text" name="seo_default_title" maxlength="70" value="{{ $settings['seo_default_title'] ?? '' }}">
                     </label>
 
                     <label>
                         <span>Default meta description</span>
-                        <textarea name="seo_default_description" rows="4">{{ $settings['seo_default_description'] ?? '' }}</textarea>
+                        <textarea name="seo_default_description" maxlength="320" rows="4">{{ $settings['seo_default_description'] ?? '' }}</textarea>
                     </label>
 
                     <label>
                         <span>Default keywords</span>
-                        <input type="text" name="seo_default_keywords" value="{{ $settings['seo_default_keywords'] ?? '' }}">
+                        <input type="text" name="seo_default_keywords" maxlength="255" value="{{ $settings['seo_default_keywords'] ?? '' }}">
                     </label>
 
-                    <label>
-                        <span>Default Open Graph image URL</span>
-                        <input type="text" name="seo_default_og_image" value="{{ $settings['seo_default_og_image'] ?? '' }}">
-                    </label>
+                    <label><span>Default social image</span><select name="seo_default_media_id"><option value="">No default image</option>@foreach ($mediaItems as $media)<option value="{{ $media->id }}" @selected(($settings['seo_default_media_id'] ?? '') == $media->id)>{{ $media->name }}</option>@endforeach</select></label>
                 </div>
             </section>
 
@@ -71,7 +69,7 @@
                     </label>
 
                     <label class="p-module-toggle-row">
-                        <span>Noindex entire site</span>
+                        <span>Noindex entire site (high risk; pages remain crawlable so crawlers can see this directive)</span>
                         <span class="p-module-switch">
                             <input type="checkbox" name="seo_noindex_enabled" value="1" @checked(($settings['seo_noindex_enabled'] ?? '0') == '1')>
                             <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
@@ -105,7 +103,7 @@
                 <div class="p-module-form-grid p-module-form-grid-single">
                     <label>
                         <span>Robots content</span>
-                        <textarea name="seo_robots_content" rows="10">{{ $settings['seo_robots_content'] ?? "User-agent: *\nAllow: /\n\nSitemap: /sitemap.xml" }}</textarea>
+                        <textarea name="seo_robots_content" maxlength="10000" rows="10">{{ $settings['seo_robots_content'] ?? "User-agent: *\nAllow: /\n\nSitemap: /sitemap.xml" }}</textarea>
                     </label>
                 </div>
             </section>
@@ -130,13 +128,10 @@
 
                     <label>
                         <span>Organization name</span>
-                        <input type="text" name="seo_organization_name" value="{{ $settings['seo_organization_name'] ?? ($settings['site_name'] ?? '') }}">
+                        <input type="text" name="seo_organization_name" maxlength="255" value="{{ $settings['seo_organization_name'] ?? ($settings['site_name'] ?? '') }}">
                     </label>
 
-                    <label>
-                        <span>Organization logo URL</span>
-                        <input type="text" name="seo_organization_logo" value="{{ $settings['seo_organization_logo'] ?? '' }}">
-                    </label>
+                    <label><span>Organization logo</span><select name="seo_organization_media_id"><option value="">No organization logo</option>@foreach ($mediaItems as $media)<option value="{{ $media->id }}" @selected(($settings['seo_organization_media_id'] ?? '') == $media->id)>{{ $media->name }}</option>@endforeach</select></label>
                 </div>
             </section>
         </div>

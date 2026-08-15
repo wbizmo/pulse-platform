@@ -38,3 +38,8 @@ Administrative media upload is capability, verified-account, active-account, and
 ## Navigation
 
 Menu administration requires `menus.manage` and privileged-session controls. Custom links accept only safe root-relative, HTTP, or HTTPS destinations. Public page links use the shared publication scope and current slug. Restrictive foreign keys prevent orphaned page items, and new-tab links render with `noopener noreferrer`.
+
+
+## Search metadata
+
+Global and per-content SEO mutation requires `seo.manage`; ordinary content editors cannot submit SEO fields and updates preserve stored metadata. Canonical overrides are restricted to absolute HTTP/HTTPS URLs on the configured public origin. Robots content is bounded, line-ending normalized, and rejects NUL and dangerous controls. Metadata is HTML escaped and structured data uses defensive JSON encoding.

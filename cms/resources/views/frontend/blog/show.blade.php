@@ -1,20 +1,4 @@
-@extends('frontend.layout', [
-    'page' => (object) [
-        'title' => $post->title,
-        'meta_title' => $post->meta_title ?: $post->title,
-        'meta_description' => $post->meta_description ?: $post->excerpt,
-        'meta_keywords' => '',
-        'canonical_url' => route('frontend.blog.show', $post->slug),
-        'og_title' => $post->meta_title ?: $post->title,
-        'og_description' => $post->meta_description ?: $post->excerpt,
-        'og_image' => $post->og_image ?: $post->featuredMedia?->public_url,
-        'twitter_title' => $post->meta_title ?: $post->title,
-        'twitter_description' => $post->meta_description ?: $post->excerpt,
-        'twitter_image' => $post->og_image ?: $post->featuredMedia?->public_url,
-        'show_header' => true,
-        'show_footer' => true,
-    ]
-])
+@extends('frontend.layout')
 
 @section('content')
     <article class="pulse-post">

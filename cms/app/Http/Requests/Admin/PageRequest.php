@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\SafePublicUrl;
+
 class PageRequest extends ContentRequest
 {
     public function authorize(): bool
@@ -11,17 +13,20 @@ class PageRequest extends ContentRequest
 
     public function rules(): array
     {
+        $seo = $this->user()?->can('seo.manage') ?? false;
+        $seoRule = $seo ? 'nullable' : 'prohibited';
+
         return $this->lifecycleRules() + [
             'template' => ['required', 'string', 'in:default,landing,full-width,blog,shop,school,portfolio'],
             'content' => ['nullable', 'string'],
             'featured_media_id' => [$this->user()?->can('media.manage') ? 'nullable' : 'prohibited', 'integer', 'exists:media,id'],
             'is_homepage' => ['nullable', 'boolean'], 'is_blog_page' => ['nullable', 'boolean'],
             'show_header' => ['nullable', 'boolean'], 'show_footer' => ['nullable', 'boolean'],
-            'meta_title' => ['nullable', 'string', 'max:255'], 'meta_description' => ['nullable', 'string', 'max:1000'],
-            'meta_keywords' => ['nullable', 'string', 'max:255'], 'canonical_url' => ['nullable', 'url', 'max:2048'],
-            'og_title' => ['nullable', 'string', 'max:255'], 'og_description' => ['nullable', 'string', 'max:1000'],
-            'og_image' => ['nullable', 'url', 'max:2048'], 'twitter_title' => ['nullable', 'string', 'max:255'],
-            'twitter_description' => ['nullable', 'string', 'max:1000'], 'twitter_image' => ['nullable', 'url', 'max:2048'],
+            'meta_title' => [$seoRule, 'string', 'max:70'], 'meta_description' => [$seoRule, 'string', 'max:320'],
+            'meta_keywords' => [$seoRule, 'string', 'max:255'], 'canonical_url' => [$seoRule, new SafePublicUrl, 'max:255'],
+            'og_title' => [$seoRule, 'string', 'max:70'], 'og_description' => [$seoRule, 'string', 'max:320'],
+            'og_image' => [$seoRule, new SafePublicUrl, 'max:255'], 'twitter_title' => [$seoRule, 'string', 'max:70'],
+            'twitter_description' => [$seoRule, 'string', 'max:320'], 'twitter_image' => [$seoRule, new SafePublicUrl, 'max:255'],
         ];
     }
 

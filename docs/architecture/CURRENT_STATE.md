@@ -21,3 +21,8 @@ Taxonomy now uses separate category and tag URL namespaces. Names are trimmed, w
 Media administration now accepts only bounded, successfully decoded JPEG, PNG, WebP, and GIF images; uses opaque public-disk paths; derives MIME and dimensions; paginates records; supports audited metadata changes; and blocks deletion while pages or posts reference an asset. Pages and posts use nullable restrictive media foreign keys and bounded editor choices. The former post URL column is retained as inactive `legacy_featured_image` data so deployment-specific URLs are not silently discarded or fabricated into managed records.
 
 Menu mutations now use focused requests and transactional actions. Main and footer activation is unambiguous, item operations are parent scoped, flat ordering is normalized atomically, page links derive from current slugs, and public navigation excludes page content outside the shared publication scope. Page deletion is restricted while navigation references exist.
+
+
+## M3 SEO
+
+SEO settings now use an explicit request and transactional action rather than arbitrary setting-key persistence. `seo.manage` independently protects global and per-content metadata. Public rendering receives a resolved SEO document with same-origin canonical overrides, context-aware Open Graph/Twitter and safely encoded WebSite/WebPage/BlogPosting data. Global social images are managed-media references protected from deletion. Robots output is normalized and sitemap output is cached with explicit content/taxonomy/SEO invalidation, lazy bounded queries, 50,000-URL enforcement, real modification timestamps, homepage deduplication, and public category/tag archives.

@@ -20,3 +20,6 @@ Taxonomy hardening introduced no accepted taxonomy debt. Browser interaction rem
 Media hardening introduced no newly accepted debt. Malware scanning is not claimed for the deliberately narrow, locally decoded raster-image allow-list; release storage configuration and MySQL behavior still require environment verification.
 
 Menu hardening introduced no newly accepted debt. Navigation is deliberately flat because the current contract requires no hierarchy. Browser interaction remains tracked by TD-005, and real-MySQL migration behavior remains a release-environment gate.
+
+
+SEO hardening introduced no accepted application debt. Legacy page/post social-image URL columns remain supported only as same-origin, validated compatibility fields; managed featured images and managed global defaults are the preferred path. Browser interaction remains TD-005 and real-MySQL migration verification remains a release-environment gate.

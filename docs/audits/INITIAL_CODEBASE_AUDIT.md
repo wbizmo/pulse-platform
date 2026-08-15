@@ -38,3 +38,8 @@ The inherited taxonomy controllers performed inline validation and unaudited dir
 ## M3 menu follow-up
 
 The inherited menu controller validated inline, mutated models directly, loaded every menu and page, copied page slugs into stale URL fields, accepted arbitrary custom URLs and sort values, and exposed unscoped item deletion. Public rendering selected an arbitrary active menu and could link unpublished pages. The hardened flat-menu slice adds focused requests/actions, bounded queries, singleton main/footer activation, safe links, parent-scoped item mutations, atomic reorder, restrictive page references, audits, and centralized publication-aware loading. Hierarchy remains deliberately out of scope because no current product behavior requires it.
+
+
+## M3 SEO follow-up
+
+The inherited endpoint persisted arbitrary request keys, mixed workflow into controllers, accepted broad URL input, calculated metadata in Blade, emitted generic schema, corrupted absolute robots Sitemap lines, and loaded unbounded sitemap collections with invented timestamps. The hardened slice adds explicit requests/actions and authority, safe canonical policy, managed global images, resolved context metadata, deterministic robots output, and cached lazy/bounded sitemap generation with public archives and truthful dates.
