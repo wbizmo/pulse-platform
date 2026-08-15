@@ -77,7 +77,7 @@ class SeoHardeningTest extends TestCase
         Post::create(['user_id' => $u->id, 'title' => '<script>alert(1)</script>', 'slug' => 'safe', 'excerpt' => 'Description', 'status' => 'published', 'published_at' => now()]);
         $this->get('/blog/safe')->assertOk()->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false)->assertDontSee('<title><script>', false)->assertSee('content="article"', false)->assertSee('BlogPosting', false);
         $this->get('/blog?page=2')->assertOk()->assertSee(route('frontend.blog').'?page=2', false);
-        Setting::setValue('seo_noindex_enabled','1');
-        $this->get('/')->assertSee('content="noindex,follow"',false);
+        Setting::setValue('seo_noindex_enabled', '1');
+        $this->get('/')->assertSee('content="noindex,follow"', false);
     }
 }

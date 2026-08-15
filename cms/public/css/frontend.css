@@ -708,3 +708,7 @@ body{
         height:44px;
     }
 }
+/* M5 first-party theme presentation tokens. */
+.pulse-theme-studio{--theme-surface:#fff7ed;background:linear-gradient(135deg,#fff7ed,#f5f3ff);font-family:Georgia,serif}.pulse-theme-studio .pulse-site-header{border-bottom:4px solid var(--site-secondary)}
+.pulse-theme-corporate{--theme-surface:#f8fafc;background:#f8fafc;font-family:Arial,sans-serif}.pulse-theme-corporate .pulse-site-header{background:var(--site-primary);color:#fff}.pulse-theme-corporate h1,.pulse-theme-corporate h2{letter-spacing:-.025em}
+.pulse-theme-commerce{--theme-surface:#fff;background:linear-gradient(#fff,#fff7ed);font-family:system-ui,sans-serif}.pulse-theme-commerce .pulse-site-header{border-top:6px solid var(--site-secondary)}.pulse-theme-commerce .pulse-eyebrow{text-transform:uppercase;letter-spacing:.14em}

@@ -24,7 +24,6 @@ use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\ThemeCustomizerController;
-use App\Http\Controllers\Admin\ThemeSettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PublicFormController;
@@ -142,8 +141,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             Route::get('/themes', [ThemeController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes');
             Route::post('/themes/{theme}/activate', [ThemeController::class, 'activate'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.activate');
-            Route::get('/themes/{theme}/settings', [ThemeSettingsController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings');
-            Route::post('/themes/{theme}/settings', [ThemeSettingsController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.settings.update');
+            Route::post('/themes/history/{activation}/rollback', [ThemeController::class, 'rollback'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.rollback');
+            Route::get('/themes/{theme}/preview/{page}', [ThemeController::class, 'preview'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.preview');
             Route::get('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'index'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer');
             Route::post('/themes/{theme}/customizer', [ThemeCustomizerController::class, 'update'])->middleware('can:'.Permission::ManageThemes->value)->name('themes.customizer.update');
 

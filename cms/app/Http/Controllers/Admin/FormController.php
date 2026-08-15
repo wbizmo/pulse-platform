@@ -94,7 +94,7 @@ class FormController extends Controller
         return back()->with('success', 'Fields reordered.');
     }
 
-    private function owned(Form $form,FormField $field): void
+    private function owned(Form $form, FormField $field): void
     {
         if ($field->form_id !== $form->id) {
             throw ValidationException::withMessages(['field' => 'The field does not belong to this form.']);

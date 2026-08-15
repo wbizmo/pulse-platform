@@ -51,3 +51,6 @@ No first-party forms persistence or authorization vertical existed. M3 adds norm
 ## M4 Builder follow-up
 
 The inherited Builder accepted arbitrary JSON through a generic request, treated browser JavaScript as the schema source, rendered stored HTML/iframe content raw, used arbitrary image URLs, lacked stable IDs/nesting limits/concurrency, and kept templates only in JavaScript. Builder V4 replaces that path with a focused request/action, closed server registry and bounded schema-v1 decoder, UUID tree identity, managed media, safe links/video, Page-version compare-and-swap, persisted snapshot templates, metadata audits, shared validated rendering, and version-aware local draft recovery. Legacy arrays remain unchanged and recoverable but fail closed rather than execute.
+
+## M5 Theme follow-up
+The inherited surface trusted editable metadata, arbitrary strings/URLs/CSS, broad activation and scattered queries. M5 replaces executable identity with three code manifests, typed media-backed settings, centralized fail-safe resolution, atomic activation and snapshot rollback. Legacy seeds remain inert and retired.

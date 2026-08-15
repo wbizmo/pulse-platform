@@ -51,3 +51,6 @@ Public forms accept only persisted field keys and compile validation exclusively
 ## Builder security
 
 Builder documents accept only schema version 1 and the server registry's exact node, property, responsive-setting and nesting shapes. UUID identity is unique across the bounded forest (100 nodes, depth 4, 24 children); request JSON is limited to 128 KiB and collection/string limits are block-specific. Links use the shared safe public-link policy, video is restricted to HTTPS YouTube/Vimeo destinations, and images reference existing managed raster media. Raw HTML, iframe markup, executable embeds, arbitrary CSS/classes and unknown blocks are not supported. Invalid or legacy documents fail closed at public and private-preview rendering without being mutated. Every save carries Page `lock_version`, updates atomically, and records only schema/count/version audit metadata.
+
+## Theme platform
+Theme identity/view selection comes only from the first-party registry. Hostile persisted settings pass a closed schema; arbitrary CSS, URL schemes, fonts, classes, objects and unknown keys are prohibited. Branding uses protected managed media. Activation/rollback require the full theme administration boundary, locking, atomic singleton state and bounded auditing. Preview is nonpersistent, private/no-store and noindex.
