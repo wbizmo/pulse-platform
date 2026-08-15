@@ -16,3 +16,5 @@ The presentation boundary uses Pulse design tokens and small Blade components. A
 Content lifecycle mutations use typed states, Form Requests, transactional actions, conditional scheduled transitions, signed previews, centralized public scopes, and optimistic versions. Scheduler workers remain bounded and idempotent.
 
 Taxonomy mutations use normalized domain values, database uniqueness, explicit assignment authority, transactional audit/cache effects, and dependency-aware deletion. Public archives consume the same content visibility scope as primary routes.
+
+The completed M3 Forms boundary establishes the target pattern for schema-driven public input: closed declarative configuration, server-compiled validation, immutable historical snapshots, conservative retention, metadata-only auditing, and independently authorized personal-data access.

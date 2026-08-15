@@ -43,3 +43,7 @@ The inherited menu controller validated inline, mutated models directly, loaded 
 ## M3 SEO follow-up
 
 The inherited endpoint persisted arbitrary request keys, mixed workflow into controllers, accepted broad URL input, calculated metadata in Blade, emitted generic schema, corrupted absolute robots Sitemap lines, and loaded unbounded sitemap collections with invented timestamps. The hardened slice adds explicit requests/actions and authority, safe canonical policy, managed global images, resolved context metadata, deterministic robots output, and cached lazy/bounded sitemap generation with public archives and truthful dates.
+
+## M3 Forms follow-up
+
+No first-party forms persistence or authorization vertical existed. M3 adds normalized forms, bounded closed-schema fields, immutable durable submissions, strict public validation and abuse controls, conservative retention, paginated administration, metadata-only audits, and independent MFA-protected Forms authority. Export and notifications were deliberately deferred because current product scope does not require either for this initial vertical.

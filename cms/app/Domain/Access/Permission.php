@@ -10,6 +10,7 @@ enum Permission: string
     case ManageTaxonomy = 'taxonomy.manage';
     case ManageMedia = 'media.manage';
     case ManageMenus = 'menus.manage';
+    case ManageForms = 'forms.manage';
     case ManagePlugins = 'plugins.manage';
     case ManageThemes = 'themes.manage';
     case ManageSeo = 'seo.manage';
@@ -27,6 +28,7 @@ enum Permission: string
             self::ManageTaxonomy => 'Manage categories and tags',
             self::ManageMedia => 'Manage media',
             self::ManageMenus => 'Manage menus',
+            self::ManageForms => 'Manage forms and submissions',
             self::ManagePlugins => 'Manage plugins',
             self::ManageThemes => 'Manage themes',
             self::ManageSeo => 'Manage SEO',

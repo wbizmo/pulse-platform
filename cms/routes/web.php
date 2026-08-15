@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContentPreviewController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FormController;
+use App\Http\Controllers\Admin\FormSubmissionController;
 use App\Http\Controllers\Admin\IdentityController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
@@ -24,6 +26,7 @@ use App\Http\Controllers\Admin\ThemeCustomizerController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PublicFormController;
 use App\Http\Controllers\SeoPublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +34,9 @@ Route::get('/sitemap.xml', [SeoPublicController::class, 'sitemap'])->name('seo.s
 Route::get('/robots.txt', [SeoPublicController::class, 'robots'])->name('seo.robots');
 
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
+
+Route::get('/forms/{form:slug}', [PublicFormController::class, 'show'])->name('forms.show');
+Route::post('/forms/{form:slug}', [PublicFormController::class, 'store'])->middleware('throttle:10,1')->name('forms.store');
 
 Route::get('/blog', [FrontendController::class, 'blog'])->name('frontend.blog');
 Route::get('/blog/category/{slug}', [FrontendController::class, 'category'])->name('frontend.blog.category');
@@ -140,6 +146,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
             Route::get('/seo', [SeoController::class, 'index'])->middleware('can:'.Permission::ManageSeo->value)->name('seo');
             Route::post('/seo', [SeoController::class, 'update'])->middleware('can:'.Permission::ManageSeo->value)->name('seo.update');
+
+            Route::get('/forms', [FormController::class, 'index'])->middleware('can:'.Permission::ManageForms->value)->name('forms');
+            Route::get('/forms/create', [FormController::class, 'create'])->middleware('can:'.Permission::ManageForms->value)->name('forms.create');
+            Route::post('/forms', [FormController::class, 'store'])->middleware('can:'.Permission::ManageForms->value)->name('forms.store');
+            Route::get('/forms/{form}/edit', [FormController::class, 'edit'])->middleware('can:'.Permission::ManageForms->value)->name('forms.edit');
+            Route::put('/forms/{form}', [FormController::class, 'update'])->middleware('can:'.Permission::ManageForms->value)->name('forms.update');
+            Route::delete('/forms/{form}', [FormController::class, 'destroy'])->middleware('can:'.Permission::ManageForms->value)->name('forms.destroy');
+            Route::post('/forms/{form}/fields', [FormController::class, 'storeField'])->middleware('can:'.Permission::ManageForms->value)->name('forms.fields.store');
+            Route::put('/forms/{form}/fields/{field}', [FormController::class, 'updateField'])->middleware('can:'.Permission::ManageForms->value)->name('forms.fields.update');
+            Route::delete('/forms/{form}/fields/{field}', [FormController::class, 'destroyField'])->middleware('can:'.Permission::ManageForms->value)->name('forms.fields.destroy');
+            Route::put('/forms/{form}/fields', [FormController::class, 'reorder'])->middleware('can:'.Permission::ManageForms->value)->name('forms.fields.reorder');
+            Route::get('/forms/{form}/submissions', [FormSubmissionController::class, 'index'])->middleware('can:'.Permission::ManageForms->value)->name('forms.submissions');
+            Route::get('/forms/{form}/submissions/{submission}', [FormSubmissionController::class, 'show'])->middleware('can:'.Permission::ManageForms->value)->name('forms.submissions.show');
 
             Route::get('/settings', [SettingsController::class, 'index'])->middleware('can:'.Permission::ManageSettings->value)->name('settings');
             Route::post('/settings', [SettingsController::class, 'update'])->middleware('can:'.Permission::ManageSettings->value)->name('settings.update');

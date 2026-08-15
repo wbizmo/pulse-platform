@@ -41,3 +41,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Hardened global SEO behind an explicit allow-listed request/action contract with bounded validation, transactional persistence, cache invalidation, managed-media selection, and bounded audits.
 - Enforced `seo.manage` independently on page/post metadata, restricted canonical overrides to same-origin HTTP(S), centralized escaped context-aware metadata and JSON-LD resolution, and added article/archive/pagination behavior.
 - Rebuilt robots and sitemap output with normalized deterministic text, safe absolute sitemap directives, truthful timestamps, homepage deduplication, public taxonomy URLs, lazy bounded queries, protocol URL limits, caching, and visibility-safe output.
+
+### M3 Forms
+- Added first-party forms, closed-schema ordered fields, durable immutable submission snapshots, active public rendering, strict server-side validation, CSRF, honeypot and anonymous rate limiting.
+- Added MFA-protected `forms.manage` administration, bounded submission inbox/detail views, conservative retention, parent-scoped atomic field operations, audits that exclude submitted values, and adversarial coverage.

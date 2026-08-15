@@ -43,3 +43,7 @@ Menu administration requires `menus.manage` and privileged-session controls. Cus
 ## Search metadata
 
 Global and per-content SEO mutation requires `seo.manage`; ordinary content editors cannot submit SEO fields and updates preserve stored metadata. Canonical overrides are restricted to absolute HTTP/HTTPS URLs on the configured public origin. Robots content is bounded, line-ending normalized, and rejects NUL and dangerous controls. Metadata is HTML escaped and structured data uses defensive JSON encoding.
+
+## Forms security
+
+Public forms accept only persisted field keys and compile validation exclusively from a closed, bounded schema. They reject scalar/array confusion, unexpected keys, oversized bodies, inactive targets, invalid options and hostile types; CSRF, throttling and a honeypot provide abuse controls. Submission values are escaped at presentation and excluded from audits and URLs. Forms administration and personal-data inbox access require `forms.manage` and privileged MFA.
