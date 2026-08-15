@@ -6,7 +6,7 @@ Milestones are dependency ordered and complete only with migrations, authorizati
 2. **M1 Identity and deny-by-default RBAC (complete)** — hardened authentication and lifecycle controls, normalized RBAC, safe user/role administration, capability-derived privileged-user TOTP MFA, recovery and backend enforcement, and the expanded adversarial identity authorization matrix are complete.
 3. **M2 Pulse design system and admin shell (complete)** — tokens and reusable accessible components, custom safe toast/dialog/drawer system; responsive admin/public foundations; remove dead UI/assets.
 4. **M3 Content verticals (complete)** — lifecycle, taxonomy, managed media, deterministic menus, production SEO, and secure first-party forms are complete with bounded queries, audits, accessible interfaces, and deny-by-default authorization.
-5. **M4 Builder V4** — versioned validated nested schema, full block catalogue, reusable sections/templates, responsive preview, draft recovery, unsaved warnings and optimistic concurrency; restrict custom HTML.
+5. **M4 Builder V4 (complete)** — versioned validated nested schema, closed first-party catalogue, persisted snapshot templates, responsive preview, draft recovery, unsaved warnings and optimistic concurrency; raw custom HTML removed.
 6. **M5 Theme platform** — validated/versioned lifecycle, preview/activation/rollback/settings and polished Pulse Studio, Corporate and Commerce themes with graceful commerce absence.
 7. **M6 Plugin runtime** — manifests, dependencies/compatibility, hooks/contributions, canonical permissions, validated settings, lifecycle and safe failure isolation.
 8. **M7 Commerce catalogue/inventory** — products, variants/SKUs/media, integer money/currency, stock ledger/reservations and concurrency tests.

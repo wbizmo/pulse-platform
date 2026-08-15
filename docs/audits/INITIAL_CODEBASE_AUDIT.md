@@ -13,7 +13,7 @@ Date: 2026-07-30. Scope: repository structure, routes, controllers, models, migr
 | High | Required commerce/payment/audit capabilities absent | No models/migrations/services/routes for these boundaries. | Dependency-ordered modular slices. |
 | Medium (substantially resolved M1) | Single role string is not RBAC | Normalized RBAC and delegation invariants are implemented; the legacy compatibility column remains. | Remove the legacy column after compatibility verification. |
 | Medium | Controllers mix validation/workflow | Inline request validation and direct model operations dominate CRUD. | Introduce requests/actions/policies per slice. |
-| Medium | Builder/runtime lifecycle incomplete | Existing builder/plugin/theme UI does not meet required schema, lifecycle, isolation and concurrency guarantees. | Preserve useful behavior while versioning contracts. |
+| Medium (resolved M4) | Builder/runtime lifecycle incomplete | Builder V4 now uses a server-owned versioned/validated tree, stable IDs, managed references, optimistic saves, snapshot templates and fail-closed rendering. | Retain adversarial and concurrency coverage; plugin contribution remains M6. |
 | Medium (partially resolved M1) | Test suite is skeletal | Identity and access now have security-first feature coverage; other modules remain largely uncovered. | Add module suites with each dependency-ordered slice. |
 | Medium | Operational/release surface absent | No installer, audit/log access, production health, release SQL validation. | Add after identity and core domain foundations. |
 | Low (partially resolved M2) | Misleading/dead UI and asset artifacts | The disconnected shell Site Health link and obsolete direct admin bundles were removed; `public/js/frontend.jsphp` is still suspicious and boilerplate product metadata remains. | Remove or implement during UI/operations cleanup. |
@@ -47,3 +47,7 @@ The inherited endpoint persisted arbitrary request keys, mixed workflow into con
 ## M3 Forms follow-up
 
 No first-party forms persistence or authorization vertical existed. M3 adds normalized forms, bounded closed-schema fields, immutable durable submissions, strict public validation and abuse controls, conservative retention, paginated administration, metadata-only audits, and independent MFA-protected Forms authority. Export and notifications were deliberately deferred because current product scope does not require either for this initial vertical.
+
+## M4 Builder follow-up
+
+The inherited Builder accepted arbitrary JSON through a generic request, treated browser JavaScript as the schema source, rendered stored HTML/iframe content raw, used arbitrary image URLs, lacked stable IDs/nesting limits/concurrency, and kept templates only in JavaScript. Builder V4 replaces that path with a focused request/action, closed server registry and bounded schema-v1 decoder, UUID tree identity, managed media, safe links/video, Page-version compare-and-swap, persisted snapshot templates, metadata audits, shared validated rendering, and version-aware local draft recovery. Legacy arrays remain unchanged and recoverable but fail closed rather than execute.

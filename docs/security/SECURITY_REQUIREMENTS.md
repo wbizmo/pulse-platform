@@ -47,3 +47,7 @@ Global and per-content SEO mutation requires `seo.manage`; ordinary content edit
 ## Forms security
 
 Public forms accept only persisted field keys and compile validation exclusively from a closed, bounded schema. They reject scalar/array confusion, unexpected keys, oversized bodies, inactive targets, invalid options and hostile types; CSRF, throttling and a honeypot provide abuse controls. Submission values are escaped at presentation and excluded from audits and URLs. Forms administration and personal-data inbox access require `forms.manage` and privileged MFA.
+
+## Builder security
+
+Builder documents accept only schema version 1 and the server registry's exact node, property, responsive-setting and nesting shapes. UUID identity is unique across the bounded forest (100 nodes, depth 4, 24 children); request JSON is limited to 128 KiB and collection/string limits are block-specific. Links use the shared safe public-link policy, video is restricted to HTTPS YouTube/Vimeo destinations, and images reference existing managed raster media. Raw HTML, iframe markup, executable embeds, arbitrary CSS/classes and unknown blocks are not supported. Invalid or legacy documents fail closed at public and private-preview rendering without being mutated. Every save carries Page `lock_version`, updates atomically, and records only schema/count/version audit metadata.
