@@ -10,4 +10,7 @@
 - **Builder compatibility:** legacy unversioned arrays remain stored and recoverable but do not render or silently migrate. Opening Builder reports the condition; retain/export historical data before intentionally replacing it. Raw HTML and arbitrary embeds are not V4 capabilities.
 - **Environment gates:** browser/assistive-technology TD-005 and real MySQL remain outstanding. SQLite and CLI-server evidence are not substitutes for either gate.
 - **CLI-server acceptance:** the file-session run exercised login, MFA, Forms administration, active GET, valid/invalid POST, inactive rejection, submissions, Builder edit/save and public rendering with empty server stderr and Laravel log. The array-session run exercised login/public/admin denial request boundaries with empty stderr/log; Laravel's intentionally non-persistent `array` driver cannot carry authentication or CSRF state across separate curl requests, so stateful array workflows remain covered in-process rather than misreported as a real multi-request session.
-- **Next exact milestone:** **M5 Theme platform**. Do not begin M5 until M4 is published and merged.
+- **Published M4 authority:** PR #18 published head is `f190ff0`; its merged `main` checkpoint is `b077ce6`.
+- **Completed milestone:** **M5 Theme Platform** delivers Studio, Corporate and Commerce manifests, closed settings, managed media, centralized resolution, preview, atomic activation and snapshot rollback.
+- **M5 boundaries:** Commerce has no products, carts, checkout or payments. Third-party execution is absent. Browser TD-005 and real MySQL remain release gates.
+- **Next exact milestone:** **M6 Plugin runtime**. Do not begin M6.

@@ -1,8 +1,8 @@
 <header class="pulse-site-header">
     <div class="pulse-site-container pulse-site-header-inner">
         <a href="{{ route('frontend.home') }}" class="pulse-site-brand">
-            @if (! empty($themeSettings['logo_url']))
-                <img src="{{ $themeSettings['logo_url'] }}" alt="{{ $settings['site_name'] ?? 'Pulse CMS' }}" class="pulse-site-logo-img">
+            @if ($themeSettings['logo_media_id'] && isset($themeRuntime->media[$themeSettings['logo_media_id']]))
+                <img src="{{ $themeRuntime->media[$themeSettings['logo_media_id']]->public_url }}" alt="{{ $settings['site_name'] ?? 'Pulse CMS' }}" class="pulse-site-logo-img">
             @else
                 <span class="pulse-site-logo">
                     {{ strtoupper(substr($settings['site_name'] ?? 'Pulse', 0, 1)) }}

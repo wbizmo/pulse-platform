@@ -99,14 +99,11 @@
                             <span class="material-symbols-rounded">brush</span>
                             Customize
                         </a>
-
-                        <a href="{{ route('admin.themes.settings', $theme) }}" class="p-button p-button--secondary">
-                            <span class="material-symbols-rounded">tune</span>
-                            Settings
-                        </a>
                     </div>
                 </div>
             </article>
         @endforeach
     </section>
+
+@if($history->firstWhere('previous_theme_id'))<x-pulse.card><h2>Activation history</h2><p>Restore the previous compatible theme and its validated settings snapshot.</p><form method="POST" action="{{ route('admin.themes.rollback',$history->firstWhere('previous_theme_id')) }}">@csrf<x-pulse.button type="submit" variant="secondary">Roll back latest activation</x-pulse.button></form></x-pulse.card>@endif
 @endsection

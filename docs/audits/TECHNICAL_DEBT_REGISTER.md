@@ -27,3 +27,5 @@ SEO hardening introduced no accepted application debt. Legacy page/post social-i
 Forms hardening introduced no accepted application debt. CSV export, notifications, attachments, autoresponders and automation are deliberately absent because current product scope does not require them. Browser interaction remains TD-005 and real-MySQL migration verification remains a release-environment gate.
 
 Builder V4 closes the Builder portion of TD-007 with a versioned validated document and managed media references. Historical unversioned Builder JSON is deliberately retained without automatic transformation because assigning stable identity or replacing legacy URL/HTML semantics would fabricate operator intent; it fails closed until an operator intentionally rebuilds or migrates it. Browser interaction remains TD-005 and real-MySQL migration verification remains a release-environment gate.
+
+Theme M5 introduces no accepted application debt. Legacy CSS is inert recoverable data and never rendered. Browser/assistive-technology verification remains TD-005; real MySQL remains a release-environment gate.

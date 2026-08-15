@@ -30,3 +30,6 @@ SEO settings now use an explicit request and transactional action rather than ar
 ## Forms
 
 First-party forms use normalized unique slugs, explicit active state, a closed ten-type field schema, bounded ordered fields, compiled trusted validation, and immutable submission snapshots. Public POSTs are CSRF and rate-limit protected and reject unknown keys. Administration and submission access require `forms.manage`, verified active identity, and privileged MFA; submission contents are never audited.
+
+## M5 theme platform
+Public content receives a centralized first-party Theme runtime. Code manifests own renderer identity/capabilities; typed persisted settings own presentation state. Transactional activation/rollback and private preview stay outside presentation. See `docs/engineering/THEME_PLATFORM.md`.

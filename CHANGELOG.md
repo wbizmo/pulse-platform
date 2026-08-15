@@ -51,3 +51,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Replaced arbitrary Builder JSON persistence with a server-authoritative schema-v1 decoder, stable UUID node identity, closed block registry, strict known-key validation, bounded trees/collections/responsive tokens, and safe URL/video policies.
 - Added atomic Page-version concurrency, metadata-only audits, managed-image reference validation and deletion protection, persisted snapshot templates, secure shared public/preview rendering, and fail-closed legacy handling that never executes stored HTML.
 - Rebuilt the editor contract around server-provided metadata, keyboard-operable ordering/duplication/deletion, responsive controls, secure preview, dirty-state navigation protection, and bounded page/version-specific local recovery.
+
+### M5 Theme Platform
+- Added the authoritative versioned Studio, Corporate and Commerce registry, closed typed settings, managed branding media, centralized safe resolution and distinct presentation.
+- Added transactional singleton activation, settings snapshots, audited rollback, private non-mutating preview and non-destructive legacy retirement.
+- Removed arbitrary theme CSS, font and URL customization from runtime behavior and protected theme media dependencies.

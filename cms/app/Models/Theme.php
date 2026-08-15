@@ -19,6 +19,7 @@ class Theme extends Model
         'default_pages',
         'default_settings',
         'is_active',
+        'manifest_version', 'settings_schema_version', 'active_slot', 'retired_at',
     ];
 
     protected $casts = [
@@ -26,6 +27,7 @@ class Theme extends Model
         'default_pages' => 'array',
         'default_settings' => 'array',
         'is_active' => 'boolean',
+        'retired_at' => 'datetime',
     ];
 
     public function settings(): HasMany

@@ -18,3 +18,5 @@ Content lifecycle mutations use typed states, Form Requests, transactional actio
 Taxonomy mutations use normalized domain values, database uniqueness, explicit assignment authority, transactional audit/cache effects, and dependency-aware deletion. Public archives consume the same content visibility scope as primary routes.
 
 The completed M3 Forms boundary establishes the target pattern for schema-driven public input: closed declarative configuration, server-compiled validation, immutable historical snapshots, conservative retention, metadata-only auditing, and independently authorized personal-data access.
+
+M5 establishes immutable theme manifests, closed settings, centralized resolution, a reversible lifecycle and presentation-only renderers. Third-party contributions remain M6 scope.

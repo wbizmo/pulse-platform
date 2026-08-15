@@ -21,6 +21,6 @@ class FormSubmissionController extends Controller
             throw ValidationException::withMessages(['submission' => 'The submission does not belong to this form.']);
         }
 
-return view('admin.forms.submissions.show', compact('form', 'submission'));
+        return view('admin.forms.submissions.show', compact('form', 'submission'));
     }
 }

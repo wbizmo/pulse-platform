@@ -1,4 +1,4 @@
-@extends('frontend.layout')
+@extends($themeRuntime->view('layout'))
 
 @section('content')
     @if ($builder)

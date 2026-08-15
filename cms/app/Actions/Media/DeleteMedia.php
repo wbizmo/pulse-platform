@@ -6,6 +6,7 @@ use App\Actions\Access\RecordAudit;
 use App\Models\Media;
 use App\Models\Page;
 use App\Models\Setting;
+use App\Models\ThemeSetting;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,8 @@ class DeleteMedia
 
             return true;
         });
-        if ($media->pages()->exists() || $media->posts()->exists() || $seoReference || $builderReference) {
+        $themeReference = ThemeSetting::query()->whereIn('key', ['logo_media_id', 'favicon_media_id'])->where('value', (string) $media->id)->exists();
+        if ($media->pages()->exists() || $media->posts()->exists() || $seoReference || $builderReference || $themeReference) {
             throw ValidationException::withMessages(['media' => 'This image is in use by content or SEO settings and cannot be deleted.']);
         }
         $disk = Storage::disk($media->disk);
