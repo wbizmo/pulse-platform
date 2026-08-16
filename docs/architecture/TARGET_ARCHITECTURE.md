@@ -20,3 +20,7 @@ Taxonomy mutations use normalized domain values, database uniqueness, explicit a
 The completed M3 Forms boundary establishes the target pattern for schema-driven public input: closed declarative configuration, server-compiled validation, immutable historical snapshots, conservative retention, metadata-only auditing, and independently authorized personal-data access.
 
 M5 establishes immutable theme manifests, closed settings, centralized resolution, a reversible lifecycle and presentation-only renderers. Third-party contributions remain M6 scope.
+
+## M6 plugin boundary implemented
+
+The plugin target now has an authoritative code manifest registry, deterministic dependency graph, lifecycle application actions, validated settings and explicit contribution interfaces. Future extension types must be introduced as closed contracts with authorization and failure-boundary tests rather than database callback/class/path strings.

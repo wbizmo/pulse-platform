@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plugin extends Model
 {
@@ -17,6 +18,8 @@ class Plugin extends Model
         'is_active',
         'has_settings',
         'provides',
+        'requires',
+        'permissions',
         'settings_schema',
         'settings',
     ];
@@ -25,9 +28,16 @@ class Plugin extends Model
         'is_active' => 'boolean',
         'has_settings' => 'boolean',
         'provides' => 'array',
+        'requires' => 'array',
+        'permissions' => 'array',
         'settings_schema' => 'array',
         'settings' => 'array',
     ];
+
+    public function settings(): HasMany
+    {
+        return $this->hasMany(PluginSetting::class);
+    }
 
     public function isActive(): bool
     {

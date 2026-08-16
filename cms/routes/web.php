@@ -135,7 +135,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/menus/{menu}/items/{item}', [MenuController::class, 'destroyItem'])->middleware('can:'.Permission::ManageMenus->value)->name('menus.items.destroy');
 
             Route::get('/plugins', [PluginController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins');
-            Route::post('/plugins/{plugin}/toggle', [PluginController::class, 'toggle'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.toggle');
+            Route::post('/plugins/{plugin}/activate', [PluginController::class, 'activate'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.activate');
+            Route::post('/plugins/{plugin}/deactivate', [PluginController::class, 'deactivate'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.deactivate');
             Route::get('/plugins/{plugin}/settings', [PluginSettingsController::class, 'index'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings');
             Route::post('/plugins/{plugin}/settings', [PluginSettingsController::class, 'update'])->middleware('can:'.Permission::ManagePlugins->value)->name('plugins.settings.update');
 

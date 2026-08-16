@@ -54,3 +54,7 @@ Builder documents accept only schema version 1 and the server registry's exact n
 
 ## Theme platform
 Theme identity/view selection comes only from the first-party registry. Hostile persisted settings pass a closed schema; arbitrary CSS, URL schemes, fonts, classes, objects and unknown keys are prohibited. Branding uses protected managed media. Activation/rollback require the full theme administration boundary, locking, atomic singleton state and bounded auditing. Preview is nonpersistent, private/no-store and noindex.
+
+## Plugin runtime
+
+Executable plugin identity and contributions are first-party code only. Administrative input cannot select classes, callbacks, routes, paths, views or executable content. Lifecycle/settings require the canonical verified, active, MFA-complete `plugins.manage` boundary and CSRF. Settings are closed and typed; permissions are slug-namespaced and cannot override core authority; audits/logs contain bounded redacted metadata.

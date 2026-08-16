@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Domain\Plugins\PluginHookEvent;
 use App\Http\Controllers\Controller;
+use App\Pulse\Plugins\PluginRuntime;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index(PluginRuntime $runtime): View
     {
-        return view('admin.dashboard');
+        $runtime->dispatch(new PluginHookEvent('dashboard.loaded'));
+
+        return view('admin.dashboard', ['pluginWidgets' => $runtime->widgets()]);
     }
 }

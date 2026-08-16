@@ -56,3 +56,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added the authoritative versioned Studio, Corporate and Commerce registry, closed typed settings, managed branding media, centralized safe resolution and distinct presentation.
 - Added transactional singleton activation, settings snapshots, audited rollback, private non-mutating preview and non-destructive legacy retirement.
 - Removed arbitrary theme CSS, font and URL customization from runtime behavior and protected theme media dependencies.
+
+### M6 Plugin runtime
+- Added a closed semantic-versioned first-party manifest registry, deterministic dependency graph, transactional audited lifecycle, canonical namespaced permission synchronization and runtime cache invalidation.
+- Replaced arbitrary plugin settings with typed closed schemas and replaced the fake catalogue with two genuine non-commerce proof plugins using explicit dashboard-widget and hook contracts.
+- Retired legacy fake/core/future plugin rows non-destructively, isolated optional contribution failures with redacted logging, and restored clean SQLite fresh seeding.

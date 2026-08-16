@@ -8,7 +8,7 @@ Milestones are dependency ordered and complete only with migrations, authorizati
 4. **M3 Content verticals (complete)** — lifecycle, taxonomy, managed media, deterministic menus, production SEO, and secure first-party forms are complete with bounded queries, audits, accessible interfaces, and deny-by-default authorization.
 5. **M4 Builder V4 (complete)** — versioned validated nested schema, closed first-party catalogue, persisted snapshot templates, responsive preview, draft recovery, unsaved warnings and optimistic concurrency; raw custom HTML removed.
 6. **M5 Theme platform (complete)** — validated/versioned lifecycle, preview/activation/rollback/settings and polished Pulse Studio, Corporate and Commerce themes with graceful commerce absence.
-7. **M6 Plugin runtime** — manifests, dependencies/compatibility, hooks/contributions, canonical permissions, validated settings, lifecycle and safe failure isolation.
+7. **M6 Plugin runtime (complete)** — manifests, dependencies/compatibility, hooks/contributions, canonical permissions, validated settings, lifecycle and safe failure isolation.
 8. **M7 Commerce catalogue/inventory** — products, variants/SKUs/media, integer money/currency, stock ledger/reservations and concurrency tests.
 9. **M8 Cart, checkout and orders** — carts/addresses, coupons/tax/shipping, idempotent checkout, immutable order snapshots, state histories and admin management.
 10. **M9 Payments/refunds** — gateway contract and real Stripe/PayPal/Flutterwave/Paystack adapters, encrypted configuration, canonical states, verified webhook inbox, refunds/disputes/reconciliation and exhaustive tests.
