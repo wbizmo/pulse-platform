@@ -61,3 +61,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added a closed semantic-versioned first-party manifest registry, deterministic dependency graph, transactional audited lifecycle, canonical namespaced permission synchronization and runtime cache invalidation.
 - Replaced arbitrary plugin settings with typed closed schemas and replaced the fake catalogue with two genuine non-commerce proof plugins using explicit dashboard-widget and hook contracts.
 - Retired legacy fake/core/future plugin rows non-destructively, isolated optional contribution failures with redacted logging, and restored clean SQLite fresh seeding.
+
+### M7 Commerce catalogue and inventory
+- Added the independent Commerce product category, product, variant and managed-gallery model with typed lifecycle, normalized globally unique SKUs, bounded option snapshots, and variant-authoritative integer-minor-unit prices with explicit allow-listed currencies.
+- Added transactionally materialized inventory balances, an append-only ledger, locked adjustments, concurrency-safe reservations, idempotent release/consume/expiry transitions, and a bounded scheduled expiration command.
+- Added independently MFA-protected catalogue and inventory administration, managed-media deletion protection, and real theme-runtime public catalogue/category/product presentation without cart, checkout, order, or payment controls.

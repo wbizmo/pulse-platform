@@ -37,3 +37,7 @@ Public content receives a centralized first-party Theme runtime. Code manifests 
 ## M6 plugin runtime
 
 Plugins now resolve exclusively through a closed first-party manifest registry with dependency-first loading, transactional lifecycle actions, typed settings, namespaced permissions, explicit widget/hook contracts, redacted optional-failure isolation, and two genuine proof plugins. Legacy catalogue rows are inert and hidden. Arbitrary code installation and commerce/payment plugins do not exist.
+
+## M7 Commerce
+
+Commerce now has first-class categories, lifecycle-bound products, globally normalized-SKU variants, managed galleries, integer money, materialized inventory backed by an append-only ledger, locked reservations and public theme-runtime catalogue routes. See `COMMERCE_CATALOGUE_INVENTORY.md`.

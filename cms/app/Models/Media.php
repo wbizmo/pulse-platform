@@ -42,6 +42,11 @@ class Media extends Model
         return $this->hasMany(Post::class, 'featured_media_id');
     }
 
+    public function featuredProducts(): HasMany
+    {
+        return $this->hasMany(Product::class, 'featured_media_id');
+    }
+
     public function getPublicUrlAttribute(): string
     {
         return Storage::disk($this->disk)->url($this->path);

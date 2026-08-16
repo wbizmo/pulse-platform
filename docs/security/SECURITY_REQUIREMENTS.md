@@ -58,3 +58,7 @@ Theme identity/view selection comes only from the first-party registry. Hostile 
 ## Plugin runtime
 
 Executable plugin identity and contributions are first-party code only. Administrative input cannot select classes, callbacks, routes, paths, views or executable content. Lifecycle/settings require the canonical verified, active, MFA-complete `plugins.manage` boundary and CSRF. Settings are closed and typed; permissions are slug-namespaced and cannot override core authority; audits/logs contain bounded redacted metadata.
+
+## M7 Commerce
+
+Catalogue and inventory mutations require separate canonical permissions, verified active identity, privileged MFA and CSRF. SKU/currency/money/options/media inputs use closed bounded validation. Public catalogue queries expose active records and qualitative availability only. Stock changes lock and transact balances with an append-only ledger; media dependencies block deletion.
