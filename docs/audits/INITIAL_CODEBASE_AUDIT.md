@@ -62,3 +62,7 @@ The inherited plugin surface directly toggled database booleans, accepted arbitr
 ## M7 Commerce follow-up
 
 The previously absent product and inventory vertical now uses separate normalized catalogue tables, variant price/SKU authority, managed Media, transactional materialized balances, an append-only stock ledger, locked reservations, bounded expiry, deny-by-default administration and theme-runtime public presentation. Carts/orders and payments remain explicitly absent for M8/M9.
+
+
+## M8 Commerce transaction follow-up
+The previously absent transaction vertical now supplies server-side guest carts, deterministic configurable totals, M7-backed atomic checkout, immutable awaiting-payment orders, capability access, lifecycle history and bounded cancellation/expiry. Gateway/payment/refund behavior remains deliberately absent for M9.

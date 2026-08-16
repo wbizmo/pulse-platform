@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Domain\Commerce\ReservationState;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class InventoryReservation extends Model
 {
@@ -18,5 +19,10 @@ class InventoryReservation extends Model
     public function variant(): BelongsTo
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+    }
+
+    public function orderLink(): HasOne
+    {
+        return $this->hasOne(OrderReservation::class);
     }
 }

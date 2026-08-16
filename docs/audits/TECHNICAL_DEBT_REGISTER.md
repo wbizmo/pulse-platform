@@ -33,3 +33,6 @@ Theme M5 introduces no accepted application debt. Legacy CSS is inert recoverabl
 Plugin M6 introduces no accepted application debt. Unsupported contribution types are intentionally absent rather than placeholders. Browser/assistive-technology verification remains TD-005 and real MySQL remains a release-environment gate.
 
 Commerce M7 introduces no accepted application debt. SQLite sequential invariant coverage does not replace the real-MySQL concurrency gate, and browser/assistive-technology verification remains TD-005. The earlier M6 CLI MFA 403 has no retained script/transcript and therefore remains unclaimed rather than being misreported as resolved.
+
+
+Commerce M8 introduces no accepted application debt. Real-MySQL parallel checkout/coupon/cancellation races remain a release-environment gate, and browser/assistive-technology verification remains TD-005. Order-linked inventory expiry is owned exclusively by the Order lifecycle.

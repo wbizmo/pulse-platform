@@ -20,6 +20,8 @@ enum Permission: string
     case ManageRoles = 'roles.manage';
     case ManageCommerceProducts = 'commerce.products.manage';
     case ManageCommerceInventory = 'commerce.inventory.manage';
+    case ManageCommerceOrders = 'commerce.orders.manage';
+    case ManageCommerceRules = 'commerce.rules.manage';
 
     public function label(): string
     {
@@ -40,6 +42,8 @@ enum Permission: string
             self::ManageRoles => 'Manage roles and permissions',
             self::ManageCommerceProducts => 'Manage commerce catalogue',
             self::ManageCommerceInventory => 'Manage commerce inventory',
+            self::ManageCommerceOrders => 'Manage commerce orders',
+            self::ManageCommerceRules => 'Manage commerce rules',
         };
     }
 

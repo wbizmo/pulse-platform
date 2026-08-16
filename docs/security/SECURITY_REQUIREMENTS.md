@@ -62,3 +62,7 @@ Executable plugin identity and contributions are first-party code only. Administ
 ## M7 Commerce
 
 Catalogue and inventory mutations require separate canonical permissions, verified active identity, privileged MFA and CSRF. SKU/currency/money/options/media inputs use closed bounded validation. Public catalogue queries expose active records and qualitative availability only. Stock changes lock and transact balances with an append-only ledger; media dependencies block deletion.
+
+
+## Commerce transaction controls (implemented M8)
+Guest cart/order capabilities are random, stored only as hashes, transported in HttpOnly first-party cookies, and compared without exposing database IDs. Checkout rejects unknown address fields and browser totals, snapshots escaped Unicode PII, uses no-store/noindex customer responses, and excludes PII/secrets from audits. Administrative orders require verified identity, privileged MFA and dedicated permission.

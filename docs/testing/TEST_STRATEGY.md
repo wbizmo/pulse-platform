@@ -45,3 +45,13 @@ M5 coverage verifies the canonical registry, compatibility, hostile setting reje
 M6 plugin coverage exercises closed manifests, semantic compatibility, missing/cyclic dependencies, dependency-first activation and dependent-first deactivation, atomic failure, typed unknown/malformed/oversized setting rejection, namespaced permission safety, audits, deterministic contributions and redacted isolated optional failures. Full identity/content/Builder/theme regressions remain required. SQLite is exercised; real MySQL and TD-005 browser/assistive-technology verification remain release gates.
 
 M7 coverage verifies integer money, catalogue visibility, atomic adjustments/ledger consistency, oversell rejection, idempotent reservation release and bounded repeated expiry. SQLite cannot establish real parallel row-lock behavior; real MySQL concurrency remains a release gate. Public browser viewport and assistive-technology interaction remains TD-005.
+
+
+M8 coverage exercises guest capability isolation, cart merging/currency and hostile quantities, stale authoritative prices, deterministic integer rounding, coupon/tax/shipping rules, atomic reservation-backed checkout, idempotent replay/body mismatch, oversell, immutable snapshots, cancellation/expiry release and guest IDOR. SQLite cannot prove MySQL parallel row locks; real MySQL remains a release gate.
+
+
+### Retained M6 CLI-server acceptance evidence (2026-08-16)
+
+The acceptance environment used `/tmp/m6.sqlite`, `DB_CONNECTION=sqlite`, `SESSION_DRIVER=file`, a fixed test-only `APP_KEY`, and `php artisan serve --host=127.0.0.1 --port=8791`. `migrate:fresh --seed --force` created the isolated database; the dedicated `admin@pulse.test` fixture was attached to the canonical `super_admin` role only in that database. Tinker invoked `Totp::secret()`, persisted the encrypted secret/confirmation fields used by the enrollment implementation, and Reflection invoked the implementation's private `code` method for the current 30-second counter (no shell TOTP arithmetic).
+
+Curl retained `/tmp/m6.cookies`, extracted each rendered `_token`, deliberately followed only the dashboard redirects, and asserted: login GET 200; login POST 302; MFA challenge GET 200; MFA POST 302; dashboard/plugin/settings GET 200; activation/settings/deactivation POST 302; configured `CLI proof contribution` present after activation and absent after deactivation; final dashboard 200. `/tmp/m6.stderr` and `storage/logs/laravel.log` were asserted empty. The isolated database, secret, cookies, pages and transcript were removed after inspection. This fresh evidence closes and replaces the old unexplained 403 note.

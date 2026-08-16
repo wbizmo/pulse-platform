@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('content:publish-scheduled')->everyMinute()->withoutOverlapping();
 Schedule::command('commerce:expire-reservations --batch=100')->everyMinute()->withoutOverlapping();
+Schedule::command('commerce:expire-orders --batch=100')->everyMinute()->withoutOverlapping();
