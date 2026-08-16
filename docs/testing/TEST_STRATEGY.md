@@ -63,3 +63,8 @@ Payment tests exercise immutable commercial values, duplicate success fulfilment
 ## M10 Operations coverage
 
 Operations feature coverage verifies minimal liveness, direct authorization denial, stale heartbeat detection, nested mixed-case redaction, log traversal containment/escaping, private exports, formula neutralization and append-only audits. Baseline release gates remain the complete PHP suite, strict Composer validation, Pint, route/schedule inspection, fresh seed, frontend build and real server smoke.
+
+
+## M11 MySQL qualification
+
+MySQL 8.0.46 clean-migration testing is now an enforced CI job rather than inferred from SQLite. The same job runs the complete PHP suite, imports the checksummed canonical SQL into an empty database, verifies migration status and requires a no-op forced migration. Genuine multi-process race tests remain required separately; a service-backed sequential suite must not be described as concurrency evidence.

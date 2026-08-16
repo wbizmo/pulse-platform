@@ -13,6 +13,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added permission-derived privileged-user TOTP MFA with encrypted secrets, one-way single-use recovery codes, replay/rate-limit controls, password-confirmed lifecycle operations, audited administrator recovery, and accessible enrollment/challenge interfaces.
 
 ### Fixed
+- Repaired genuine-MySQL fresh migration ordering for legacy same-timestamp parent/child tables and made Builder exact-key validation insensitive to MySQL JSON object-key normalization.
 - Repaired the Forms submissions inbox Blade structure exposed by the deferred real CLI-server acceptance smoke; the authenticated inbox now compiles and renders under the production view compiler.
 - Completed the M2 administration presentation migration for media, menus, builder, themes and customizer, plugins and settings, site settings, and SEO; retired administration `pulse-*` bridge consumers while preserving authorized workflows, shared confirmation dialogs, and safe toasts.
 - Migrated page and post administration lists and editors from the legacy presentation bridge to reusable Pulse page-header, card, table, form, badge, action, pagination, empty-state, and confirmation components.
