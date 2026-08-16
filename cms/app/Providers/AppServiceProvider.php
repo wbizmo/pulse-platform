@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use App\Domain\Access\Permission;
+use App\Domain\Plugins\PluginManifestRegistry;
 use App\Models\User;
-use App\Pulse\Plugins\PluginManager;
+use App\Pulse\Plugins\PluginRuntime;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,9 +15,8 @@ class AppServiceProvider extends ServiceProvider
     {
         require_once app_path('Pulse/Plugins/helpers.php');
 
-        $this->app->singleton(PluginManager::class, function () {
-            return new PluginManager;
-        });
+        $this->app->singleton(PluginManifestRegistry::class, fn () => new PluginManifestRegistry);
+        $this->app->singleton(PluginRuntime::class);
     }
 
     public function boot(): void

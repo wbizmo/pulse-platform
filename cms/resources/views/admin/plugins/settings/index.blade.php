@@ -1,51 +1,14 @@
-@extends('admin.layouts.app', [
-    'title' => $plugin->name . ' Settings',
-    'heading' => $plugin->name . ' Settings',
-    'subheading' => 'Configure bundled plugin options and frontend behavior.'
-])
-
+@extends('admin.layouts.app', ['title' => $manifest['name'].' settings', 'heading' => $manifest['name'].' settings'])
 @section('content')
-
-    <form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}" class="p-module-settings-form">
-        @csrf
-
-        <section class="p-card">
-            <div class="p-card-head">
-                <h3>General Plugin Settings</h3>
-                <p>Basic controls for this bundled Pulse CMS plugin.</p>
-            </div>
-
-            <div class="p-module-toggle-list">
-                <label class="p-module-toggle-row">
-                    <span>Show plugin features on frontend where supported</span>
-
-                    <span class="p-module-switch">
-                        <input type="checkbox" name="show_on_frontend" value="1" @checked(($settings['show_on_frontend'] ?? '1') == '1')>
-                        <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
-                    </span>
-                </label>
-
-                <label class="p-module-toggle-row">
-                    <span>Enable plugin helper notices in admin</span>
-
-                    <span class="p-module-switch">
-                        <input type="checkbox" name="enabled" value="1" @checked(($settings['enabled'] ?? '1') == '1')>
-                        <span class="p-module-switch-track"><span class="p-module-switch-thumb"></span></span>
-                    </span>
-                </label>
-            </div>
-        </section>
-
-        <div class="p-module-save-bar">
-            <div>
-                <strong>{{ $plugin->name }}</strong>
-                <span>Save plugin configuration.</span>
-            </div>
-
-            <button type="submit" class="p-button">
-                <span>Save settings</span>
-                <span class="material-symbols-rounded">save</span>
-            </button>
-        </div>
-    </form>
+<x-pulse.page-header :title="$manifest['name'].' settings'" description="Only manifest-defined settings are accepted." />
+<form method="POST" action="{{ route('admin.plugins.settings.update', $plugin) }}">@csrf
+@foreach($manifest['settings'] as $key => $definition)
+<div class="p-field"><label for="setting-{{ $key }}">{{ ucfirst(str_replace('_', ' ', $key)) }}</label>
+@if($definition['type'] === 'boolean')<input type="hidden" name="{{ $key }}" value="0"><input id="setting-{{ $key }}" type="checkbox" name="{{ $key }}" value="1" @checked(old($key, $settings[$key] ?? $definition['default']))>
+@elseif($definition['type'] === 'enum')<select id="setting-{{ $key }}" name="{{ $key }}">@foreach($definition['values'] as $choice)<option value="{{ $choice }}" @selected(old($key, $settings[$key] ?? $definition['default']) === $choice)>{{ ucfirst($choice) }}</option>@endforeach</select>
+@else<input id="setting-{{ $key }}" name="{{ $key }}" value="{{ old($key, $settings[$key] ?? $definition['default']) }}" maxlength="{{ $definition['max'] }}">
+@endif @error($key)<p role="alert">{{ $message }}</p>@enderror</div>
+@endforeach
+<x-pulse.button type="submit">Save settings</x-pulse.button>
+</form>
 @endsection

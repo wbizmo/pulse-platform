@@ -1,38 +1,38 @@
 <?php
 
-use App\Pulse\Plugins\PluginManager;
+use App\Pulse\Plugins\PluginRuntime;
 
 if (! function_exists('pulse_plugins')) {
-    function pulse_plugins(): PluginManager
+    function pulse_plugins(): PluginRuntime
     {
-        return app(PluginManager::class);
+        return app(PluginRuntime::class);
     }
 }
-
 if (! function_exists('plugin_active')) {
     function plugin_active(string $slug): bool
     {
-        return pulse_plugins()->has($slug);
+        return isset(pulse_plugins()->active()[$slug]);
     }
 }
-
 if (! function_exists('plugin_inactive')) {
     function plugin_inactive(string $slug): bool
     {
-        return pulse_plugins()->inactive($slug);
+        return ! plugin_active($slug);
     }
 }
-
 if (! function_exists('plugin_setting')) {
     function plugin_setting(string $slug, string $key, mixed $default = null): mixed
     {
-        return pulse_plugins()->setting($slug, $key, $default);
+        $entry = pulse_plugins()->active()[$slug] ?? null;
+
+        return $entry ? ($entry['plugin']->settings()->where('key', $key)->value('value') ?? $default) : $default;
     }
 }
-
 if (! function_exists('plugin_settings')) {
     function plugin_settings(string $slug): array
     {
-        return pulse_plugins()->settings($slug);
+        $entry = pulse_plugins()->active()[$slug] ?? null;
+
+        return $entry ? $entry['plugin']->settings()->pluck('value', 'key')->all() : [];
     }
 }

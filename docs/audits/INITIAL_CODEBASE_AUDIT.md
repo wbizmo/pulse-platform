@@ -54,3 +54,7 @@ The inherited Builder accepted arbitrary JSON through a generic request, treated
 
 ## M5 Theme follow-up
 The inherited surface trusted editable metadata, arbitrary strings/URLs/CSS, broad activation and scattered queries. M5 replaces executable identity with three code manifests, typed media-backed settings, centralized fail-safe resolution, atomic activation and snapshot rollback. Legacy seeds remain inert and retired.
+
+## M6 plugin follow-up
+
+The inherited plugin surface directly toggled database booleans, accepted arbitrary settings, trusted loose database metadata, and seeded core, future, payment and nonexistent capabilities as functional plugins. M6 replaces it with a closed code registry, dependency/compatibility validation, transactional audited actions, typed settings, canonical permissions, explicit contributions and redacted failure isolation. Legacy rows remain inert and fresh installs expose only genuine proof plugins.

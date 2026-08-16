@@ -33,3 +33,7 @@ First-party forms use normalized unique slugs, explicit active state, a closed t
 
 ## M5 theme platform
 Public content receives a centralized first-party Theme runtime. Code manifests own renderer identity/capabilities; typed persisted settings own presentation state. Transactional activation/rollback and private preview stay outside presentation. See `docs/engineering/THEME_PLATFORM.md`.
+
+## M6 plugin runtime
+
+Plugins now resolve exclusively through a closed first-party manifest registry with dependency-first loading, transactional lifecycle actions, typed settings, namespaced permissions, explicit widget/hook contracts, redacted optional-failure isolation, and two genuine proof plugins. Legacy catalogue rows are inert and hidden. Arbitrary code installation and commerce/payment plugins do not exist.
