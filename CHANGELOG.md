@@ -78,3 +78,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M10 Operations
 - Added minimal public liveness and a protected Operations area with typed readiness checks, scheduler heartbeat, bounded database-queue triage, payment operational summaries, in-app transition alerts, append-only audit administration, centralized logging redaction, correlation IDs, protected bounded logs, private formula-safe exports and expiry pruning.
 - Hardened scheduled ownership with overlap locks, conservative configured-gateway payment reconciliation, intentional daily log retention, bounded command output and evidence-based audit/webhook indexes.
+
+### M11 installer and release readiness
+- Split the default production-safe system bootstrap from explicit demo fixtures; demo users now fail closed in production.
+- Added CLI preflight, secure interactive installation, installation status, canonical RBAC/theme/plugin synchronization, first-super-administrator creation and durable re-entry protection.
+- Replaced the obsolete repository README and added installation, deployment, backup/restore, upgrade/rollback, troubleshooting and evidence-based release-checklist runbooks.

@@ -54,3 +54,7 @@ Payments are now a first-class domain with one immutable-order Payment, retryabl
 ## M10 operational state
 
 The application now has the protected, bounded Operations vertical documented in `OPERATIONS.md`: typed local readiness, scheduler heartbeat, safe queue failure triage, payment backlog summaries, database notifications, append-only audit browsing, centralized log redaction/correlation, canonical-path log tails and private expiring exports.
+
+## M11 installation and release boundary
+
+The default seed path synchronizes canonical RBAC, theme and plugin system state without accounts. Demo identities require the explicit demo seeder and are rejected in production. `pulse:preflight`, `pulse:install`, and `pulse:status` provide a CLI-only installation boundary: validated hidden credentials create the first verified super administrator, privileged MFA enrollment remains mandatory at first sign-in, and a database record durably prevents installer re-entry. Migrations remain the canonical schema authority; release SQL is not published without genuine MySQL clean-import evidence.
