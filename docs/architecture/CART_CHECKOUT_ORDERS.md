@@ -21,3 +21,7 @@ M9 takes an awaiting-payment Order, creates its own gateway-neutral attempt, ver
 ## Verification and remaining release gates
 
 The dedicated `CartCheckoutOrdersTest` covers opaque capabilities, line merging/currency, integer rounding, authoritative snapshot totals, coupon capacity release, replay/body mismatch, oversell prevention, cancellation idempotence and guest IDOR. Full regressions retain M7 stock invariants. SQLite remains insufficient proof of MySQL parallel row locking, and TD-005 still requires real browser/assistive-technology interaction.
+
+## M9 handoff completion
+
+M9 now consumes this boundary without repricing: one Payment snapshots the immutable total/currency; authoritative verified success alone transitions `awaiting_payment` to `paid`, consumes linked reservations and coupon capacity once, and appends history. Cancellation/expiry lock and reject an already successful Payment. Refunds never restock or restore coupon capacity.

@@ -4,10 +4,12 @@ namespace App\Actions\Commerce;
 
 use App\Domain\Commerce\OrderState;
 use App\Domain\Commerce\ReservationState;
+use App\Domain\Payments\PaymentState;
 use App\Models\Coupon;
 use App\Models\CouponRedemption;
 use App\Models\Order;
 use App\Models\OrderStateHistory;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -20,6 +22,10 @@ final class TransitionOrder
     {
         return DB::transaction(function () use ($order, $target, $actor, $reason) {
             $locked = Order::lockForUpdate()->findOrFail($order->id);
+            $payment = Payment::where('order_id', $locked->id)->lockForUpdate()->first();
+            if (in_array($target, [OrderState::Cancelled, OrderState::Expired], true) && $payment?->state === PaymentState::Succeeded) {
+                throw ValidationException::withMessages(['state' => 'A successfully paid order cannot be cancelled or expired.']);
+            }
             if ($locked->state === $target) {
                 return $locked;
             }if (! $locked->state->canTransitionTo($target)) {

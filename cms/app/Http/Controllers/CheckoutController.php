@@ -38,6 +38,6 @@ class CheckoutController extends Controller
         $token = $r->cookie(config('commerce.order_cookie'));
         abort_unless(is_string($token) && hash_equals($order->access_token_hash, hash('sha256', $token)), 404);
 
-        return response()->view('frontend.commerce.order',compact('order'))->header('X-Robots-Tag','noindex, nofollow, noarchive')->header('Cache-Control','no-store, private');
+        return response()->view('frontend.commerce.order', compact('order'))->header('X-Robots-Tag', 'noindex, nofollow, noarchive')->header('Cache-Control', 'no-store, private');
     }
 }

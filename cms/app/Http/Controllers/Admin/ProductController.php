@@ -23,7 +23,7 @@ class ProductController extends Controller
             $q->where(fn ($x) => $x->where('name', 'like', '%'.addcslashes(mb_substr($search, 0, 100), '%_\\').'%')->orWhere('slug', 'like', '%'.addcslashes(mb_substr($search, 0, 100), '%_\\').'%'));
         }
 
-return view('admin.commerce.products.index', ['products' => $q->paginate(20)->withQueryString()]);
+        return view('admin.commerce.products.index', ['products' => $q->paginate(20)->withQueryString()]);
     }
 
     public function create(): View
@@ -68,6 +68,6 @@ return view('admin.commerce.products.index', ['products' => $q->paginate(20)->wi
     {
         $save->saveVariant($product, $variant, $r->validated(), $r->user());
 
-        return back()->with('success','Variant updated.');
+        return back()->with('success', 'Variant updated.');
     }
 }

@@ -66,3 +66,7 @@ Catalogue and inventory mutations require separate canonical permissions, verifi
 
 ## Commerce transaction controls (implemented M8)
 Guest cart/order capabilities are random, stored only as hashes, transported in HttpOnly first-party cookies, and compared without exposing database IDs. Checkout rejects unknown address fields and browser totals, snapshots escaped Unicode PII, uses no-store/noindex customer responses, and excludes PII/secrets from audits. Administrative orders require verified identity, privileged MFA and dedicated permission.
+
+## M9 payment boundary
+
+Gateway secrets use dedicated encrypted storage and replacement-only forms. Public webhooks are POST-only, size/content-type/rate bounded, authenticated from original bytes before persistence, and replay protected. Pulse never collects PAN/CVV or trusts browser amount, currency, provider status, return URLs, or callback success. Audits and operator views contain normalized identifiers and replacement metadata only.

@@ -26,6 +26,6 @@ class InventoryController extends Controller
     {
         $adjust->execute($variant, $r->integer('quantity'), StockMovement::from($r->validated('movement')), $r->validated('reason'), $r->user());
 
-        return back()->with('success','Inventory adjusted.');
+        return back()->with('success', 'Inventory adjusted.');
     }
 }

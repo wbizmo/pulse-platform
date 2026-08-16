@@ -50,9 +50,9 @@ class CartController extends Controller
 
     public function destroy(Request $r, int $item, GetOrCreateCart $get, MutateCart $mutate)
     {
-        [$cart] = $this->cart($r,$get);
-        $mutate->remove($cart,$item);
+        [$cart] = $this->cart($r, $get);
+        $mutate->remove($cart, $item);
 
-        return back()->with('success','Item removed.');
+        return back()->with('success', 'Item removed.');
     }
 }

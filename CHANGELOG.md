@@ -70,3 +70,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M8 Cart, checkout and orders
 - Added opaque server-side guest carts, authoritative variant repricing, one-currency line mutations, deterministic coupon/tax/shipping totals, idempotent atomic checkout through M7 reservations, immutable awaiting-payment orders, capability-protected confirmation, state history, cancellation/expiry, administration and accessible theme-neutral storefront views.
 - Added order/rule RBAC authorities and documented the payment-free M9 handoff; payment gateways, paid transitions and refunds remain absent.
+
+### M9 Payments and refunds
+- Added the immutable-order Payment aggregate, retryable attempts, closed first-party Stripe/PayPal/Flutterwave/Paystack adapters, encrypted configuration and explicit currency availability.
+- Added verified replay-protected webhook intake, server verification, atomic paid Order/inventory/coupon fulfilment, payment-aware terminal transitions, idempotent partial/full refunds, disputes, bounded reconciliation, private customer UX and MFA/RBAC administration.

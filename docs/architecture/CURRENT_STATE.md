@@ -46,3 +46,7 @@ Commerce now has first-class categories, lifecycle-bound products, globally norm
 ## M8 commerce transactions
 
 The application now has opaque guest carts, deterministic rules/totals, atomic idempotent checkout integrated with M7 reservations, immutable awaiting-payment Orders, capability-protected confirmation, bounded expiry/cancellation, and MFA/RBAC-protected order administration. Payment processing remains absent until M9. See `CART_CHECKOUT_ORDERS.md`.
+
+## M9 payments and refunds
+
+Payments are now a first-class domain with one immutable-order Payment, retryable attempts, a closed four-gateway registry, encrypted configuration, authenticated replay-protected webhook inbox, atomic paid fulfilment, refund/dispute records, bounded reconciliation, customer payment/status presentation, and MFA/RBAC administration. See `PAYMENTS_REFUNDS.md`.

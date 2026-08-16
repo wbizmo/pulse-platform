@@ -11,7 +11,7 @@ Milestones are dependency ordered and complete only with migrations, authorizati
 7. **M6 Plugin runtime (complete)** — manifests, dependencies/compatibility, hooks/contributions, canonical permissions, validated settings, lifecycle and safe failure isolation.
 8. **M7 Commerce catalogue/inventory (complete)** — products, variants/SKUs/media, integer money/currency, stock ledger/reservations and concurrency tests.
 9. **M8 Cart, checkout and orders (complete)** — secure guest carts, validated addresses, deterministic coupon/tax/shipping totals, idempotent reservation-backed checkout, immutable awaiting-payment orders, histories, expiry/cancellation and protected administration.
-10. **M9 Payments/refunds** — gateway contract and real Stripe/PayPal/Flutterwave/Paystack adapters, encrypted configuration, canonical states, verified webhook inbox, refunds/disputes/reconciliation and exhaustive tests.
+10. **M9 Payments/refunds (complete)** — gateway contract and real Stripe/PayPal/Flutterwave/Paystack adapters, encrypted configuration, canonical states, verified webhook inbox, refunds/disputes/reconciliation and exhaustive tests.
 11. **M10 Operations** — append-only audits, notifications, health, protected redacted logs, queues/scheduler, performance/index review, exports and observability.
 12. **M11 Installer and release readiness** — secure bootstrap, deployment/backup/restore/upgrade/rollback docs, end-to-end/accessibility/security checks, generated MySQL release SQL and clean-import boot validation; PostgreSQL artifact only if verified.
 

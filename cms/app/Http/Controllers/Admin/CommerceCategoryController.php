@@ -39,6 +39,6 @@ class CommerceCategoryController extends Controller
             return back()->withErrors(['category' => 'Assigned categories cannot be deleted.']);
         }$category->delete();
 
-        return back()->with('success','Commerce category deleted.');
+        return back()->with('success', 'Commerce category deleted.');
     }
 }
