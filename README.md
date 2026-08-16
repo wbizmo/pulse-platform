@@ -1,564 +1,106 @@
-# Pulse CMS (Work in Progress)
-
-Pulse CMS is a custom-built content management system currently under active development.
-
-The project is not yet feature-complete and should be considered unfinished. Core functionality has been implemented, many major systems are operational, and the overall architecture is in place, but several modules still require additional development, refinement, testing, and documentation before a stable production release.
-
----
-
 # Pulse CMS
 
-A modern Laravel-based content management system focused on flexibility, clean design, extensibility, blogging, page building, theme customization, media management, SEO tooling, and plugin-driven functionality.
+Pulse is a security-first Laravel publishing and commerce platform by [Williams (wbizmo)](https://github.com/wbizmo). The repository implements the M1–M10 product domains and the M11 secure installation/release foundation. Release qualification is evidence-driven: see the checklist for the remaining environment and owner gates rather than interpreting implemented adapters as live certification.
 
-Pulse CMS is designed to provide a streamlined alternative to traditional CMS platforms while maintaining familiar content management workflows.
+## Platform
 
----
+Pulse runs on PHP 8.3+, Laravel 13, Blade, Tailwind CSS 4 and Vite 8. MySQL 8.0 is the production database target; SQLite is used for fast isolated tests but is not production or concurrency evidence. PostgreSQL support is not claimed. Built assets are committed to a deployable release and Node.js is not needed at runtime.
 
-# Current Status
+## Capabilities
 
-Development Status:
+### Identity and security
 
-```txt
-In Progress
+Pulse provides active/disabled account lifecycle controls, verified email and non-enumerating recovery, owned database-session visibility and revocation, TOTP MFA with single-use recovery codes, granular deny-by-default RBAC, bounded role delegation and append-only security audits. Every administration route enforces backend authority; privileged capabilities require verified identity and MFA.
+
+### Publishing
+
+Pages and posts have draft/scheduled/published lifecycle, optimistic versioning, private previews, managed taxonomy, managed raster media, deterministic menus, centralized SEO and structured data, and first-party Forms with immutable submission snapshots and abuse controls.
+
+Builder V4 stores a versioned, server-validated nested document from a closed block catalogue. It supports nesting, keyboard reorder, responsive preview, persisted templates, page/version-scoped recovery, dirty-navigation warnings and optimistic conflict handling. Stored arbitrary HTML is not executed.
+
+The Theme Platform ships **Pulse Studio**, **Pulse Corporate**, and **Pulse Commerce**, with typed settings, preview, atomic activation and rollback. The first-party Plugin Runtime uses code-owned manifests, dependency/compatibility validation, typed settings, canonical permissions, explicit safe contributions and failure isolation—never uploaded executable archives.
+
+### Commerce and payments
+
+The catalogue includes categories, products, variants, globally unique SKUs, managed media and integer-minor-unit money. Inventory uses an append-only ledger, locked materialized balances and expiring reservations. Server-side guest carts feed idempotent checkout, immutable order snapshots, coupons, tax/shipping rules and order history without trusting browser prices.
+
+A gateway-neutral payment domain integrates Stripe, PayPal, Flutterwave and Paystack adapters. It verifies webhook signatures and replay identity, owns amount/currency decisions, fulfils atomically, and supports idempotent refunds, disputes and reconciliation. Deterministic contract tests do not equal sandbox/live provider certification; credential-dependent certification remains a release-owner gate.
+
+### Operations
+
+Protected Operations surfaces expose typed readiness, database queue and scheduler heartbeat, redacted bounded logs, transition-deduplicated notifications, append-only audits, formula-safe private exports, payment visibility and pruning. `/up` reveals only minimal liveness.
+
+## Secure installation
+
+The web root **must be `cms/public`**. There is no public installer, `.env` editor, default administrator or force bypass.
+
+```bash
+cd cms
+cp .env.example .env                 # configure production MySQL, URL, mail and drivers
+composer install --no-dev --prefer-dist --optimize-autoloader
+php artisan key:generate
+npm ci
+npm run build
+php artisan pulse:preflight
+php artisan pulse:install            # hidden password prompts; then enroll MFA
+php artisan pulse:status
 ```
 
-Completion Estimate:
+The normal `DatabaseSeeder` synchronizes only canonical roles, permissions, themes and plugins. Demo accounts are isolated behind an explicit non-production seeder and fail closed in production. Migrations remain canonical. A MySQL release SQL artifact may be published only after the clean-database generation/import and forbidden-data checks in the release checklist; none is represented as verified merely from SQLite.
 
-```txt
-Approximately 85–90%
+See [Installation](docs/release/INSTALLATION.md) and [Deployment](docs/release/DEPLOYMENT.md) for permissions, HTTPS, caches, mail, storage and provider configuration.
+
+## Production processes
+
+Run the database queue baseline under a supervisor (or deliberately configure monitored Redis):
+
+```bash
+php artisan queue:work --sleep=3 --tries=3 --timeout=90 --max-time=3600
+php artisan queue:restart
 ```
 
-The platform is currently suitable for development, testing, experimentation, and continued feature implementation.
+Run one scheduler cron, never one cron per task:
 
----
-
-# Technology Stack
-
-## Backend
-
-* PHP 8.4+
-* Laravel 13
-* Blade Templates
-* Eloquent ORM
-
-## Database
-
-* SQLite (Development)
-* MySQL (Planned Production Support)
-* PostgreSQL (Planned Production Support)
-
-## Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-* Blade Components
-* Material Symbols Rounded Icons
-* Google Fonts
-
-## Infrastructure
-
-* Git
-* GitHub
-* GitHub Codespaces
-
----
-
-# Core Features Implemented
-
-## Authentication
-
-* Admin Login
-* Session Authentication
-* Logout Functionality
-* Protected Admin Routes
-
----
-
-## Dashboard
-
-* Admin Dashboard
-* Administrative Navigation
-* CMS Overview
-
----
-
-## Pages
-
-* Create Pages
-* Edit Pages
-* Delete Pages
-* Custom Slugs
-* Page Status Management
-* SEO Metadata
-* Header Controls
-* Footer Controls
-
----
-
-## Page Builder
-
-Visual block-based page construction.
-
-Supported Blocks:
-
-* Hero
-* Text
-* Image
-* Video
-* CTA
-* Features
-* Statistics
-* Accordion
-* Testimonials
-* Custom HTML
-
-Builder Data Storage:
-
-```txt
-JSON-based
+```cron
+* * * * * cd /path/to/cms && php artisan schedule:run >> /dev/null 2>&1
 ```
 
----
+This drives scheduler heartbeat, publishing, reservation/order expiry, monitoring, reconciliation and pruning.
 
-## Media Library
+## Verification
 
-* Media Upload
-* Media Listing
-* Media Deletion
-* Media Library API Endpoint
-* Builder Integration Foundation
+From `cms/`:
 
----
-
-## Blog System
-
-### Posts
-
-* Create Posts
-* Edit Posts
-* Delete Posts
-* Publish Workflow
-* Draft Workflow
-* Slug Management
-* Featured Images
-* Categories
-* Tags
-
-### Categories
-
-* Create Categories
-* Edit Categories
-* Delete Categories
-
-### Tags
-
-* Create Tags
-* Edit Tags
-* Delete Tags
-
-### Frontend Blog Routes
-
-```txt
-/blog
-/blog/{slug}
+```bash
+composer validate --strict
+vendor/bin/pint --test
+php artisan test
+php artisan route:list
+php artisan schedule:list
+npm run build
+composer audit --locked
+npm audit
 ```
 
----
+Release additionally requires genuine MySQL fresh-install and parallel race evidence, release-SQL clean import/schema comparison, production no-dev/cache/HTTP smoke, backup restore and M10 upgrade rehearsal, security review, and browser/keyboard/accessibility automation. Human assistive-technology testing and live payment certification are explicitly manual owner gates unless actually recorded. See [Release checklist](docs/release/RELEASE_CHECKLIST.md).
 
-## Menus
+## Backup, upgrades and recovery
 
-* Menu Creation
-* Menu Editing
-* Menu Item Management
-* Custom Links
-* Dynamic Navigation
+Back up MySQL plus persistent public/private application files and release metadata into encrypted controlled storage; keep `.env` and secret-manager material outside ordinary backups. Always drill a disposable restore. Database restore—not universally `migrate:rollback`—is authoritative when reverting incompatible data changes. Follow [Backup/restore](docs/release/BACKUP_RESTORE.md), [Upgrade/rollback](docs/release/UPGRADE_ROLLBACK.md), and [Troubleshooting](docs/release/TROUBLESHOOTING.md).
 
----
+## Repository map
 
-## Themes
+- `cms/app/Actions`, `Domain`, `Payments` — application/domain/integration boundaries
+- `cms/app/Http` — validated and authorized HTTP delivery
+- `cms/app/Console` — installer, scheduler and operational commands
+- `cms/app/Models`, `database/migrations`, `database/seeders` — persistence and canonical schema/bootstrap
+- `cms/resources/views`, `resources/css`, `resources/js` — accessible server-rendered presentation
+- `cms/tests` — unit and feature security/regression coverage
+- `docs/architecture`, `docs/security`, `docs/testing` — governing technical contracts
+- `docs/release` — installation, deployment and recovery runbooks
 
-Theme system implemented.
+Architecture detail starts with [Current state](docs/architecture/CURRENT_STATE.md), [Engineering contract](docs/engineering/ENGINEERING_CONTRACT.md), and [Security requirements](docs/security/SECURITY_REQUIREMENTS.md).
 
-Current themes have been repurposed as visual style presets rather than industry-specific website packages.
+## License
 
-Current Theme Presets:
-
-* Pulse Classic
-* Pulse Minimal
-* Pulse Centered
-* Pulse Pill
-* Pulse Topbar
-
-Theme Controls:
-
-* Colors
-* Typography
-* Header Style
-* Footer Style
-* Logo
-* Favicon
-* Button Radius
-* Custom CSS
-* Back-to-Top Toggle
-
-Theme styling currently supports:
-
-* Classic Headers
-* Minimal Headers
-* Centered Navigation Layouts
-* Pill Navigation Layouts
-* Topbar Header Layouts
-* Theme-specific Typography
-* Theme-specific Color Palettes
-* Responsive Mobile Navigation Styling
-
----
-
-## Theme Customizer
-
-Supports:
-
-* Logo Configuration
-* Favicon Configuration
-* Font Selection
-* Primary Color
-* Secondary Color
-* Header Styles
-* Footer Styles
-* Button Radius
-* Custom CSS
-* Back-to-Top Button Control
-
----
-
-## SEO Module
-
-### Global SEO Settings
-
-* Default Meta Title
-* Default Meta Description
-* Default Keywords
-* Open Graph Defaults
-
-### Search Engine Features
-
-* Sitemap Generation
-* Robots.txt Generation
-* Canonical URLs
-* Noindex Controls
-* Social Metadata
-* Open Graph Metadata
-* Twitter Metadata
-
-### Structured Data
-
-* Schema.org JSON-LD
-* Organization Schema
-* Website Schema
-* Person Schema
-* Local Business Schema
-
-Routes:
-
-```txt
-/sitemap.xml
-/robots.txt
-```
-
----
-
-## Plugin System
-
-Foundation implemented.
-
-Current capabilities:
-
-* Plugin Registration
-* Plugin Activation
-* Plugin Deactivation
-* Plugin Settings
-* Plugin Manager Service
-* Plugin Helper Functions
-
-Helpers:
-
-```php
-plugin_active()
-plugin_inactive()
-plugin_setting()
-plugin_settings()
-pulse_plugins()
-```
-
----
-
-## System Tools
-
-* Cache Clearing
-* Optimize Clear Integration
-* Administrative Utilities
-
----
-
-## Frontend
-
-Current frontend capabilities:
-
-* Dynamic Pages
-* Dynamic Blog
-* Dynamic Menus
-* Dynamic Theme Loading
-* SEO Metadata Rendering
-* Schema Rendering
-* Responsive Layouts
-* Theme Styling
-* Back-to-Top Button
-
----
-
-# Architecture
-
-Current architecture includes:
-
-```txt
-Authentication
-Pages
-Page Builder
-Blog
-Categories
-Tags
-Menus
-Media Library
-Themes
-Theme Customizer
-SEO
-Plugins
-Frontend Rendering
-System Tools
-```
-
----
-
-# Project Structure
-
-```txt
-cms/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Admin/
-│   │   │   ├── FrontendController.php
-│   │   │   └── SeoPublicController.php
-│   │   └── Middleware/
-│   │
-│   ├── Models/
-│   │   ├── Category.php
-│   │   ├── Media.php
-│   │   ├── Menu.php
-│   │   ├── MenuItem.php
-│   │   ├── Page.php
-│   │   ├── Plugin.php
-│   │   ├── Post.php
-│   │   ├── Setting.php
-│   │   ├── Tag.php
-│   │   ├── Theme.php
-│   │   └── ThemeSetting.php
-│   │
-│   ├── Pulse/
-│   │   ├── Plugins/
-│   │   │   ├── PluginManager.php
-│   │   │   └── helpers.php
-│   │   ├── Admin/
-│   │   ├── Core/
-│   │   ├── Installer/
-│   │   ├── Support/
-│   │   └── Themes/
-│   │
-│   └── Providers/
-│       └── AppServiceProvider.php
-│
-├── bootstrap/
-├── config/
-├── database/
-│   ├── factories/
-│   ├── migrations/
-│   └── seeders/
-│
-├── public/
-│   ├── css/
-│   ├── js/
-│   ├── themes/
-│   └── uploads/
-│
-├── resources/
-│   ├── views/
-│   │   ├── admin/
-│   │   ├── frontend/
-│   │   └── seo/
-│   └── lang/
-│
-├── routes/
-│   └── web.php
-│
-├── storage/
-├── tests/
-├── composer.json
-├── package.json
-└── README.md
-```
-
----
-
-# Features Not Yet Completed
-
-The following systems are partially implemented or planned for future development.
-
-## Site Health
-
-Planned:
-
-* PHP Diagnostics
-* Environment Checks
-* Storage Checks
-* Cache Checks
-* Queue Checks
-* Mail Checks
-
----
-
-## Error Log Viewer
-
-Planned:
-
-* Application Logs
-* Plugin Logs
-* Theme Logs
-* System Errors
-* Error Filtering
-
----
-
-## Plugin Runtime Integration
-
-Current plugin activation exists.
-
-Still required:
-
-* Module Hook Registration
-* Runtime Service Loading
-* Conditional Module Loading
-* Plugin Event System
-
----
-
-## Media Enhancements
-
-Planned:
-
-* Advanced Media Picker
-* Media Search
-* Media Folders
-* Media Metadata
-
----
-
-## Theme Enhancements
-
-Planned:
-
-* Theme Export
-* Theme Import
-* Theme Packaging
-* Theme Marketplace Foundation
-
----
-
-## Builder Enhancements
-
-Planned:
-
-* Drag-and-Drop Sorting
-* Nested Layouts
-* Columns
-* Grid Builder
-* Section Templates
-* Saved Templates
-
----
-
-## Forms System
-
-Planned:
-
-* Contact Forms
-* Newsletter Forms
-* Lead Forms
-* Form Builder
-* Submission Storage
-* Email Notifications
-
----
-
-## Installer
-
-Partially Implemented
-
-Still Required:
-
-* Full Installation Wizard
-* Environment Setup
-* Database Setup
-* Administrator Creation
-* Initial Site Configuration
-
----
-
-## Documentation
-
-Still Required:
-
-* User Documentation
-* Theme Documentation
-* Plugin Documentation
-* Developer Documentation
-* API Documentation
-
----
-
-# Removed Scope
-
-The following items were intentionally removed from the current roadmap:
-
-* Ecommerce
-* Payment Gateways
-* School Website Plugin
-* Business Website Plugin
-
-These may be revisited in the future but are not currently part of the project scope.
-
----
-
-# Development Notes
-
-This project is actively evolving and the architecture may continue to change as development progresses.
-
-Features, file structures, naming conventions, and implementation details may be refined before a stable release.
-
----
-
-# License
-
-No license currently assigned.
-
-All rights reserved until a license is selected.
-
----
-
-# Author
-
-Williams
-
-Software Engineer
-
-GitHub: https://github.com/wbizmo
+Pulse CMS is released under the [MIT License](LICENSE). Copyright Williams; project maintained at [wbizmo/pulse-platform](https://github.com/wbizmo/pulse-platform).

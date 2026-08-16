@@ -42,3 +42,7 @@ Payments M9 introduces no accepted application debt. Provider live/sandbox certi
 ## M10 review
 
 No historical financial/security evidence is subject to Operations pruning. TD-005 browser/assistive-technology qualification and real MySQL remain open. Credential-dependent payment certification remains an owner/environment gate. Form-submission export is intentionally absent until a dedicated PII policy is approved; this is a product boundary rather than placeholder behavior.
+
+## M11 qualification
+
+TD-002 is resolved by the production-safe default seeder and production-rejecting demo seeder; `pulse:install` accepts no default credential and writes a durable completion lock. TD-005 remains an external qualification gate. Genuine MySQL 8.0.46 clean migration and release-SQL import/schema comparison are evidenced. Parallel concurrency, disposable restore, M10 upgrade rehearsal, and provider credential certification remain release gates rather than claimed evidence; see `docs/release/RELEASE_CHECKLIST.md`.

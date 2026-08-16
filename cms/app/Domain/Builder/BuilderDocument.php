@@ -25,7 +25,7 @@ final class BuilderDocument
         } catch (\JsonException) {
             $this->fail('Builder JSON is invalid.');
         }
-        if (! is_array($document) || array_keys($document) !== ['schema_version', 'nodes'] || $document['schema_version'] !== BlockRegistry::SCHEMA_VERSION || ! is_array($document['nodes']) || ! array_is_list($document['nodes'])) {
+        if (! is_array($document) || ! $this->hasExactKeys($document, ['schema_version', 'nodes']) || $document['schema_version'] !== BlockRegistry::SCHEMA_VERSION || ! is_array($document['nodes']) || ! array_is_list($document['nodes'])) {
             $this->fail('The builder document schema or version is unsupported.');
         }
         $this->count = 0;
@@ -71,7 +71,7 @@ final class BuilderDocument
         }
         $result = [];
         foreach ($nodes as $node) {
-            if (! is_array($node) || array_keys($node) !== ['id', 'type', 'props', 'settings', 'children']) {
+            if (! is_array($node) || ! $this->hasExactKeys($node, ['id', 'type', 'props', 'settings', 'children'])) {
                 $this->fail('A builder node contains unknown or missing fields.');
             }
             if (! is_string($node['id']) || ! Str::isUuid($node['id']) || isset($this->ids[$node['id']])) {
@@ -172,6 +172,12 @@ final class BuilderDocument
         }
 
         return in_array(strtolower((string) parse_url($url, PHP_URL_HOST)), ['youtube.com', 'www.youtube.com', 'youtu.be', 'vimeo.com', 'www.vimeo.com'], true);
+    }
+
+    private function hasExactKeys(array $value, array $expected): bool
+    {
+        return count($value) === count($expected)
+            && array_diff(array_keys($value), $expected) === [];
     }
 
     private function fail(string $message): never

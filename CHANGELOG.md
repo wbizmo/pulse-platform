@@ -13,6 +13,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added permission-derived privileged-user TOTP MFA with encrypted secrets, one-way single-use recovery codes, replay/rate-limit controls, password-confirmed lifecycle operations, audited administrator recovery, and accessible enrollment/challenge interfaces.
 
 ### Fixed
+- Repaired genuine-MySQL fresh migration ordering for legacy same-timestamp parent/child tables and made Builder exact-key validation insensitive to MySQL JSON object-key normalization.
 - Repaired the Forms submissions inbox Blade structure exposed by the deferred real CLI-server acceptance smoke; the authenticated inbox now compiles and renders under the production view compiler.
 - Completed the M2 administration presentation migration for media, menus, builder, themes and customizer, plugins and settings, site settings, and SEO; retired administration `pulse-*` bridge consumers while preserving authorized workflows, shared confirmation dialogs, and safe toasts.
 - Migrated page and post administration lists and editors from the legacy presentation bridge to reusable Pulse page-header, card, table, form, badge, action, pagination, empty-state, and confirmation components.
@@ -78,3 +79,8 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M10 Operations
 - Added minimal public liveness and a protected Operations area with typed readiness checks, scheduler heartbeat, bounded database-queue triage, payment operational summaries, in-app transition alerts, append-only audit administration, centralized logging redaction, correlation IDs, protected bounded logs, private formula-safe exports and expiry pruning.
 - Hardened scheduled ownership with overlap locks, conservative configured-gateway payment reconciliation, intentional daily log retention, bounded command output and evidence-based audit/webhook indexes.
+
+### M11 installer and release readiness
+- Split the default production-safe system bootstrap from explicit demo fixtures; demo users now fail closed in production.
+- Added CLI preflight, secure interactive installation, installation status, canonical RBAC/theme/plugin synchronization, first-super-administrator creation and durable re-entry protection.
+- Replaced the obsolete repository README and added installation, deployment, backup/restore, upgrade/rollback, troubleshooting and evidence-based release-checklist runbooks.

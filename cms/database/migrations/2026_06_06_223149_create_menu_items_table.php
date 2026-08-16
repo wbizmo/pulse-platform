@@ -11,7 +11,9 @@ return new class extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('menu_id')->constrained()->cascadeOnDelete();
+            // The parent migration has the same legacy timestamp and sorts
+            // after this file; the constraint is reconciled once both exist.
+            $table->foreignId('menu_id');
             $table->foreignId('page_id')->nullable()->constrained('pages')->nullOnDelete();
 
             $table->string('label');
