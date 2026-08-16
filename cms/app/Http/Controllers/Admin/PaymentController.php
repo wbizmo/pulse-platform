@@ -54,6 +54,6 @@ final class PaymentController extends Controller
         $refund = $requestRefund->execute($payment, $d['gateway'], (int) $d['amount_minor'], $d['reason'], $d['idempotency_key'], $r->user());
         $audit->execute($r->user(), 'commerce.refund.initiated', $refund, ['payment_id' => $payment->id, 'refund_reference' => $refund->reference, 'amount_minor' => $refund->amount_minor, 'currency' => $refund->currency, 'gateway' => $refund->gateway]);
 
-        return back()->with('success','Refund request recorded.');
+        return back()->with('success', 'Refund request recorded.');
     }
 }

@@ -30,7 +30,7 @@ final class RequestRefund
                 throw ValidationException::withMessages(['amount_minor' => 'Refund exceeds the remaining captured amount.']);
             }
 
-return $p->refunds()->create(['order_id' => $p->order_id, 'gateway' => $gateway, 'reference' => (string) Str::uuid(), 'amount_minor' => $amount, 'currency' => $p->currency, 'state' => RefundState::Requested, 'reason' => mb_substr(trim($reason), 0, 240), 'actor_id' => $actor?->id, 'idempotency_key' => $hash]);
+            return $p->refunds()->create(['order_id' => $p->order_id, 'gateway' => $gateway, 'reference' => (string) Str::uuid(), 'amount_minor' => $amount, 'currency' => $p->currency, 'state' => RefundState::Requested, 'reason' => mb_substr(trim($reason), 0, 240), 'actor_id' => $actor?->id, 'idempotency_key' => $hash]);
         }, 5);
         if ($refund->provider_reference) {
             return $refund;
@@ -41,6 +41,6 @@ return $p->refunds()->create(['order_id' => $p->order_id, 'gateway' => $gateway,
             (new CompleteRefund)->execute($refund);
         }
 
-return $refund->fresh();
+        return $refund->fresh();
     }
 }

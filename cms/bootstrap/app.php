@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CorrelationId;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsurePrivilegedMfa;
 use Illuminate\Foundation\Application;
@@ -11,9 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
-        health: '/up',
+        health: null,
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(CorrelationId::class);
+
         $middleware->alias([
             'account.active' => EnsureAccountIsActive::class,
             'privileged.mfa' => EnsurePrivilegedMfa::class,

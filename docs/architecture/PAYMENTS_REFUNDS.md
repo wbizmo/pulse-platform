@@ -34,3 +34,7 @@ Refunds use integer minor units, stable local/provider idempotency, Payment lock
 The capability-protected, private/no-store/noindex payment page exposes only configured currency-compatible choices. Provider-hosted redirects are used for PayPal, Flutterwave, and Paystack; Stripe returns only its publishable collection material, never its secret key. Customer status is friendly and bounded. Payment configuration/list/detail and refunds sit behind active account, verified email, canonical RBAC, privileged MFA, and CSRF. `commerce.payments.manage` does not imply `commerce.refunds.manage`.
 
 No live/sandbox credentials were present in the repository environment, so live provider certification remains an owner/environment release gate. HTTP fakes and locally derived signatures are automated evidence, not live certification. Real MySQL concurrency and TD-005 browser/assistive-technology checks also remain release gates.
+
+## M10 operational handoff
+
+Operations now reports verified unprocessed webhooks, reconciliation-required payments, aged pending refunds and locally configured gateways without exposing provider payloads or credentials. Enabled, fully configured gateways reconcile in bounded batches every 15 minutes with overlap protection. Provider sandbox/live certification remains an environment gate.

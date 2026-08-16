@@ -59,3 +59,7 @@ Curl retained `/tmp/m6.cookies`, extracted each rendered `_token`, deliberately 
 ## M9 payment coverage
 
 Payment tests exercise immutable commercial values, duplicate success fulfilment, cancellation/success reconciliation, refund monotonicity/no-restock, encrypted secret redaction, migrations and prior M7/M8 regressions. Adapter HTTP/signature tests use fakes without live credentials. Provider sandbox certification, real-MySQL race execution and browser/assistive-technology flows remain explicit environment gates rather than being inferred from fakes.
+
+## M10 Operations coverage
+
+Operations feature coverage verifies minimal liveness, direct authorization denial, stale heartbeat detection, nested mixed-case redaction, log traversal containment/escaping, private exports, formula neutralization and append-only audits. Baseline release gates remain the complete PHP suite, strict Composer validation, Pint, route/schedule inspection, fresh seed, frontend build and real server smoke.

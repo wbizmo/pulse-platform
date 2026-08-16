@@ -50,3 +50,7 @@ The application now has opaque guest carts, deterministic rules/totals, atomic i
 ## M9 payments and refunds
 
 Payments are now a first-class domain with one immutable-order Payment, retryable attempts, a closed four-gateway registry, encrypted configuration, authenticated replay-protected webhook inbox, atomic paid fulfilment, refund/dispute records, bounded reconciliation, customer payment/status presentation, and MFA/RBAC administration. See `PAYMENTS_REFUNDS.md`.
+
+## M10 operational state
+
+The application now has the protected, bounded Operations vertical documented in `OPERATIONS.md`: typed local readiness, scheduler heartbeat, safe queue failure triage, payment backlog summaries, database notifications, append-only audit browsing, centralized log redaction/correlation, canonical-path log tails and private expiring exports.

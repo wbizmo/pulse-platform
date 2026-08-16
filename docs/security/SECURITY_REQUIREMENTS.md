@@ -70,3 +70,7 @@ Guest cart/order capabilities are random, stored only as hashes, transported in 
 ## M9 payment boundary
 
 Gateway secrets use dedicated encrypted storage and replacement-only forms. Public webhooks are POST-only, size/content-type/rate bounded, authenticated from original bytes before persistence, and replay protected. Pulse never collects PAN/CVV or trusts browser amount, currency, provider status, return URLs, or callback success. Audits and operator views contain normalized identifiers and replacement metadata only.
+
+## Operations security
+
+Detailed readiness, queues, logs, notifications, audits and exports require an active authenticated verified `system.manage` account with completed privileged MFA. Public `/up` is plain minimal liveness. Operational hostile text is escaped and centrally redacted; log and export paths are server-controlled and private. Audit evidence has application-level append-only guards.

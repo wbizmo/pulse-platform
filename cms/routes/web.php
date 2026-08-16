@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MfaController;
+use App\Http\Controllers\Admin\Operations\OperationsController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\PageController;
@@ -39,6 +40,8 @@ use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\PublicFormController;
 use App\Http\Controllers\SeoPublicController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/up', fn () => response('OK', 200, ['Content-Type' => 'text/plain; charset=UTF-8']))->name('liveness');
 
 Route::get('/sitemap.xml', [SeoPublicController::class, 'sitemap'])->name('seo.sitemap');
 Route::get('/robots.txt', [SeoPublicController::class, 'robots'])->name('seo.robots');
@@ -109,6 +112,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('roles', RoleController::class)->except('show')->middleware('can:'.Permission::ManageRoles->value);
 
             Route::post('/system/clear-cache', [SystemController::class, 'clearCache'])->middleware('can:'.Permission::ManageSystem->value)->name('system.clear-cache');
+
+            Route::middleware('can:'.Permission::ManageSystem->value)->prefix('operations')->name('operations.')->group(function () {
+                Route::get('/', [OperationsController::class, 'overview'])->name('overview');
+                Route::get('/health', [OperationsController::class, 'health'])->name('health');
+                Route::get('/queue', [OperationsController::class, 'queue'])->name('queue');
+                Route::post('/queue/{uuid}/retry', [OperationsController::class, 'retry'])->whereUuid('uuid')->name('queue.retry');
+                Route::delete('/queue/{uuid}', [OperationsController::class, 'forget'])->whereUuid('uuid')->name('queue.forget');
+                Route::get('/scheduler', [OperationsController::class, 'scheduler'])->name('scheduler');
+                Route::get('/logs', [OperationsController::class, 'logs'])->name('logs');
+                Route::get('/audit', [OperationsController::class, 'audit'])->name('audit');
+                Route::get('/notifications', [OperationsController::class, 'notifications'])->name('notifications');
+                Route::post('/notifications/{id}/read', [OperationsController::class, 'read'])->whereUuid('id')->name('notifications.read');
+                Route::get('/exports', [OperationsController::class, 'exports'])->name('exports');
+                Route::post('/exports', [OperationsController::class, 'createExport'])->name('exports.create');
+                Route::get('/exports/{export}', [OperationsController::class, 'download'])->name('exports.download');
+            });
 
             Route::get('/media', [MediaController::class, 'index'])->middleware('can:'.Permission::ManageMedia->value)->name('media');
             Route::get('/media/library', [MediaController::class, 'library'])->middleware('can:'.Permission::ManageMedia->value)->name('media.library');

@@ -19,6 +19,6 @@ enum RefundState: string
             return false;
         }
 
-return true;
+        return true;
     }
 }
