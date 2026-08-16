@@ -58,3 +58,7 @@ The inherited surface trusted editable metadata, arbitrary strings/URLs/CSS, bro
 ## M6 plugin follow-up
 
 The inherited plugin surface directly toggled database booleans, accepted arbitrary settings, trusted loose database metadata, and seeded core, future, payment and nonexistent capabilities as functional plugins. M6 replaces it with a closed code registry, dependency/compatibility validation, transactional audited actions, typed settings, canonical permissions, explicit contributions and redacted failure isolation. Legacy rows remain inert and fresh installs expose only genuine proof plugins.
+
+## M7 Commerce follow-up
+
+The previously absent product and inventory vertical now uses separate normalized catalogue tables, variant price/SKU authority, managed Media, transactional materialized balances, an append-only stock ledger, locked reservations, bounded expiry, deny-by-default administration and theme-runtime public presentation. Carts/orders and payments remain explicitly absent for M8/M9.

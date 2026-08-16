@@ -24,3 +24,7 @@ M5 establishes immutable theme manifests, closed settings, centralized resolutio
 ## M6 plugin boundary implemented
 
 The plugin target now has an authoritative code manifest registry, deterministic dependency graph, lifecycle application actions, validated settings and explicit contribution interfaces. Future extension types must be introduced as closed contracts with authorization and failure-boundary tests rather than database callback/class/path strings.
+
+## Commerce progression
+
+M7 supplies catalogue and single-pool inventory infrastructure. M8 may consume reservation actions for carts, checkout and orders; M9 may add gateway-neutral payments. Neither later concern may mutate balances outside Commerce actions.

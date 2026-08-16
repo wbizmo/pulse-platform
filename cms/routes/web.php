@@ -4,11 +4,13 @@ use App\Domain\Access\Permission;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BuilderTemplateController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommerceCategoryController;
 use App\Http\Controllers\Admin\ContentPreviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FormController;
 use App\Http\Controllers\Admin\FormSubmissionController;
 use App\Http\Controllers\Admin\IdentityController;
+use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MfaController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProductController as CommerceProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -25,6 +28,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\ThemeCustomizerController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PublicFormController;
 use App\Http\Controllers\SeoPublicController;
@@ -34,6 +38,9 @@ Route::get('/sitemap.xml', [SeoPublicController::class, 'sitemap'])->name('seo.s
 Route::get('/robots.txt', [SeoPublicController::class, 'robots'])->name('seo.robots');
 
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
+Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue.index');
+Route::get('/catalogue/category/{category:slug}', [CatalogueController::class, 'category'])->name('catalogue.category');
+Route::get('/catalogue/products/{slug}', [CatalogueController::class, 'show'])->name('catalogue.show');
 
 Route::get('/forms/{form:slug}', [PublicFormController::class, 'show'])->name('forms.show');
 Route::post('/forms/{form:slug}', [PublicFormController::class, 'store'])->middleware('throttle:10,1')->name('forms.store');
@@ -92,6 +99,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/media', [MediaController::class, 'store'])->middleware('can:'.Permission::ManageMedia->value)->name('media.store');
             Route::patch('/media/{media}', [MediaController::class, 'update'])->middleware('can:'.Permission::ManageMedia->value)->name('media.update');
             Route::delete('/media/{media}', [MediaController::class, 'destroy'])->middleware('can:'.Permission::ManageMedia->value)->name('media.destroy');
+
+            Route::get('/commerce/products', [CommerceProductController::class, 'index'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.products.index');
+            Route::get('/commerce/products/create', [CommerceProductController::class, 'create'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.products.create');
+            Route::post('/commerce/products', [CommerceProductController::class, 'store'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.products.store');
+            Route::get('/commerce/products/{product}/edit', [CommerceProductController::class, 'edit'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.products.edit');
+            Route::put('/commerce/products/{product}', [CommerceProductController::class, 'update'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.products.update');
+            Route::post('/commerce/products/{product}/variants', [CommerceProductController::class, 'storeVariant'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.variants.store');
+            Route::put('/commerce/products/{product}/variants/{variant}', [CommerceProductController::class, 'updateVariant'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.variants.update');
+            Route::get('/commerce/categories', [CommerceCategoryController::class, 'index'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.categories.index');
+            Route::post('/commerce/categories', [CommerceCategoryController::class, 'store'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.categories.store');
+            Route::put('/commerce/categories/{category}', [CommerceCategoryController::class, 'update'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.categories.update');
+            Route::delete('/commerce/categories/{category}', [CommerceCategoryController::class, 'destroy'])->middleware('can:'.Permission::ManageCommerceProducts->value)->name('commerce.categories.destroy');
+            Route::get('/commerce/inventory', [InventoryController::class, 'index'])->middleware('can:'.Permission::ManageCommerceInventory->value)->name('commerce.inventory.index');
+            Route::get('/commerce/inventory/{variant}', [InventoryController::class, 'show'])->middleware('can:'.Permission::ManageCommerceInventory->value)->name('commerce.inventory.show');
+            Route::post('/commerce/inventory/{variant}/adjust', [InventoryController::class, 'adjust'])->middleware('can:'.Permission::ManageCommerceInventory->value)->name('commerce.inventory.adjust');
 
             Route::get('/posts', [PostController::class, 'index'])->middleware('can:'.Permission::ManagePosts->value)->name('posts');
             Route::get('/posts/create', [PostController::class, 'create'])->middleware('can:'.Permission::ManagePosts->value)->name('posts.create');
