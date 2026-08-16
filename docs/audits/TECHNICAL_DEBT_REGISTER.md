@@ -45,4 +45,4 @@ No historical financial/security evidence is subject to Operations pruning. TD-0
 
 ## M11 qualification
 
-TD-002 is resolved by the production-safe default seeder and production-rejecting demo seeder; `pulse:install` accepts no default credential and writes a durable completion lock. TD-005 remains an external qualification gate. Genuine MySQL concurrency, release-SQL import/schema comparison, disposable restore, M10 upgrade rehearsal, and provider credential certification remain release gates rather than claimed evidence; see `docs/release/RELEASE_CHECKLIST.md`.
+TD-002 is resolved by the production-safe default seeder and production-rejecting demo seeder; `pulse:install` accepts no default credential and writes a durable completion lock. TD-005 remains an external qualification gate. Genuine MySQL 8.0.46 clean migration and release-SQL import/schema comparison are evidenced. Parallel concurrency, disposable restore, M10 upgrade rehearsal, and provider credential certification remain release gates rather than claimed evidence; see `docs/release/RELEASE_CHECKLIST.md`.

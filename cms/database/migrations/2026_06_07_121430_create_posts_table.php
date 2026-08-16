@@ -20,9 +20,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->foreignId('category_id')
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
+                ->nullable();
 
             $table->string('title');
 
