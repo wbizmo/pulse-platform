@@ -43,6 +43,6 @@ final class PaystackGateway extends AbstractHttpGateway
 
     public function normalizeWebhook(array $p): array
     {
-        return ['id' => (string) ($p['id'] ?? hash('sha256', json_encode($p))), 'type' => $this->string($p, 'event', 120), 'reference' => (string) data_get($p, 'data.reference'), 'status' => (string) data_get($p, 'data.status'), 'amount' => (int) data_get($p,'data.amount',0), 'currency' => strtoupper((string) data_get($p,'data.currency'))];
+        return ['id' => (string) ($p['id'] ?? hash('sha256', json_encode($p))), 'type' => $this->string($p, 'event', 120), 'reference' => (string) data_get($p, 'data.reference'), 'status' => (string) data_get($p, 'data.status'), 'amount' => (int) data_get($p, 'data.amount', 0), 'currency' => strtoupper((string) data_get($p, 'data.currency'))];
     }
 }

@@ -70,3 +70,7 @@ The previously absent transaction vertical now supplies server-side guest carts,
 ## M9 Payments follow-up
 
 The prior payment-free M8 handoff is replaced by a normalized Payment/attempt/refund/dispute schema, closed first-party adapters, encrypted credentials, signature-authenticated replay-protected inbox, atomic reservation/coupon consumption, payment-aware expiry/cancellation, bounded reconciliation, deny-by-default administration and private customer payment pages. Provider payloads and card credentials are deliberately excluded.
+
+## M10 follow-up
+
+M10 closed the baseline operations gaps with protected readiness, queue/scheduler visibility, daily redacted logging, read-only audit administration and bounded private exports. The query review added focused audit and payment-webhook indexes rather than speculative indexes.

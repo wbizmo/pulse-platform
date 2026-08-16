@@ -47,6 +47,6 @@ final class StripeGateway extends AbstractHttpGateway
 
     public function normalizeWebhook(array $p): array
     {
-        return ['id' => $this->string($p, 'id'), 'type' => $this->string($p, 'type', 120), 'reference' => (string) data_get($p, 'data.object.id'), 'status' => (string) data_get($p, 'data.object.status'), 'amount' => (int) (data_get($p,'data.object.amount_received') ?? data_get($p,'data.object.amount') ?? 0), 'currency' => strtoupper((string) data_get($p,'data.object.currency'))];
+        return ['id' => $this->string($p, 'id'), 'type' => $this->string($p, 'type', 120), 'reference' => (string) data_get($p, 'data.object.id'), 'status' => (string) data_get($p, 'data.object.status'), 'amount' => (int) (data_get($p, 'data.object.amount_received') ?? data_get($p, 'data.object.amount') ?? 0), 'currency' => strtoupper((string) data_get($p, 'data.object.currency'))];
     }
 }

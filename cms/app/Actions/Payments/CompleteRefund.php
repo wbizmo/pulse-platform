@@ -29,7 +29,7 @@ final class CompleteRefund
                 OrderStateHistory::create(['order_id' => $o->id, 'from_state' => $from->value, 'to_state' => $target->value, 'reason' => 'Provider refund completed', 'created_at' => now()]);
             }
 
-return $r->fresh();
+            return $r->fresh();
         });
     }
 }

@@ -46,6 +46,6 @@ final class FlutterwaveGateway extends AbstractHttpGateway
 
     public function normalizeWebhook(array $p): array
     {
-        return ['id' => (string) ($p['id'] ?? data_get($p, 'data.id') ?? hash('sha256', json_encode($p))), 'type' => (string) ($p['type'] ?? $p['event'] ?? 'unknown'), 'reference' => (string) data_get($p, 'data.tx_ref'), 'status' => (string) data_get($p, 'data.status'), 'amount' => (int) data_get($p,'data.amount',0), 'currency' => strtoupper((string) data_get($p,'data.currency'))];
+        return ['id' => (string) ($p['id'] ?? data_get($p, 'data.id') ?? hash('sha256', json_encode($p))), 'type' => (string) ($p['type'] ?? $p['event'] ?? 'unknown'), 'reference' => (string) data_get($p, 'data.tx_ref'), 'status' => (string) data_get($p, 'data.status'), 'amount' => (int) data_get($p, 'data.amount', 0), 'currency' => strtoupper((string) data_get($p, 'data.currency'))];
     }
 }

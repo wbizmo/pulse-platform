@@ -1,0 +1,3 @@
+@extends('admin.layouts.app',['heading'=>'Operations health'])
+@section('content')<x-pulse.page-header title="Detailed health" description="Dependency checks never expose credentials or raw exceptions." />@include('admin.operations._nav')
+<x-pulse.card><p>Overall: <strong>{{ ucfirst($status->value) }}</strong></p><div class="p-table-wrap"><table class="p-table"><caption>Current readiness checks</caption><thead><tr><th>Check</th><th>Status</th><th>Summary</th><th>Safe metadata</th></tr></thead><tbody>@foreach($results as $result)<tr><th>{{ $result->label }}</th><td>{{ ucfirst($result->status->value) }}</td><td>{{ $result->summary }}</td><td><code>{{ json_encode($result->metadata) }}</code></td></tr>@endforeach</tbody></table></div></x-pulse.card>@endsection

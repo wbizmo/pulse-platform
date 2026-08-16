@@ -74,3 +74,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 ### M9 Payments and refunds
 - Added the immutable-order Payment aggregate, retryable attempts, closed first-party Stripe/PayPal/Flutterwave/Paystack adapters, encrypted configuration and explicit currency availability.
 - Added verified replay-protected webhook intake, server verification, atomic paid Order/inventory/coupon fulfilment, payment-aware terminal transitions, idempotent partial/full refunds, disputes, bounded reconciliation, private customer UX and MFA/RBAC administration.
+
+### M10 Operations
+- Added minimal public liveness and a protected Operations area with typed readiness checks, scheduler heartbeat, bounded database-queue triage, payment operational summaries, in-app transition alerts, append-only audit administration, centralized logging redaction, correlation IDs, protected bounded logs, private formula-safe exports and expiry pruning.
+- Hardened scheduled ownership with overlap locks, conservative configured-gateway payment reconciliation, intentional daily log retention, bounded command output and evidence-based audit/webhook indexes.

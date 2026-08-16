@@ -37,7 +37,7 @@ final class PaymentController extends Controller
             return redirect()->away($url);
         }
 
-return redirect()->route('payments.show', $order->public_reference)->with('success', 'Payment initialized securely.');
+        return redirect()->route('payments.show', $order->public_reference)->with('success', 'Payment initialized securely.');
     }
 
     public function callback(Request $r, string $gateway, string $reference, PaymentGatewayRegistry $registry, ConfirmSuccessfulPayment $confirm)
@@ -51,6 +51,6 @@ return redirect()->route('payments.show', $order->public_reference)->with('succe
             }
         }
 
-return redirect()->route('orders.show',$reference);
+        return redirect()->route('orders.show', $reference);
     }
 }

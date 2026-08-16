@@ -33,3 +33,7 @@ M7 supplies catalogue and single-pool inventory infrastructure. M8 may consume r
 M8 establishes the transaction aggregate and explicit awaiting-payment boundary consumed by planned M9 payment orchestration; providers may not mutate carts, stock or orders directly.
 
 M9 realizes the Payment boundary through a closed registry and provider-neutral DTOs, encrypted dedicated configuration, monotonic states, raw-byte authenticated webhook inbox, one transactional fulfilment action, idempotent refunds, bounded disputes and reconciliation. Provider callbacks cannot bypass server verification.
+
+## M10 operations realization
+
+The portable operations layer is now implemented without requiring external observability services. M11 consumes these foundations and owns installer and release-readiness work.

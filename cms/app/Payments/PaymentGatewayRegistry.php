@@ -24,7 +24,7 @@ final class PaymentGatewayRegistry
             throw ValidationException::withMessages(['gateway' => 'Payment gateway is not configured.']);
         }
 
-return new (self::MAP[$slug])($config);
+        return new (self::MAP[$slug])($config);
     }
 
     public function available(string $currency): array

@@ -31,7 +31,7 @@ abstract class AbstractHttpGateway implements PaymentGateway
             throw ValidationException::withMessages(['gateway' => 'Payment provider returned an invalid response.']);
         }
 
-return $v;
+        return $v;
     }
 
     protected function status(string $value): PaymentState

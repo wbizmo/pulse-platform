@@ -19,7 +19,7 @@ enum PaymentState: string
             return false;
         }
 
-return match ($this) {
+        return match ($this) {
             self::Initialized => in_array($next, [self::RequiresAction, self::Pending, self::Succeeded, self::Failed, self::Cancelled], true),self::RequiresAction,self::Pending => in_array($next, [self::Pending, self::Succeeded, self::Failed, self::Cancelled], true),self::Failed,self::Cancelled => false,self::Succeeded => false
         };
     }

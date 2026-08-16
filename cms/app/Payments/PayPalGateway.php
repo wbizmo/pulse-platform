@@ -76,6 +76,6 @@ final class PayPalGateway extends AbstractHttpGateway
 
     public function normalizeWebhook(array $p): array
     {
-        return ['id' => $this->string($p, 'id'), 'type' => $this->string($p, 'event_type', 120), 'reference' => (string) (data_get($p, 'resource.supplementary_data.related_ids.order_id') ?? data_get($p, 'resource.id')), 'status' => (string) data_get($p,'resource.status'), 'amount' => $this->minor((string) data_get($p,'resource.amount.value','0')), 'currency' => strtoupper((string) data_get($p,'resource.amount.currency_code'))];
+        return ['id' => $this->string($p, 'id'), 'type' => $this->string($p, 'event_type', 120), 'reference' => (string) (data_get($p, 'resource.supplementary_data.related_ids.order_id') ?? data_get($p, 'resource.id')), 'status' => (string) data_get($p, 'resource.status'), 'amount' => $this->minor((string) data_get($p, 'resource.amount.value', '0')), 'currency' => strtoupper((string) data_get($p, 'resource.amount.currency_code'))];
     }
 }
