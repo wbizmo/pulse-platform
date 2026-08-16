@@ -41,3 +41,8 @@ Plugins now resolve exclusively through a closed first-party manifest registry w
 ## M7 Commerce
 
 Commerce now has first-class categories, lifecycle-bound products, globally normalized-SKU variants, managed galleries, integer money, materialized inventory backed by an append-only ledger, locked reservations and public theme-runtime catalogue routes. See `COMMERCE_CATALOGUE_INVENTORY.md`.
+
+
+## M8 commerce transactions
+
+The application now has opaque guest carts, deterministic rules/totals, atomic idempotent checkout integrated with M7 reservations, immutable awaiting-payment Orders, capability-protected confirmation, bounded expiry/cancellation, and MFA/RBAC-protected order administration. Payment processing remains absent until M9. See `CART_CHECKOUT_ORDERS.md`.

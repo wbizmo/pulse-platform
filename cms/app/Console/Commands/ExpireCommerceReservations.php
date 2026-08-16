@@ -16,13 +16,15 @@ class ExpireCommerceReservations extends Command
     public function handle(FinalizeReservation $finalize): int
     {
         $batch = max(1, min(1000, (int) $this->option('batch')));
-        $ids = InventoryReservation::where('state', 'active')->where('expires_at', '<=', now())->orderBy('expires_at')->limit($batch)->pluck('id');
+        // Order-linked reservations are owned exclusively by the order expiry lifecycle.
+        $ids = InventoryReservation::where('state', 'active')->whereDoesntHave('orderLink')->where('expires_at', '<=', now())->orderBy('expires_at')->limit($batch)->pluck('id');
         foreach ($ids as $id) {
             $reservation = InventoryReservation::find($id);
             if ($reservation) {
                 $finalize->execute($reservation, ReservationState::Expired);
             }
-        }$this->info("Expired {$ids->count()} reservation(s).");
+        }
+        $this->info("Expired {$ids->count()} reservation(s).");
 
         return self::SUCCESS;
     }

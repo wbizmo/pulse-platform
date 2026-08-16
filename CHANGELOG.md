@@ -66,3 +66,7 @@ All notable changes are recorded here. The project is pre-release and follows mi
 - Added the independent Commerce product category, product, variant and managed-gallery model with typed lifecycle, normalized globally unique SKUs, bounded option snapshots, and variant-authoritative integer-minor-unit prices with explicit allow-listed currencies.
 - Added transactionally materialized inventory balances, an append-only ledger, locked adjustments, concurrency-safe reservations, idempotent release/consume/expiry transitions, and a bounded scheduled expiration command.
 - Added independently MFA-protected catalogue and inventory administration, managed-media deletion protection, and real theme-runtime public catalogue/category/product presentation without cart, checkout, order, or payment controls.
+
+### M8 Cart, checkout and orders
+- Added opaque server-side guest carts, authoritative variant repricing, one-currency line mutations, deterministic coupon/tax/shipping totals, idempotent atomic checkout through M7 reservations, immutable awaiting-payment orders, capability-protected confirmation, state history, cancellation/expiry, administration and accessible theme-neutral storefront views.
+- Added order/rule RBAC authorities and documented the payment-free M9 handoff; payment gateways, paid transitions and refunds remain absent.

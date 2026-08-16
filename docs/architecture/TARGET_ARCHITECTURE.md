@@ -28,3 +28,6 @@ The plugin target now has an authoritative code manifest registry, deterministic
 ## Commerce progression
 
 M7 supplies catalogue and single-pool inventory infrastructure. M8 may consume reservation actions for carts, checkout and orders; M9 may add gateway-neutral payments. Neither later concern may mutate balances outside Commerce actions.
+
+
+M8 establishes the transaction aggregate and explicit awaiting-payment boundary consumed by planned M9 payment orchestration; providers may not mutate carts, stock or orders directly.
