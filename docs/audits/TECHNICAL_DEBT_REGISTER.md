@@ -36,3 +36,5 @@ Commerce M7 introduces no accepted application debt. SQLite sequential invariant
 
 
 Commerce M8 introduces no accepted application debt. Real-MySQL parallel checkout/coupon/cancellation races remain a release-environment gate, and browser/assistive-technology verification remains TD-005. Order-linked inventory expiry is owned exclusively by the Order lifecycle.
+
+Payments M9 introduces no accepted application debt. Provider live/sandbox certification was unavailable without owner credentials; real-MySQL race verification and TD-005 browser/assistive-technology checks remain release-environment gates. Official provider contracts were checked on 2026-08-16 and must be rechecked before release.

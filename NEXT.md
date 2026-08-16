@@ -1,6 +1,6 @@
 # Recovery checkpoint
 
-- **Authoritative base:** PR #21 (M7 Commerce catalogue/inventory) published head is `8ecdc4ac9f63e435729b5e09cb82712b161eca12`; its merged `main` checkpoint is `b7ea6fafb558d04d7781523ee447728d70fa55ac`. M1–M7 are published/merged, not local-only.
+- **Authoritative base:** PR #22 (M8 Cart, checkout and orders) published head is `09ce10c0a2998603bfac694ce0b7e09a847051f3`; its merged `main` checkpoint is `dd3ff84eff83d7c5204266ed057aac23c68774b7`. M1–M8 are published/merged, not local-only.
 - **Completed milestone:** **M6 Plugin runtime** adds the closed first-party manifest registry, semantic Pulse/dependency compatibility, deterministic acyclic loading, transactional audited activation/deactivation, typed settings, canonical namespaced permission synchronization, explicit dashboard widget/hooks, cache invalidation and redacted optional failure isolation.
 - **Genuine plugins:** Editorial Notes is a configurable safe dashboard widget. Publishing Insights depends on it and supplies a bounded dashboard widget and typed hook. Core Blog/Forms/SEO/Security/Builder/Themes are not plugins. Legacy fake/core/future rows are retained inactive and hidden; fresh seed exposes no commerce or payment plugin.
 - **Security boundary:** executable identities/classes are code-defined; no archive upload, callback/path/class input, arbitrary routes/views/assets, dynamic include or `eval`. Plugin administration remains authenticated, active, verified, `plugins.manage`, privileged-MFA and CSRF protected. Settings audits contain keys, never values.
@@ -8,4 +8,5 @@
 - **Environment gates:** TD-005 browser/assistive-technology interaction and real MySQL remain outstanding release gates. SQLite success is not MySQL proof.
 - **Completed milestone:** **M7 Commerce catalogue/inventory** implements the independent catalogue, variant-authoritative money, managed media, ledger-backed balances, locked reservations, bounded expiration, administration, and public theme presentation described in `docs/architecture/COMMERCE_CATALOGUE_INVENTORY.md`.
 - **Completed milestone:** **M8 Cart, checkout and orders** implements the guest cart, deterministic totals/rules, atomic idempotent M7-backed checkout, immutable awaiting-payment order snapshots, capability access, state history, expiry/cancellation, administration and public theme surfaces documented in `docs/architecture/CART_CHECKOUT_ORDERS.md`.
-- **Next exact milestone:** **M9 Payments/refunds**. Do not begin M9.
+- **Completed milestone:** **M9 Payments/refunds** adds the gateway-neutral aggregate, retryable attempts, closed Stripe/PayPal/Flutterwave/Paystack registry, encrypted configuration, verified replay-safe inbox, atomic paid fulfilment, idempotent refunds, disputes, reconciliation, customer UX and protected administration documented in `docs/architecture/PAYMENTS_REFUNDS.md`.
+- **Next exact milestone:** **M10 Operations**. Do not begin M10.

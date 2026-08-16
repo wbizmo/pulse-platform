@@ -21,7 +21,7 @@ class OrderController extends Controller
             $q->where('state', OrderState::tryFrom($r->string('state')->toString())?->value ?? '__invalid__');
         }
 
-return view('admin.commerce.orders.index', ['orders' => $q->paginate(25)->withQueryString()]);
+        return view('admin.commerce.orders.index', ['orders' => $q->paginate(25)->withQueryString()]);
     }
 
     public function show(Order $order)
@@ -34,6 +34,6 @@ return view('admin.commerce.orders.index', ['orders' => $q->paginate(25)->withQu
         $transition->execute($order, OrderState::Cancelled, $r->user(), 'Cancelled by administrator');
         $audit->execute($r->user(), 'commerce.order.cancelled', $order, ['reference' => $order->public_reference, 'prior_state' => OrderState::AwaitingPayment->value]);
 
-        return back()->with('success','Order cancelled and reservations released.');
+        return back()->with('success', 'Order cancelled and reservations released.');
     }
 }

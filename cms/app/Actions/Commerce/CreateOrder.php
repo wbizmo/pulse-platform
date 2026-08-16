@@ -29,7 +29,7 @@ final class CreateOrder
                 throw ValidationException::withMessages(['idempotency_key' => 'This key was already used for different checkout details.']);
             }
 
-return [$existing, null, true];
+            return [$existing, null, true];
         }
 
         return DB::transaction(function () use ($cart, $input, $hash, $fingerprint) {
@@ -40,7 +40,7 @@ return [$existing, null, true];
                     throw ValidationException::withMessages(['idempotency_key' => 'This key was already used for different checkout details.']);
                 }
 
-return [$existing, null, true];
+                return [$existing, null, true];
             }$quote = $this->calculate->execute($locked, $input['shipping_address'], $input['shipping_method_id'], $input['coupon_code'] ?? null);
             $coupon = $quote['coupon'] ? Coupon::lockForUpdate()->find($quote['coupon']->id) : null;
             if ($coupon && $coupon->usage_limit !== null && $coupon->reserved_count + $coupon->consumed_count >= $coupon->usage_limit) {

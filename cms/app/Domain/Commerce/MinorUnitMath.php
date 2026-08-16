@@ -10,6 +10,6 @@ final class MinorUnitMath
             throw new \InvalidArgumentException('Invalid percentage operands.');
         }
 
-return intdiv(($minor * $basisPoints) + 5000, 10000);
+        return intdiv(($minor * $basisPoints) + 5000, 10000);
     }
 }

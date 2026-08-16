@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\MfaController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PageBuilderController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\PluginController;
 use App\Http\Controllers\Admin\PluginSettingsController;
 use App\Http\Controllers\Admin\PostController;
@@ -33,6 +34,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\PublicFormController;
 use App\Http\Controllers\SeoPublicController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +54,10 @@ Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])->name('c
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
 Route::get('/orders/{reference}', [CheckoutController::class, 'order'])->name('orders.show');
+Route::get('/orders/{reference}/payment', [PaymentController::class, 'show'])->name('payments.show');
+Route::post('/orders/{reference}/payment', [PaymentController::class, 'store'])->middleware('throttle:10,1')->name('payments.store');
+Route::get('/payments/{gateway}/return/{reference}', [PaymentController::class, 'callback'])->middleware('throttle:20,1')->name('payments.callback');
+Route::post('/webhooks/payments/{gateway}', PaymentWebhookController::class)->whereIn('gateway', ['stripe', 'paypal', 'flutterwave', 'paystack'])->middleware('throttle:120,1')->name('payments.webhook');
 
 Route::get('/forms/{form:slug}', [PublicFormController::class, 'show'])->name('forms.show');
 Route::post('/forms/{form:slug}', [PublicFormController::class, 'store'])->middleware('throttle:10,1')->name('forms.store');
@@ -124,6 +131,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/commerce/orders', [OrderController::class, 'index'])->middleware('can:'.Permission::ManageCommerceOrders->value)->name('commerce.orders.index');
             Route::get('/commerce/orders/{order}', [OrderController::class, 'show'])->middleware('can:'.Permission::ManageCommerceOrders->value)->name('commerce.orders.show');
             Route::post('/commerce/orders/{order}/cancel', [OrderController::class, 'cancel'])->middleware('can:'.Permission::ManageCommerceOrders->value)->name('commerce.orders.cancel');
+            Route::get('/commerce/payments', [AdminPaymentController::class, 'index'])->middleware('can:'.Permission::ManageCommercePayments->value)->name('commerce.payments.index');
+            Route::get('/commerce/payments/configuration', [AdminPaymentController::class, 'configuration'])->middleware('can:'.Permission::ManageCommercePayments->value)->name('commerce.payments.configuration');
+            Route::put('/commerce/payments/configuration/{gateway}', [AdminPaymentController::class, 'updateConfiguration'])->whereIn('gateway', ['stripe', 'paypal', 'flutterwave', 'paystack'])->middleware('can:'.Permission::ManageCommercePayments->value)->name('commerce.payments.configuration.update');
+            Route::get('/commerce/payments/{payment}', [AdminPaymentController::class, 'show'])->middleware('can:'.Permission::ManageCommercePayments->value)->name('commerce.payments.show');
+            Route::post('/commerce/payments/{payment}/refunds', [AdminPaymentController::class, 'refund'])->middleware('can:'.Permission::ManageCommerceRefunds->value)->name('commerce.payments.refunds.store');
 
             Route::get('/commerce/inventory', [InventoryController::class, 'index'])->middleware('can:'.Permission::ManageCommerceInventory->value)->name('commerce.inventory.index');
             Route::get('/commerce/inventory/{variant}', [InventoryController::class, 'show'])->middleware('can:'.Permission::ManageCommerceInventory->value)->name('commerce.inventory.show');
