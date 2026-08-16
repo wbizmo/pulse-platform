@@ -11,9 +11,10 @@ return new class extends Migration
         Schema::create('theme_settings', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('theme_id')
-                ->constrained()
-                ->cascadeOnDelete();
+            // The legacy migration shares a timestamp with the parent-table
+            // migration and is sorted first on case-sensitive filesystems.
+            // The foreign key is attached after both tables exist.
+            $table->foreignId('theme_id');
 
             $table->string('key');
             $table->longText('value')->nullable();
