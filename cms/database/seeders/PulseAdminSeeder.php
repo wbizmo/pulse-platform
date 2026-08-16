@@ -10,6 +10,10 @@ class PulseAdminSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->environment('production')) {
+            throw new \RuntimeException('Demo accounts are forbidden in production. Use pulse:install.');
+        }
+
         $users = [
             [
                 'name' => 'Pulse Super Admin',

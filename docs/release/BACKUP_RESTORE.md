@@ -1,0 +1,7 @@
+# Backup and restore
+
+Create an encrypted, access-controlled backup set containing a transactionally consistent MySQL dump, `storage/app/public`, required application-owned files under `storage/app/private`, and release identifier/checksum metadata. Exclude `.env`, provider credentials exported from configuration, caches, sessions, jobs, logs, temporary uploads, and built/source dependencies. Database rows containing application-encrypted provider configuration still require protection and the original `APP_KEY`; manage that key separately in the secret manager, not inside ordinary backups.
+
+For MySQL, use `mysqldump --single-transaction --routines --triggers --hex-blob --no-tablespaces DATABASE > pulse.sql`, checksum the dump and file archive, encrypt them, and apply retention/restore access controls. Snapshot media in the same operational window or record a storage generation marker.
+
+Restore only into an isolated host first: provision the same application release and separately recovered secrets, import MySQL, restore persistent files with ownership-preserving tooling, run `php artisan migrate:status`, clear/rebuild caches, then verify users/RBAC, representative content/media/forms, inventory ledger, order history, payment/refund/webhook evidence, and audit history by identifiers and counts. Exercise login/MFA, storefront and Operations before traffic is enabled. A release is not qualified until an operator records this drill; repository CI cannot prove recovery of a production backup.

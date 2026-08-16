@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            PulseAdminSeeder::class,
+            PulseSystemSeeder::class,
             PulseThemeSeeder::class,
             PulsePluginSeeder::class,
         ]);
